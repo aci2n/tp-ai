@@ -121,7 +121,7 @@ public class AdministradorPersistenciaMaterial extends
 				float costo = rs.getFloat(6);
 
 				m = new Material(cod, nom, puntoPedido, AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit), cantidad, costo); // FALTA BUSCAR PROVEEDOR Y
-												// PASARLO AL CONSTRUCTOR
+				
 			}
 			return m;
 		} catch (Exception e) {
