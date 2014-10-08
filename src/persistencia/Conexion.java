@@ -10,8 +10,8 @@ public class Conexion {
 	public static Connection connect() {
 		Connection con = null;
 		try {
-            String userName = "user";
-            String password = "123"; 
+            String userName = "sa";
+            String password = "sa"; 
             String url = "jdbc:sqlserver://localhost";
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

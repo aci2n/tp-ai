@@ -3,7 +3,7 @@ package persistencia;
 import java.util.List;
 
 public abstract class AdministradorPersistencia {
-	private static String database = "A_Interactivas_01.dbo";
+	private static String database = "TPO";
 	
 	public abstract void insert(Object o);
 	public abstract void update(Object o);
