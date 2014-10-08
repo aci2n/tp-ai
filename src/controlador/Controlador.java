@@ -27,7 +27,7 @@ public class Controlador {
 		return con;
 	}
 
-	public void altaMaterial(String codigo, String nombre, String puntoPedido, String cuit, float cantidad, float costo){
+	public void altaMaterial(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
 		if (!existeMaterial(codigo)){
 			Proveedor proveedor = obtenerProveedor(cuit);
 			if (proveedor!=null){
@@ -52,7 +52,7 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"Ya existe un proveedor con el CUIT ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
-	public void modificarMaterial(String codigo, String nombre, String puntoPedido, String cuit, float cantidad, float costo){
+	public void modificarMaterial(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
 		if (existeMaterial(codigo)==true){
 			Proveedor proveedor = obtenerProveedor(cuit);
 			if (proveedor != null){

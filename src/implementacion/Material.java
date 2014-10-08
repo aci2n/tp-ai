@@ -3,12 +3,12 @@ package implementacion;
 public class Material {
 	private String codigo;
 	private String nombre;
-	private String puntoPedido;
+	private float puntoPedido;
 	private Proveedor proveedor;
 	private float cantidad;
 	private float costo;
 	
-	public Material(String codigo2, String nombre2, String puntoPedido2,
+	public Material(String codigo2, String nombre2, float puntoPedido2,
 			Proveedor proveedor2, float cantidad2, float costo2) {
 		setCodigo(codigo2);
 		setNombre(nombre2);
@@ -32,7 +32,7 @@ public class Material {
 		this.nombre = nombre;
 	}
 
-	public void setPuntoPedido(String puntoPedido) {
+	public void setPuntoPedido(float puntoPedido) {
 		this.puntoPedido = puntoPedido;
 	}
 
@@ -56,7 +56,7 @@ public class Material {
 		return nombre;
 	}
 
-	public String getPuntoPedido() {
+	public float getPuntoPedido() {
 		return puntoPedido;
 	}
 

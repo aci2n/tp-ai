@@ -142,7 +142,7 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 					JOptionPane.showMessageDialog(this.getComponent(0), "Costo unitario incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Controlador.getControlador().altaMaterial(tCodigo.getText(), tNombre.getText(), tPuntoPedido.getText(), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
+				Controlador.getControlador().altaMaterial(tCodigo.getText(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

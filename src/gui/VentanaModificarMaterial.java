@@ -138,7 +138,7 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 			if (materiales.getSelectedItem()!=null){
 				Material material = Controlador.getControlador().obtenerMaterial(materiales.getSelectedItem().toString());
 				tNombre.setText(material.getNombre());
-				tPuntoPedido.setText(material.getPuntoPedido());
+				tPuntoPedido.setText(Float.toString(material.getPuntoPedido()));
 				tCantidad.setText(Float.toString(material.getCantidad()));
 				tCosto.setText(Float.toString(material.getCosto()));
 				tCuit.setText(material.getProveedor().getCuit());				
@@ -158,7 +158,7 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 					JOptionPane.showMessageDialog(this.getComponent(0), "Costo unitario incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Controlador.getControlador().modificarMaterial(materiales.getSelectedItem().toString(), tNombre.getText(), tPuntoPedido.getText(), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
+				Controlador.getControlador().modificarMaterial(materiales.getSelectedItem().toString(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
 			}
 			else 					
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material y complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);
