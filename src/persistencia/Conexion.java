@@ -8,14 +8,14 @@ import java.sql.Statement;
 
 public class Conexion 
 {
-	private Connection con;
+	private static Connection con;
 	
-	public Connection connect()
+	public static Connection connect()
 	{
 		try
 		{
-            String userName = "alvaro"; //CAMBIAR
-            String password = "password"; //mi password es password
+            String userName = "user";
+            String password = "123"; 
             String url = "jdbc:sqlserver://localhost";
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -24,7 +24,8 @@ public class Conexion
         }
         catch (Exception e)
         {
-            System.err.println ("Cannot connect to database server");
+            System.err.println ("No se puede conectar al server de la base de datos");
+            return null;
         }
 		return con;
 	}
