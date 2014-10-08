@@ -107,6 +107,10 @@ public class Controlador {
 		return materiales;
 	}
 
+	public void setMateriales(Collection<Material> materiales) {
+		this.materiales = materiales;
+	}
+
 	public Collection<Proveedor> getProveedores() {
 		return proveedores;
 	}

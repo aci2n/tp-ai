@@ -9,12 +9,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import persistencia.AdministradorPersistenciaMaterial;
+
 import controlador.Controlador;
 
 public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionListener{
 	private JButton eliminar;
 	private JComboBox materiales;
 	private JLabel codigo;
+	private AdministradorPersistenciaMaterial apm = AdministradorPersistenciaMaterial.getInstance();
 
 	public static void main(String[] args) {
 		new VentanaBajaMaterial();
@@ -41,6 +44,7 @@ public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionLis
 				materiales = new JComboBox();
 				getContentPane().add(materiales);
 				materiales.setBounds(70, 12, 243, 24);
+				Controlador.getControlador().setMateriales(apm.obtenerMateriales()); // OBTIENE LOS MATERIALES DE LA BD
 				for (Material m : Controlador.getControlador().getMateriales())
 					materiales.addItem(m.getCodigo());
 				materiales.setSelectedIndex(-1);
@@ -66,8 +70,13 @@ public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionLis
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==eliminar){
 			if (materiales.getSelectedItem()!=null){
-				Controlador.getControlador().eliminarMaterial(materiales.getSelectedItem().toString());
-				materiales.removeItemAt(materiales.getSelectedIndex());
+				
+				Material m = Controlador.getControlador().obtenerMaterial(materiales.getSelectedItem().toString());
+				if(m != null){
+					Controlador.getControlador().eliminarMaterial(m.getCodigo());
+					materiales.removeItemAt(materiales.getSelectedIndex());
+					apm.delete(m);
+				}
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0),"Por favor elija un material a eliminar.","Error",JOptionPane.ERROR_MESSAGE);
