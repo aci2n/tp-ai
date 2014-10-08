@@ -129,7 +129,8 @@ public class AdministradorPersistenciaMaterial extends
 		}
 		return null;
 	}
-
+	
+	/*
 	public ArrayList<MaterialView> listarMateriales() {
 
 		try {
@@ -163,7 +164,8 @@ public class AdministradorPersistenciaMaterial extends
 			return null;
 		}
 	}
-
+*/
+	
 	public ArrayList<Material> obtenerMateriales() {
 
 		try {
