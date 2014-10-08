@@ -1,4 +1,6 @@
 package gui;
+import implementacion.Material;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -6,9 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
+import persistencia.AdministradorPersistenciaMaterial;
 import controlador.Controlador;
 
 public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionListener{
@@ -25,6 +26,7 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 	private JLabel costo;
 	private JLabel cantidad;
 	private JLabel puntoPedido;
+	private AdministradorPersistenciaMaterial apm = AdministradorPersistenciaMaterial.getInstance();
 
 
 	public static void main(String[] args) {
@@ -149,6 +151,9 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 					return;
 				}
 				Controlador.getControlador().altaMaterial(tCodigo.getText(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
+				Material m = Controlador.getControlador().obtenerMaterial(tCodigo.getText());
+				apm.insert(m);
+			
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);
