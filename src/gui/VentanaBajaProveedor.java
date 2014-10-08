@@ -68,8 +68,11 @@ public class VentanaBajaProveedor extends javax.swing.JFrame implements ActionLi
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==eliminar){
 			if (proveedores.getSelectedItem()!=null){
-				Controlador.getControlador().eliminarProveedor(proveedores.getSelectedItem().toString());
-				proveedores.removeItemAt(proveedores.getSelectedIndex());
+				if (Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).isActivo()==true)
+					Controlador.getControlador().eliminarProveedor(proveedores.getSelectedItem().toString());
+				//proveedores.removeItemAt(proveedores.getSelectedIndex());
+				else
+					JOptionPane.showMessageDialog(this.getComponent(0),"El proveedor seleccionado ya está inactivo.","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0),"Por favor elija un proveedor a eliminar.","Error",JOptionPane.ERROR_MESSAGE);

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +22,7 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 	private JTextField tNombre;
 	private JLabel cuit;
 	private JButton modificar;
+	private JCheckBox activo;
 
 	public static void main(String[] args) {
 		new VentanaModificarProveedor();
@@ -67,6 +69,12 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 				nombre.setBounds(12, 48, 54, 17);
 			}
 			{
+				activo = new JCheckBox();
+				getContentPane().add(activo);
+				activo.setText("Activo");
+				activo.setBounds(12, 81, 80, 17);
+			}
+			{
 				tNombre = new JTextField();
 				getContentPane().add(tNombre);
 				tNombre.setBounds(78, 45, 265, 24);
@@ -85,12 +93,14 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==proveedores){
 			if (proveedores.getSelectedItem()!=null){
-				tNombre.setText(Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).getNombre());				
+				tNombre.setText(Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).getNombre());
+				activo.setSelected(Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).isActivo());
 			}
 		}
 		if (e.getSource()==modificar){
 			if (proveedores.getSelectedItem()!=null && !tNombre.getText().equals("")){
 				Controlador.getControlador().modificarProveedor(proveedores.getSelectedItem().toString(), tNombre.getText());
+				Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).setActivo(activo.isSelected());
 			}
 			else 					
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un proveedor y complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

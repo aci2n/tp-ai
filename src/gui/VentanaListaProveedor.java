@@ -36,12 +36,17 @@ public class VentanaListaProveedor extends JFrame{
 		
 		modelo.addColumn("Nombre");
 		modelo.addColumn("CUIT");
+		modelo.addColumn("Activo");
 		
 		// FILAS 
 		
 		for(Proveedor p : proveedores){
-			
-			Object[] nuevo = {p.getNombre(), p.getCuit()};
+			String activo;
+			if (p.isActivo())
+				activo="Sí";
+			else
+				activo="No";
+			Object[] nuevo = {p.getNombre(), p.getCuit(),activo};
 			modelo.addRow(nuevo);
 		}
 		

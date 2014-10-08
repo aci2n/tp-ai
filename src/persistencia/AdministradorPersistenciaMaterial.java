@@ -85,9 +85,9 @@ public class AdministradorPersistenciaMaterial extends
 
 			Material m = (Material) o;
 			con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("delete from "
-					+ super.getDatabase() + ".dbo.Materiales where codigo = ?");
-			s.setString(1, m.getCodigo());
+			PreparedStatement s = con.prepareStatement("update "+super.getDatabase()+".dbo.Materiales set activo = ? where codigo = ?");
+			s.setBoolean(1, false);
+			s.setString(2, m.getCodigo());
 			s.execute();
 
 		} catch (Exception e) {
@@ -120,8 +120,7 @@ public class AdministradorPersistenciaMaterial extends
 				float puntoPedido = rs.getFloat(5);
 				float costo = rs.getFloat(6);
 
-				m = new Material(cod, nom, puntoPedido, new Proveedor("jose",
-						"1"), cantidad, costo); // FALTA BUSCAR PROVEEDOR Y
+				m = new Material(cod, nom, puntoPedido, AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit), cantidad, costo); // FALTA BUSCAR PROVEEDOR Y
 												// PASARLO AL CONSTRUCTOR
 			}
 			return m;
@@ -176,7 +175,7 @@ public class AdministradorPersistenciaMaterial extends
 			con = Conexion.connect();
 			Material m = null;
 			PreparedStatement s = con.prepareStatement("select * from "
-					+ super.getDatabase() + ".dbo.Materiales");
+					+ super.getDatabase() + ".dbo.Materiales where activo = 1");
 			ResultSet rs = s.executeQuery();
 
 			while (rs.next()) {
@@ -187,7 +186,7 @@ public class AdministradorPersistenciaMaterial extends
 				float cantidad = rs.getFloat(4);
 				float puntoPedido = rs.getFloat(5);
 				float costo = rs.getFloat(6);
-				m = new Material(cod, nom, puntoPedido, new Proveedor("1","Jose"), cantidad, costo);
+				m = new Material(cod, nom, puntoPedido, AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit), cantidad, costo);
 				// AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit)
 				materiales.add(m); 
 			}

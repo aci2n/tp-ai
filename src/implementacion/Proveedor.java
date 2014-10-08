@@ -1,5 +1,9 @@
 package implementacion;
 
+import java.util.Collection;
+
+import persistencia.AdministradorPersistenciaProveedor;
+
 
 public class Proveedor {
 	private String nombre;
@@ -43,10 +47,20 @@ public class Proveedor {
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+		AdministradorPersistenciaProveedor.getInstancia().update(this);
 	}	
 	
 	public static Proveedor buscarProveedor(String cuit){
 		Proveedor p = null;
 		return p;
 	}
+	
+	public static Collection<Proveedor> obtenerProveedores(){
+		return AdministradorPersistenciaProveedor.getInstancia().obtenerProveedores();
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
 }

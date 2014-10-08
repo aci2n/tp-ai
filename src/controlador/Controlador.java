@@ -99,7 +99,7 @@ public class Controlador {
 	public void eliminarProveedor(String cuit) {
 		for (Proveedor p : proveedores)
 			if (p.sosElProveedor(cuit)==true){
-				proveedores.remove(p);
+				p.eliminar();
 				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}		
@@ -163,7 +163,19 @@ public class Controlador {
 	}
 	
 	public Collection<Proveedor> getProveedores() {
-		return proveedores;
+		//comienzo de la negrada, probe con !contain() y otras cosas pero no andaban y esto si ni nos vimos
+		boolean yaExiste=false;
+		for (Proveedor p : Proveedor.obtenerProveedores()){
+			for (Proveedor p2 : proveedores)
+				if (p2.sosElProveedor(p.getCuit())){
+					yaExiste=true;
+				}
+			if (!yaExiste)
+				proveedores.add(p);
+			yaExiste=false;
+		}
+		//fin de la negrada
+		return this.proveedores;
 	}
 
 	public Collection<Prenda> getPrendas() {
