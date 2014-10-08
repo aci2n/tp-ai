@@ -19,6 +19,7 @@ public class MaterialView {
 		this.proveedor = proveedor;
 		this.cantidad = cantidad;
 		this.costo = costo;
+		activo = true;
 	}
 
 	public String getCodigo() {

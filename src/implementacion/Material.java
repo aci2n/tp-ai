@@ -17,6 +17,7 @@ public class Material {
 		setProveedor(proveedor2);
 		setCantidad(cantidad2);
 		setCosto(costo2);
+		activo = true;
 	}
 
 	public boolean sosElMaterial(String codigo2) {

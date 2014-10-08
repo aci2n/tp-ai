@@ -1,6 +1,7 @@
 package persistencia;
 
 import implementacion.Material;
+import implementacion.MaterialView;
 import implementacion.Proveedor;
 
 import java.sql.Connection;
@@ -31,13 +32,14 @@ public class AdministradorPersistenciaMaterial extends AdministradorPersistencia
 		try{
 			Material m = (Material)o;
 			con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("insert into "+super.getDatabase()+".dbo.Materiales values (?,?,?,?,?,?)");
+			PreparedStatement s = con.prepareStatement("insert into "+super.getDatabase()+".dbo.Materiales values (?,?,?,?,?,?,?)");
 			s.setString(1, m.getCodigo());
 			s.setString(2, m.getProveedor().getCuit());
 			s.setString(3, m.getNombre());
 			s.setFloat(4, m.getCantidad());
 			s.setFloat(5, m.getPuntoPedido());
-			s.setFloat(6, m.getCosto()); 			// FALTA VER LO DEL ATRIBUTO ACTIVO
+			s.setFloat(6, m.getCosto()); 	// FALTA VER LO DEL ATRIBUTO ACTIVO
+			s.setBoolean(7, true);
 			s.execute();
 		
 		}catch(Exception e){
@@ -90,7 +92,6 @@ public class AdministradorPersistenciaMaterial extends AdministradorPersistencia
 		
 	}
 
-	@Override
 	public List<Object> select(Object o) {
 		// TODO Auto-generated method stub
 		return null;
@@ -124,12 +125,13 @@ public class AdministradorPersistenciaMaterial extends AdministradorPersistencia
 		return null;
 	}
 	
-	public ArrayList<Material> listarMateriales(){
+	public ArrayList<MaterialView> listarMateriales(){
 		
 		try{
 			
-			ArrayList<Material> materiales = new ArrayList<Material>();
+			ArrayList<MaterialView> materiales = new ArrayList<MaterialView>();
 			con = Conexion.connect();
+			Material m = null;
 			PreparedStatement s = con.prepareStatement("select * from "+super.getDatabase()+".dbo.Materiales");
 			ResultSet rs = s.executeQuery();
 			
@@ -141,8 +143,9 @@ public class AdministradorPersistenciaMaterial extends AdministradorPersistencia
 				float cantidad = rs.getFloat(4);
 				float puntoPedido = rs.getFloat(5);
 				float costo = rs.getFloat(6);
-				
-				materiales.add(new Material(cod, nom, puntoPedido, new Proveedor("jose","1"), cantidad, costo)); // FALTA BUSCAR PROVEEDOR Y PASARLO AL CONSTRUCTOR	
+				m = new Material(cod, nom, puntoPedido, new Proveedor("jose","1"), cantidad, costo);
+				MaterialView mv = m.generarMaterialView();
+				materiales.add(mv); // FALTA BUSCAR PROVEEDOR Y PASARLO AL CONSTRUCTOR	
 			}
 			
 			return materiales;

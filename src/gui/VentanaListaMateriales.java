@@ -1,6 +1,7 @@
 package gui;
 
 import implementacion.Material;
+import implementacion.MaterialView;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -11,11 +12,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controlador.Controlador;
+import persistencia.AdministradorPersistenciaMaterial;
 
 public class VentanaListaMateriales extends JFrame{
 	
 	private JTable tabla;
+	private AdministradorPersistenciaMaterial apm = AdministradorPersistenciaMaterial.getInstance();
 	
 	public VentanaListaMateriales(){
 	
@@ -28,7 +30,8 @@ public class VentanaListaMateriales extends JFrame{
 		
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
-		Collection<Material> materiales = Controlador.getControlador().getMateriales();
+		//Collection<Material> materiales = Controlador.getControlador().getMateriales();
+		Collection<MaterialView> materiales = apm.listarMateriales();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS
@@ -42,7 +45,7 @@ public class VentanaListaMateriales extends JFrame{
 		
 		// FILAS 
 		
-		for(Material m : materiales){
+		for(MaterialView m : materiales){
 			
 			Object[] nuevo = {m.getCodigo(), m.getNombre(), m.getPuntoPedido(), m.getProveedor().getNombre(), m.getCantidad(), m.getCosto()};
 			modelo.addRow(nuevo);
