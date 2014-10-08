@@ -1,6 +1,6 @@
 package implementacion;
 
-public class PrendaDeTemporada extends PrendaSimple{
+public class PrendaConTemporada extends PrendaSimple{
 	private String temporada;
 	private float porcentajeVenta;
 	
