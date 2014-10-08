@@ -158,6 +158,12 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 					JOptionPane.showMessageDialog(this.getComponent(0), "Costo unitario incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				try{
+					Float.parseFloat(tPuntoPedido.getText());
+				} catch(Exception exep){
+					JOptionPane.showMessageDialog(this.getComponent(0), "Punto de pedido incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				Controlador.getControlador().modificarMaterial(materiales.getSelectedItem().toString(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
 			}
 			else 					

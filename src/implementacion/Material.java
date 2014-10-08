@@ -7,6 +7,7 @@ public class Material {
 	private Proveedor proveedor;
 	private float cantidad;
 	private float costo;
+	private boolean activo;
 	
 	public Material(String codigo2, String nombre2, float puntoPedido2,
 			Proveedor proveedor2, float cantidad2, float costo2) {

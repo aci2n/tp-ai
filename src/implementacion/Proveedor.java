@@ -5,6 +5,7 @@ import java.util.Collection;
 public class Proveedor {
 	private String nombre;
 	private String cuit;
+	private boolean activo;
 	
 	public Proveedor (String nombre2, String cuit2){
 		setNombre(nombre2);
