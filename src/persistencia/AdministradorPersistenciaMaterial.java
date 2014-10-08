@@ -80,6 +80,8 @@ public class AdministradorPersistenciaMaterial extends
 	public void delete(Object o) {
 		// TODO Auto-generated method stub
 		try {
+			
+			/* HAY QUE CAMBIAR EL SELECT PARA QUE PONGO EL ATRIBUTO ACTIVO EN 0 */
 
 			Material m = (Material) o;
 			con = Conexion.connect();
