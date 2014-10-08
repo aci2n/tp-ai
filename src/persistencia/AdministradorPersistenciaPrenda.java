@@ -24,7 +24,7 @@ public class AdministradorPersistenciaPrenda extends AdministradorPersistencia {
 	public void insert(Object o) {
 		Connection con = Conexion.connect();
 		Prenda prenda = (Prenda) o;
-		PreparedStatement s = con.prepareStatement("insert into A_Interactivas_01.dbo.Afiliados values (?,?,?,?,?,?,?,?,?,?,?)");
+		PreparedStatement s = con.prepareStatement("insert into " + super.getDatabase() + " values (?,?,?,?,?,?,?,?,?,?,?)");
 		//agregar campos
 		s.setLong(1,a.getCodigo());
 		s.setString(2, a.getNombre());
