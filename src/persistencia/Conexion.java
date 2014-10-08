@@ -6,14 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class Conexion 
-{
-	private static Connection con;
-	
-	public static Connection connect()
-	{
-		try
-		{
+public class Conexion {
+	public static Connection connect() {
+		Connection con = null;
+		try {
             String userName = "user";
             String password = "123"; 
             String url = "jdbc:sqlserver://localhost";
@@ -21,9 +17,7 @@ public class Conexion
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
             con = DriverManager.getConnection (url, userName, password);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println ("No se puede conectar al server de la base de datos");
             return null;
         }
