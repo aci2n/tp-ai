@@ -73,5 +73,10 @@ public class Material {
 		return costo;
 	}
 	
+	public MaterialView generarMaterialView(){
+		
+		return new MaterialView(this.codigo, this.nombre, this.puntoPedido,
+			this.proveedor, this.cantidad, this.costo);
+	}
 	
 }
