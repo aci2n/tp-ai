@@ -187,10 +187,9 @@ public class AdministradorPersistenciaMaterial extends
 				float cantidad = rs.getFloat(4);
 				float puntoPedido = rs.getFloat(5);
 				float costo = rs.getFloat(6);
-				m = new Material(cod, nom, puntoPedido, new Proveedor("jose",
-						"1"), cantidad, costo);
-				materiales.add(m); // FALTA BUSCAR PROVEEDOR Y PASARLO AL
-									// CONSTRUCTOR
+				m = new Material(cod, nom, puntoPedido, new Proveedor("1","Jose"), cantidad, costo);
+				// AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit)
+				materiales.add(m); 
 			}
 
 			return materiales;

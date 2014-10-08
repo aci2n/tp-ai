@@ -1,9 +1,9 @@
 package gui;
 import implementacion.Material;
+import implementacion.MaterialView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -141,6 +141,7 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 		if (e.getSource()==materiales){
 			if (materiales.getSelectedItem()!=null){
 				Material material = Controlador.getControlador().obtenerMaterial(materiales.getSelectedItem().toString());
+				//MaterialView material = m.generarMaterialView();
 				tNombre.setText(material.getNombre());
 				tPuntoPedido.setText(Float.toString(material.getPuntoPedido()));
 				tCantidad.setText(Float.toString(material.getCantidad()));

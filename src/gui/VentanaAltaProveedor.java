@@ -76,6 +76,7 @@ public class VentanaAltaProveedor extends javax.swing.JFrame implements ActionLi
 			if (!tNombre.getText().equals("") && !tCuit.getText().equals("")){
 				Controlador con = Controlador.getControlador();
 				con.altaProveedor(tNombre.getText(), tCuit.getText());
+				
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

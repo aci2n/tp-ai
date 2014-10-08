@@ -1,6 +1,5 @@
 package implementacion;
 
-import persistencia.AdministradorPersistenciaProveedor;
 
 public class Proveedor {
 	private String nombre;
@@ -11,7 +10,6 @@ public class Proveedor {
 		this.nombre=nombre2;
 		this.cuit=cuit2;
 		this.activo=true;
-		AdministradorPersistenciaProveedor.getInstancia().insert(this);
 	}
 	
 	public Proveedor() {
@@ -25,7 +23,6 @@ public class Proveedor {
 	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		AdministradorPersistenciaProveedor.getInstancia().update(this);
 	}
 	
 	public String getNombre() {
@@ -42,7 +39,6 @@ public class Proveedor {
 
 	public void eliminar() {
 		setActivo(false);
-		AdministradorPersistenciaProveedor.getInstancia().delete(this);
 	}
 
 	public void setActivo(boolean activo) {
@@ -50,7 +46,7 @@ public class Proveedor {
 	}	
 	
 	public static Proveedor buscarProveedor(String cuit){
-		Proveedor p = AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit);
+		Proveedor p = null;
 		return p;
 	}
 }
