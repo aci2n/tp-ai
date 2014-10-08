@@ -182,7 +182,7 @@ public class AdministradorPersistenciaMaterial extends
 			while (rs.next()) {
 
 				String cod = rs.getString(1);
-				String cuit = rs.getString(2);
+				String cuit = rs.getString(2); // USAR CON EL ADMPERSISTENCIA DE PROVEEDORES
 				String nom = rs.getString(3);
 				float cantidad = rs.getFloat(4);
 				float puntoPedido = rs.getFloat(5);
