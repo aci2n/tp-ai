@@ -20,6 +20,8 @@ public class Controlador {
 		proveedores = new ArrayList<Proveedor>();
 		prendas = new ArrayList<Prenda>();
 	}
+		
+	//SINGLETON
 	
 	public static Controlador getControlador(){
 		if(con == null)
@@ -27,6 +29,8 @@ public class Controlador {
 		return con;
 	}
 
+	//ALTAS
+	
 	public void altaMaterial(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
 		if (!existeMaterial(codigo)){
 			Proveedor proveedor = obtenerProveedor(cuit);
@@ -52,6 +56,8 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"Ya existe un proveedor con el CUIT ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
+	//MODIFICAR
+	
 	public void modificarMaterial(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
 		if (existeMaterial(codigo)==true){
 			Proveedor proveedor = obtenerProveedor(cuit);
@@ -70,6 +76,46 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"No existe material con el código seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
+	public void modificarProveedor(String cuit, String nombre) {
+		if (existeProveedor(cuit)==true){
+			obtenerProveedor(cuit).setNombre(nombre);
+			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
+	}
+	
+	//BAJAS
+	
+	public void eliminarMaterial(String codigo){
+		for (Material m : materiales)
+			if (m.sosElMaterial(codigo)==true){
+				materiales.remove(m);
+				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+	}
+	
+	public void eliminarProveedor(String cuit) {
+		for (Proveedor p : proveedores)
+			if (p.sosElProveedor(cuit)==true){
+				proveedores.remove(p);
+				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}		
+	}
+
+	public void eliminarPrenda(String codigo) {
+		for (Prenda pr : prendas)
+			if (pr.sosLaPrenda(codigo)==true){
+				proveedores.remove(pr);
+				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}	
+	}
+	
+	//EXISTE
+	
 	public boolean existeMaterial(String codigo){
 		for (Material m : materiales)
 			if (m.sosElMaterial(codigo)==true){
@@ -83,42 +129,25 @@ public class Controlador {
 			if (p.sosElProveedor(cuit)==true){
 				return true;
 			}
+		if (Proveedor.buscarProveedor(cuit)!=null)
+			return true;
 		return false;
 	}
 	
+	
+	//OBTENER
+	
 	public Proveedor obtenerProveedor(String cuit){
+		Proveedor prov;
 		for (Proveedor p : proveedores)
 			if (p.sosElProveedor(cuit)==true){
-				return p;
+				prov = p;
+				return prov;
 			}
-		return null;
+		prov = Proveedor.buscarProveedor(cuit);
+		return prov;
 	}
 	
-	public void eliminarMaterial(String codigo){
-		for (Material m : materiales)
-			if (m.sosElMaterial(codigo)==true){
-				materiales.remove(m);
-				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}
-	}
-
-	public Collection<Material> getMateriales() {
-		return materiales;
-	}
-
-	public void setMateriales(Collection<Material> materiales) {
-		this.materiales = materiales;
-	}
-
-	public Collection<Proveedor> getProveedores() {
-		return proveedores;
-	}
-
-	public Collection<Prenda> getPrendas() {
-		return prendas;
-	}
-
 	public Material obtenerMaterial(String codigo) {
 		for (Material m : materiales)
 			if (m.sosElMaterial(codigo)==true){
@@ -126,31 +155,25 @@ public class Controlador {
 			}
 		return null;
 	}
+	
+	//GETTERS
 
-	public void eliminarProveedor(String cuit) {
-		for (Proveedor p : proveedores)
-			if (p.sosElProveedor(cuit)==true){
-				proveedores.remove(p);
-				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}		
+	public Collection<Material> getMateriales() {
+		return materiales;
+	}
+	
+	public Collection<Proveedor> getProveedores() {
+		return proveedores;
 	}
 
-	public void modificarProveedor(String cuit, String nombre) {
-		if (existeProveedor(cuit)==true){
-			obtenerProveedor(cuit).setNombre(nombre);
-			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
-		}
-		else
-			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
+	public Collection<Prenda> getPrendas() {
+		return prendas;
 	}
+	
+	//SETTERS
 
-	public void eliminarPrenda(String codigo) {
-		for (Prenda pr : prendas)
-			if (pr.sosLaPrenda(codigo)==true){
-				proveedores.remove(pr);
-				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}	
+	public void setMateriales(Collection<Material> materiales) {
+		this.materiales = materiales;
 	}
+	
 }
