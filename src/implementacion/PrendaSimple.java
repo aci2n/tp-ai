@@ -9,4 +9,8 @@ public abstract class PrendaSimple extends Prenda{
 		return this.materiales;
 	}
 	
+	public void setMateriales(Collection<ItemMaterial> materiales){
+		this.materiales=materiales;
+	}
+
 }

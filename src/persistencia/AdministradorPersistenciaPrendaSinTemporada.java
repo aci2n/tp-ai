@@ -1,6 +1,8 @@
 package persistencia;
 
 import implementacion.ItemMaterial;
+import implementacion.Material;
+import implementacion.Prenda;
 import implementacion.PrendaSimple;
 import implementacion.PrendaSinTemporada;
 
@@ -8,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPersistencia {
 
@@ -68,30 +70,59 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 	}
 
 	public PrendaSinTemporada buscarPrendaSinTemporada(String codigo) {
+		PrendaSinTemporada prenda = null;
 		try {
-			PrendaSinTemporada prenda = null;
 			Connection con = Conexion.connect();
-			PreparedStatement ps = con.prepareStatement("select nombre from " + super.getDatabase() + ".Prendas_Simples where codigo = ?");
-			ps.setString(1,prenda.getCodigo());
+			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".Prendas_Simples where codigo = ?");
+			ps.setString(1,codigo);
+			
 			ResultSet result = ps.executeQuery();
-			while (result.next()) {
+			
+			while (result.next()){			
 				prenda = new PrendaSinTemporada();
-				prenda.setCodigo(prenda.getCodigo());
-				prenda.setNombre(result.getString(1));
+				prenda.setCodigo(result.getString("codigo"));
+				prenda.setNombre(result.getString("nombre"));
 			}
 			
-			List<ItemMaterial> materiales = new ArrayList<ItemMaterial>();
-			ps = con.prepareStatement("select i.codigo_material, i.cantidad,  from " + super.getDatabase() + ".Prendas_Simples_Materiales where codigo = ?");
+			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
+						
+			ps = con.prepareStatement("select * from "+super.getDatabase()+".Prendas_Simples_Materiales where codigo_prenda_simple = ?");
 			ps.setString(1, prenda.getCodigo());
+			
 			result = ps.executeQuery();
 			while (result.next()) {
 				ItemMaterial item = new ItemMaterial();
 				item.setCantidad(result.getFloat("cantidad"));
-				PreparedStatement ps2 = con.prepareStatement("select ")
+				
+				Material m = AdministradorPersistenciaMaterial.getInstance().buscarMaterial(result.getString("codigo_material"));
+				item.setMaterial(m);
+				items.add(item);
 			}
+			prenda.setMateriales(items);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return prenda;
+	}
+	
+	public Collection<PrendaSinTemporada> obtenerPrendasSinTemporada() {
+		Collection<PrendaSinTemporada> prendas = new ArrayList<PrendaSinTemporada>();
+		try {
+			Connection con = Conexion.connect();
+			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".Prendas_Simples where temporada IS NULL");
+
+			ResultSet result = ps.executeQuery();
+			
+			while (result.next()){			
+				Prenda prenda = this.buscarPrendaSinTemporada(result.getString("codigo")); //negrada intensifies
+				prendas.add((PrendaSinTemporada)prenda);
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return prendas;
+
 	}
 
 	private void insertarItemMateriales(PrendaSimple prenda) {

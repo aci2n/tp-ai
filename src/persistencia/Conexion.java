@@ -9,7 +9,7 @@ public class Conexion {
 		try {
             String userName = "sa";
             String password = "sa"; 
-            String url = "jdbc:sqlserver://localhost";
+            String url = "jdbc:sqlserver://192.168.6.202";
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 

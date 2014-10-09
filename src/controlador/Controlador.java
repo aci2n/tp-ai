@@ -156,6 +156,14 @@ public class Controlador {
 		return null;
 	}
 	
+	public Prenda obtenerPrenda(String codigo) {
+		for (Prenda p : prendas)
+			if (p.sosLaPrenda(codigo)==true){
+				return p;
+			}
+		return null;
+	}
+	
 	//GETTERS
 
 	public Collection<Material> getMateriales() {
@@ -163,18 +171,7 @@ public class Controlador {
 	}
 	
 	public Collection<Proveedor> getProveedores() {
-		//comienzo de la negrada, probe con !contain() y otras cosas pero no andaban y esto si ni nos vimos
-		boolean yaExiste=false;
-		for (Proveedor p : Proveedor.obtenerProveedores()){
-			for (Proveedor p2 : proveedores)
-				if (p2.sosElProveedor(p.getCuit())){
-					yaExiste=true;
-				}
-			if (!yaExiste)
-				proveedores.add(p);
-			yaExiste=false;
-		}
-		//fin de la negrada
+		
 		return this.proveedores;
 	}
 
@@ -187,5 +184,6 @@ public class Controlador {
 	public void setMateriales(Collection<Material> materiales) {
 		this.materiales = materiales;
 	}
+
 	
 }
