@@ -1,6 +1,7 @@
 package gui;
 import implementacion.ItemMaterial;
 import implementacion.Material;
+import implementacion.Prenda;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,11 +43,10 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 	private JTextField tDescuento;
 	private JLabel descuento;
 	private JTable tablaMateriales;
-	private JComboBox materialesComboBox;
-	private JButton agregarMaterial;
-	private JSpinner cantidadMaterial;
+	private JComboBox prendasComboBox;
+	private JButton agregarPrenda;
 	private JButton confirmar;
-	Collection<ItemMaterial> itemMateriales = new ArrayList<ItemMaterial>();
+	Collection<Prenda> prendas = new ArrayList<Prenda>();
 	DefaultTableModel modelo;
 	
 	/**
@@ -63,7 +63,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 	
 	private void comportamiento(){
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.setTitle("Alta Prenda sin Temporada");
+		this.setTitle("Alta Conjunto Prenda");
 		this.setSize(355, 461);
 		setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -115,24 +115,19 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 				confirmar.addActionListener(this);
 			}
 			{
-				materialesComboBox = new JComboBox();
-				getContentPane().add(materialesComboBox);
-				for (Material m : Controlador.getControlador().getMateriales())
-					materialesComboBox.addItem(m.getCodigo());
-				materialesComboBox.setBounds(12, 128, 168, 24);
-				materialesComboBox.setSelectedIndex(-1);
+				prendasComboBox = new JComboBox();
+				getContentPane().add(prendasComboBox);
+				for (Prenda p : Controlador.getControlador().getPrendas())
+					prendasComboBox.addItem(p.getCodigo());
+				prendasComboBox.setBounds(12, 128, 168, 24);
+				prendasComboBox.setSelectedIndex(-1);
 			}
 			{
-				cantidadMaterial = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
-				getContentPane().add(cantidadMaterial);
-				cantidadMaterial.setBounds(186, 129, 47, 24);
-			}
-			{
-				agregarMaterial = new JButton();
-				getContentPane().add(agregarMaterial);
-				agregarMaterial.setBounds(239, 126, 96, 27);
-				agregarMaterial.setText("Añadir");
-				agregarMaterial.addActionListener(this);
+				agregarPrenda= new JButton();
+				getContentPane().add(agregarPrenda);
+				agregarPrenda.setBounds(239, 126, 96, 27);
+				agregarPrenda.setText("Añadir");
+				agregarPrenda.addActionListener(this);
 			}
 			{
 
@@ -155,13 +150,13 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==agregarMaterial){
-			if (Controlador.getControlador().existeMaterial(tCodigo.getText())){
+		if (e.getSource()==agregarPrenda){
+			/*if (Controlador.getControlador().existeMaterial(tCodigo.getText())){
 				ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(tCodigo.getText()),(Float)cantidadMaterial.getValue());
 				itemMateriales.add(i);
 				Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
 				modelo.addRow (fila);
-			}
+			}*/
 			JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		if (e.getSource()==confirmar){
