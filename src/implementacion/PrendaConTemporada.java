@@ -18,4 +18,14 @@ public class PrendaConTemporada extends PrendaSimple{
 	public float calcularPrecio(){
 				return 0;
 	}
+
+
+	public float getPorcentajeVenta() {
+		return this.porcentajeVenta;
+	}
+
+
+	public String getTemporada() {
+		return this.temporada;
+	}
 }
