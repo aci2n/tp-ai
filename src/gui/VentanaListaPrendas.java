@@ -41,11 +41,12 @@ public class VentanaListaPrendas extends JFrame{
 		
 		modelo.addColumn("Código");
 		modelo.addColumn("Nombre");
+		modelo.addColumn("Precio");
 		
 		// FILAS 
 		
 		for(Prenda pr : prendas){
-			Object[] nuevo = {pr.getCodigo(), pr.getNombre()};
+			Object[] nuevo = {pr.getCodigo(), pr.getNombre(), pr.calcularPrecio()};
 			modelo.addRow(nuevo);
 		}
 		

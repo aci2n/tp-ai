@@ -18,7 +18,12 @@ public class PrendaSinTemporada extends PrendaSimple{
 	}
 
 	public float calcularPrecio() {
-		return 0;
+		float precio = 0;
+		Collection<ItemMaterial> materiales = super.getMateriales();
+		for(ItemMaterial im : materiales){
+			precio = precio + (im.getMaterial().getCosto())*(im.getCantidad());
+		}
+		return precio;
 	}
 
 	public void construirDesdeDB(String codigo, String nombre, Collection<ItemMaterial> items) {

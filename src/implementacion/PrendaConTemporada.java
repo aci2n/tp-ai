@@ -24,7 +24,13 @@ public class PrendaConTemporada extends PrendaSimple{
 
 
 	public float calcularPrecio(){
-			return 0;
+		float precio = 0;
+		Collection<ItemMaterial> materiales = super.getMateriales();
+		for(ItemMaterial im : materiales){
+			precio = precio + (im.getMaterial().getCosto())*(im.getCantidad());
+		}
+		float porcentaje = (precio * this.porcentajeVenta) / 100; 
+		return (precio + porcentaje);
 	}
 
 

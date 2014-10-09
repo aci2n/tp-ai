@@ -22,7 +22,13 @@ public class ConjuntoPrenda extends Prenda{
 	}
 
 	public float calcularPrecio() {
-		return 0;
+		float pre = 0;
+		for(Prenda p : prendas){
+			Prenda prenda = AdministradorPersistenciaPrenda.getInstancia().buscarPrenda(p.getCodigo());
+			pre = pre + prenda.calcularPrecio();
+		}
+		float descuento = (pre * this.descuento) / 100;
+		return (pre - descuento);
 	}
 
 	public float getDescuento() {
