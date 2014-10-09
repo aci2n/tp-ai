@@ -9,8 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JOptionPane;
-
 public class AdministradorPersistenciaProveedor extends AdministradorPersistencia{
 
 	private static AdministradorPersistenciaProveedor instancia;
@@ -87,9 +85,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			
 			while (res.next()){
 				p = new Proveedor();
-				p.setActivo(res.getBoolean("activo"));
-				p.setNombre(res.getString("nombre"));
-				p.setCuit(res.getString("cuit"));
+				p.construirDesdeDB(res.getString("cuit"), res.getString("nombre"), res.getBoolean("activo"));
 			}
 			con.close();
 		}
@@ -109,9 +105,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			
 			while (res.next()){
 				Proveedor p = new Proveedor();
-				p.setActivo(res.getBoolean("activo"));
-				p.setNombre(res.getString("nombre"));
-				p.setCuit(res.getString("cuit"));
+				p.construirDesdeDB(res.getString("cuit"), res.getString("nombre"), res.getBoolean("activo"));
 				proveedores.add(p);
 			}
 			con.close();

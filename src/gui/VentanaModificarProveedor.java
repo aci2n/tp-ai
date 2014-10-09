@@ -1,12 +1,9 @@
 package gui;
-import implementacion.Material;
 import implementacion.Proveedor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -14,10 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import persistencia.AdministradorPersistenciaProveedor;
-
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaModificarProveedor extends javax.swing.JFrame implements ActionListener{
 	private JComboBox proveedores;
 	private JLabel nombre;
@@ -52,8 +48,6 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 				proveedores = new JComboBox();
 				getContentPane().add(proveedores);
 				proveedores.setBounds(78, 12, 265, 24);
-				// LINEA A AGREGAR
-				Controlador.getControlador().setProveedores(AdministradorPersistenciaProveedor.getInstancia().obtenerProveedores());
 				for (Proveedor p : Controlador.getControlador().getProveedores())
 					proveedores.addItem(p.getCuit());
 				proveedores.setSelectedIndex(-1);

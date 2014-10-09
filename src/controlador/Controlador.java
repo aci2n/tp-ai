@@ -16,14 +16,13 @@ import javax.swing.JOptionPane;
 public class Controlador {
 	private Collection<Material> materiales;
 	private Collection<Proveedor> proveedores;
-	
 	private Collection<Prenda> prendas;
 	public static Controlador con;
 	
 	public Controlador() {
+		prendas = new ArrayList<Prenda>();
 		materiales = new ArrayList<Material>();
 		proveedores = new ArrayList<Proveedor>();
-		prendas = new ArrayList<Prenda>();
 	}
 		
 	//SINGLETON
@@ -75,7 +74,7 @@ public class Controlador {
 	public void altaConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
 		if (!existePrenda(codigo)){
 			Prenda p = new ConjuntoPrenda(codigo,nombre, descuento, prendas);
-			prendas.add(p);
+			this.prendas.add(p);
 			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
@@ -99,12 +98,11 @@ public class Controlador {
 		if (existeMaterial(codigo)==true){
 			Proveedor proveedor = obtenerProveedor(cuit);
 			if (proveedor != null){
-				Material material = obtenerMaterial(codigo);
-				material.setNombre(nombre);
-				material.setPuntoPedido(puntoPedido);
-				material.setCantidad(cantidad);
-				material.setCosto(costo);
-				material.setProveedor(proveedor);
+				obtenerMaterial(codigo).setNombre(nombre);
+				obtenerMaterial(codigo).setPuntoPedido(puntoPedido);
+				obtenerMaterial(codigo).setCantidad(cantidad);
+				obtenerMaterial(codigo).setCosto(costo);
+				obtenerMaterial(codigo).setProveedor(proveedor);
 				JOptionPane.showMessageDialog(null, "Material modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
 			}
 			else
@@ -123,38 +121,58 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
-	public void modificarPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> itemMateriales) {
-		if (existePrenda(codigo)) {
-			PrendaConTemporada prenda = (PrendaConTemporada) obtenerPrenda(codigo);
-			prenda.setNombre(nombre);
-			prenda.setTemporada(temporada);
-			prenda.setPorcentajeVenta(porcentajeVenta);
-			prenda.setMateriales(itemMateriales);
-			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
-		}
-		else
-			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);		
-	}	
-	
 	public void ModificarPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> itemMateriales) {
 		if (existePrenda(codigo)==true){
-			PrendaConTemporada prenda = (PrendaConTemporada) obtenerPrenda(codigo);
-			prenda.setNombre(nombre);
-			prenda.setTemporada(temporada);
-			prenda.setPorcentajeVenta(porcentajeVenta);
+			PrendaConTemporada prenda = (PrendaConTemporada)obtenerPrenda(codigo);
+			prenda.setCodigo(codigo);
 			prenda.setMateriales(itemMateriales);
-			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
+			prenda.setNombre(nombre);
+			prenda.setPorcentajeVenta(porcentajeVenta);
+			prenda.setTemporada(temporada);
+			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
-			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);		
+			JOptionPane.showMessageDialog(null,"No existe la prenda.","Error",JOptionPane.ERROR_MESSAGE);		
 	}	
+	
+	public void ModificarPrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> itemMateriales) {
+		if (existePrenda(codigo)==true){
+			PrendaSinTemporada prenda = (PrendaSinTemporada)obtenerPrenda(codigo);
+			prenda.setCodigo(codigo);
+			prenda.setMateriales(itemMateriales);
+			prenda.setNombre(nombre);
+			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"No existe la prenda.","Error",JOptionPane.ERROR_MESSAGE);		
+		
+	}
+	
+	public void ModificarConjuntoPrenda(String codigo, String nombre,	float descuento, Collection<Prenda> prendas) {
+		if (existePrenda(codigo)==true){
+			ConjuntoPrenda prenda = (ConjuntoPrenda)obtenerPrenda(codigo);
+			prenda.setCodigo(codigo);
+			prenda.setPrendas(prendas);
+			prenda.setNombre(nombre);
+			prenda.setDescuento(descuento);
+			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"No existe el conjunto.","Error",JOptionPane.ERROR_MESSAGE);			
+	}
 	
 	//BAJAS
 	
 	public void eliminarMaterial(String codigo){
 		for (Material m : materiales)
 			if (m.sosElMaterial(codigo)==true){
-				materiales.remove(m);
+				m.eliminar();
+				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+		for(Material m : Material.obtenerMateriales())
+			if (m.sosElMaterial(codigo)==true){
+				m.eliminar();
 				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
@@ -167,15 +185,27 @@ public class Controlador {
 				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}		
+		for(Proveedor p : Proveedor.obtenerProveedores())
+			if (p.sosElProveedor(cuit)==true){
+				p.eliminar();
+				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
 	}
 
 	public void eliminarPrenda(String codigo) {
 		for (Prenda pr : prendas)
 			if (pr.sosLaPrenda(codigo)==true){
-				proveedores.remove(pr);
+				pr.eliminar();
 				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}	
+		for(Prenda pr : Prenda.obtenerPrendas())
+			if (pr.sosLaPrenda(codigo)==true){
+				pr.eliminar();
+				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
 	}
 	
 	//EXISTE
@@ -185,6 +215,8 @@ public class Controlador {
 			if (m.sosElMaterial(codigo)==true){
 				return true;
 			}
+		if (Material.buscarMaterial(codigo)!=null)
+			return true;
 		return false;
 	}
 	
@@ -203,57 +235,64 @@ public class Controlador {
 			if (p.sosLaPrenda(codigo)==true){
 				return true;
 			}
+		if (Prenda.buscarPrenda(codigo)!=null)
+			return true;
 		return false;
 	}	
 	
 	//OBTENER
 	
 	public Proveedor obtenerProveedor(String cuit){
-		Proveedor prov;
+		Proveedor prov = null;
 		for (Proveedor p : proveedores)
-			if (p.sosElProveedor(cuit)==true){
+			if (p.sosElProveedor(cuit)==true)
 				prov = p;
-				return prov;
-			}
-		prov = Proveedor.buscarProveedor(cuit);
+		if (prov == null){
+			prov = Proveedor.buscarProveedor(cuit);
+			this.proveedores.add(prov);
+		}
 		return prov;
 	}
 	
 	public Material obtenerMaterial(String codigo) {
+		Material mat = null;
 		for (Material m : materiales)
 			if (m.sosElMaterial(codigo)==true){
-				return m;
+				mat = m;
 			}
-		return null;
+		if (mat == null){
+			mat = Material.buscarMaterial(codigo);
+			this.materiales.add(mat);
+		}
+		return mat;
 	}
 	
 	public Prenda obtenerPrenda(String codigo) {
+		Prenda pre = null;
 		for (Prenda p : prendas)
 			if (p.sosLaPrenda(codigo)==true){
-				return p;
+				pre = p;
 			}
-		return null;
+		if (pre == null){
+			pre = Prenda.buscarPrenda(codigo);
+			this.prendas.add(pre);
+		}
+		return pre;
 	}
 	
 	//GETTERS
 
 	public Collection<Material> getMateriales() {
-		return materiales;
+			return Material.obtenerMateriales();
 	}
 	
 	public Collection<Proveedor> getProveedores() {
-			
-		return this.proveedores;
+		
+			return Proveedor.obtenerProveedores();
 	}
 
 	public Collection<Prenda> getPrendas() {
-		return prendas;
-	}
-	
-	//SETTERS
 
-	public void setMateriales(Collection<Material> meriales) {
-		this.materiales = materiales;
-	}
+			return Prenda.obtenerPrendas();
 	}
 }

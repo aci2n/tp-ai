@@ -1,6 +1,5 @@
 package persistencia;
 
-import java.util.List;
 
 public abstract class AdministradorPersistencia {
 	private static String database = "TPO";
@@ -9,7 +8,7 @@ public abstract class AdministradorPersistencia {
 	public abstract void update(Object o);
 	public abstract void delete(Object o);
 	
-	public static String getDatabase() {
-		return database;
+	public String getDatabase() {
+		return AdministradorPersistencia.database;
 	}
 }

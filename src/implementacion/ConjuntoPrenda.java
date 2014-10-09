@@ -2,7 +2,9 @@ package implementacion;
 
 import java.util.Collection;
 
-public class ConjuntoPrenda extends Prenda {
+import persistencia.AdministradorPersistenciaPrenda;
+
+public class ConjuntoPrenda extends Prenda{
 	private float descuento;
 	private Collection<Prenda> prendas;
 	
@@ -11,11 +13,12 @@ public class ConjuntoPrenda extends Prenda {
 	}
 	
 	public ConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
-		this.codigo = codigo;
-		this.nombre = nombre;
-		this.descuento = descuento;
-		this.prendas = prendas;
-		actualizar();
+		this.setCodigoDB(codigo);
+		this.setNombreDB(nombre);
+		this.descuento=descuento;
+		this.prendas=prendas;
+		this.setActivoDB(true);
+		AdministradorPersistenciaPrenda.getInstancia().insert(this);
 	}
 
 	public float calcularPrecio() {
@@ -30,7 +33,23 @@ public class ConjuntoPrenda extends Prenda {
 		return this.prendas;
 	}
 
+
 	public void setPrendas(Collection<Prenda> prendas) {
 		this.prendas = prendas;
+		AdministradorPersistenciaPrenda.getInstancia().update(this);
+	}
+
+	public void setDescuento(float descuento) {
+		this.descuento = descuento;
+		AdministradorPersistenciaPrenda.getInstancia().update(this);
+	}
+
+	public void construirDesdeDB(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
+		setCodigoDB(codigo);
+		setNombreDB(nombre);
+		this.descuento=descuento;
+		this.prendas=prendas;
 	}	
+	
+	
 }

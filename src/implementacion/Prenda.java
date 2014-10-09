@@ -1,12 +1,13 @@
 package implementacion;
 
+import java.util.Collection;
+
+import persistencia.AdministradorPersistenciaPrenda;
+
 public abstract class Prenda {
-	protected String codigo;
-	protected String nombre;
-	
-	public Prenda() {
-		
-	}
+	private String codigo;
+	private String nombre;
+	private boolean activo;
 		
 	public abstract float calcularPrecio();
 
@@ -16,7 +17,7 @@ public abstract class Prenda {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-		actualizar();
+		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
 
 	public String getNombre() {
@@ -25,17 +26,46 @@ public abstract class Prenda {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		actualizar();
+		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
-	
-	public abstract void actualizar();
-	
-	public abstract void eliminar();
-	
+
 	public boolean sosLaPrenda(String codigo) {
-		if (codigo != null && this.codigo.compareTo(codigo) == 0)
+		if (codigo != null && this.getCodigo().compareTo(codigo)==0)
 			return true;
 		return false;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+	
+	public void setCodigoDB(String codigo){
+		this.codigo = codigo;
+	}
+	
+	public void setNombreDB(String nombre){
+		this.nombre = nombre;
+	}
+	
+	public void setActivoDB(boolean activo){
+		this.activo = activo;
+	}
+	
+	public void eliminar(){
+		this.activo=false;
+		AdministradorPersistenciaPrenda.getInstancia().delete(this);
+	}
+
+	public static Collection<Prenda> obtenerPrendas() {
+		return AdministradorPersistenciaPrenda.getInstancia().obtenerPrendas();
+	}
+	
+	public static Prenda buscarPrenda(String codigo){
+		return AdministradorPersistenciaPrenda.getInstancia().buscarPrenda(codigo);
 	}
 	
 }

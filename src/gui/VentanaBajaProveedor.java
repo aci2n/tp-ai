@@ -1,5 +1,4 @@
 package gui;
-import implementacion.Material;
 import implementacion.Proveedor;
 
 import java.awt.event.ActionEvent;
@@ -9,10 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
 
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaBajaProveedor extends javax.swing.JFrame implements ActionListener{
 	private JComboBox proveedores;
 	private JButton eliminar;

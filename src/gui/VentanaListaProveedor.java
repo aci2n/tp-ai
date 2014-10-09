@@ -1,6 +1,5 @@
 package gui;
 
-import implementacion.Material;
 import implementacion.Proveedor;
 
 import java.awt.BorderLayout;
@@ -12,10 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import persistencia.AdministradorPersistenciaProveedor;
-
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaListaProveedor extends JFrame{
 	
 	private JTable tabla;
@@ -31,7 +29,7 @@ public class VentanaListaProveedor extends JFrame{
 		
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
-		Collection<Proveedor> proveedores = AdministradorPersistenciaProveedor.getInstancia().obtenerProveedores();
+		Collection<Proveedor> proveedores = Controlador.getControlador().getProveedores();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS

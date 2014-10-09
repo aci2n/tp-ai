@@ -2,58 +2,60 @@ package implementacion;
 
 import java.util.Collection;
 
-import persistencia.AdministradorPersistenciaPrendaConTemporada;
+import persistencia.AdministradorPersistenciaPrenda;
 
-public class PrendaConTemporada extends PrendaSimple {
+public class PrendaConTemporada extends PrendaSimple{
 	private String temporada;
 	private float porcentajeVenta;
 	
-	public PrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> materiales) {
-		this.codigo = codigo;
-		this.nombre = nombre;
-		this.temporada = temporada;
-		this.porcentajeVenta = porcentajeVenta;
-		this.materiales = materiales;
-		actualizar();
+	public PrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> items) {
+		setCodigoDB(codigo); //fijarse si esto no jode con la persistencia despues
+		setNombreDB(nombre);
+		this.temporada=temporada;
+		this.porcentajeVenta=porcentajeVenta;
+		setMaterialesDB(items);
+		setActivoDB(true);
+		AdministradorPersistenciaPrenda.getInstancia().insert(this);
 	}
 
-	public float calcularPrecio(){
-				return 0;
+
+	public PrendaConTemporada() {
 	}
+
+
+	public float calcularPrecio(){
+			return 0;
+	}
+
 
 	public float getPorcentajeVenta() {
 		return this.porcentajeVenta;
 	}
 
+
 	public String getTemporada() {
 		return this.temporada;
 	}
 
+
 	public void setTemporada(String temporada) {
 		this.temporada = temporada;
-		actualizar();
+		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
+
 
 	public void setPorcentajeVenta(float porcentajeVenta) {
 		this.porcentajeVenta = porcentajeVenta;
-		actualizar();
-	}
-	
-	public Collection<ItemMaterial> getMateriales() {
-		return this.materiales;
+		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
 
-	public void setMateriales(Collection<ItemMaterial> materiales) {
-		this.materiales = materiales;
-		actualizar();
+
+	public void construirDesdeDB(String codigo, String nombre, String temporada,float porcentajeVenta, Collection<ItemMaterial> items) {
+		setNombreDB(nombre);
+		setCodigoDB(codigo);
+		this.temporada=temporada;
+		this.porcentajeVenta=porcentajeVenta;
+		setMaterialesDB(items);
 	}
 
-	public void actualizar() {
-		AdministradorPersistenciaPrendaConTemporada.getInstancia().update(this);
-	}
-
-	public void eliminar() {
-		AdministradorPersistenciaPrendaConTemporada.getInstancia().delete(this);
-	}
-	
 }

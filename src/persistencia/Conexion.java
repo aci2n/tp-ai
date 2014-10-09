@@ -7,8 +7,8 @@ public class Conexion {
 	public static Connection connect() {
 		Connection con = null;
 		try {
-            String userName = "sa";
-            String password = "sa"; 
+            String userName = "alvarologeanding";
+            String password = "password"; 
             String url = "jdbc:sqlserver://localhost";
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

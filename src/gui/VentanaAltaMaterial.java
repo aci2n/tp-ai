@@ -1,6 +1,4 @@
 package gui;
-import implementacion.Material;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,9 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import persistencia.AdministradorPersistenciaMaterial;
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionListener{
 	private JLabel nombre;
 	private JTextField tNombre;
@@ -149,9 +147,7 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 					JOptionPane.showMessageDialog(this.getComponent(0), "Punto de pedido incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Controlador.getControlador().altaMaterial(tCodigo.getText(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
-				Material m = Controlador.getControlador().obtenerMaterial(tCodigo.getText());
-			
+				Controlador.getControlador().altaMaterial(tCodigo.getText(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));	
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

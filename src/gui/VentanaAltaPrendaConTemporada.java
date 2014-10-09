@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements ActionListener{
 	private JLabel codigo;
 	private JLabel nombre;
@@ -156,16 +157,20 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==agregarMaterial){
 			if (materialesComboBox.getSelectedItem()!= null && Controlador.getControlador().existeMaterial(materialesComboBox.getSelectedItem().toString())){
-				ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(materialesComboBox.getSelectedItem().toString()), (float)(Integer)cantidadMaterial.getValue());
-				itemMateriales.add(i);
-				Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
-				modelo.addRow (fila);
+				if (!contieneA(itemMateriales,materialesComboBox.getSelectedItem().toString())){
+					ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(materialesComboBox.getSelectedItem().toString()), (float)(Integer)cantidadMaterial.getValue());
+					itemMateriales.add(i);
+					Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
+					modelo.addRow (fila);
+				}
+				else JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
+
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		if (e.getSource()==confirmar){
-			if (!tCodigo.getText().equals("") && !tNombre.getText().equals("") && !tTemporada.getText().equals("") && !tPorcentajeVenta.getText().equals("")){
+			if (!tCodigo.getText().equals("") && !tNombre.getText().equals("") && !tTemporada.getText().equals("") && !tPorcentajeVenta.getText().equals("") && !itemMateriales.isEmpty()){
 				try{
 					Float.parseFloat(tPorcentajeVenta.getText());
 				} catch(Exception exep){
@@ -173,9 +178,17 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 					return;
 				}
 				Controlador.getControlador().altaPrendaConTemporada(tCodigo.getText(), tNombre.getText(), tTemporada.getText(), Float.parseFloat(tPorcentajeVenta.getText()), itemMateriales);
+				modelo.setRowCount(0);
+				this.itemMateriales = new ArrayList<ItemMaterial>();
 			}
 			else
-				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos y/o ingrese al menos 1 material.","Error",JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	private boolean contieneA(Collection<ItemMaterial> items, String codigo){
+		for (ItemMaterial i : items)
+			if (i.getMaterial().sosElMaterial(codigo))
+				return true;
+		return false;
 	}
 }

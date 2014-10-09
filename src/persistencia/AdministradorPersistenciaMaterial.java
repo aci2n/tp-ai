@@ -1,19 +1,17 @@
 package persistencia;
 
 import implementacion.Material;
-import implementacion.MaterialView;
-import implementacion.Proveedor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class AdministradorPersistenciaMaterial extends
 		AdministradorPersistencia {
 
-	private Connection con;
 	private static AdministradorPersistenciaMaterial instancia;
 
 	private AdministradorPersistenciaMaterial() {
@@ -27,34 +25,32 @@ public class AdministradorPersistenciaMaterial extends
 		return instancia;
 	}
 
-	@Override
 	public void insert(Object o) {
-		// TODO Auto-generated method stub
+		Connection con;
+		Material m = (Material) o;
 		try {
-			Material m = (Material) o;
 			con = Conexion.connect();
 			PreparedStatement s = con.prepareStatement("insert into "
 					+ super.getDatabase()
-					+ ".dbo.Materiales values (?,?,?,?,?,?)");
+					+ ".dbo.Materiales values (?,?,?,?,?,?,?)");
 			s.setString(1, m.getCodigo());
 			s.setString(2, m.getProveedor().getCuit());
 			s.setString(3, m.getNombre());
 			s.setFloat(4, m.getCantidad());
 			s.setFloat(5, m.getPuntoPedido());
 			s.setFloat(6, m.getCosto()); // FALTA VER LO DEL ATRIBUTO ACTIVO
+			s.setInt(7, 1);
 			s.execute();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
-	@Override
 	public void update(Object o) {
-		// TODO Auto-generated method stub
+		Connection con;
+		Material m = (Material) o;
 		try {
-
-			Material m = (Material) o;
 			con = Conexion.connect();
 			PreparedStatement s = con
 					.prepareStatement("update "
@@ -69,146 +65,70 @@ public class AdministradorPersistenciaMaterial extends
 			s.setFloat(5, m.getCosto());
 			s.setString(6, m.getCodigo());
 			s.execute();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
-	@Override
 	public void delete(Object o) {
-		// TODO Auto-generated method stub
+		Connection con;
+		Material m = (Material) o;
 		try {
-			
-			/* HAY QUE CAMBIAR EL SELECT PARA QUE PONGO EL ATRIBUTO ACTIVO EN 0 */
-
-			Material m = (Material) o;
 			con = Conexion.connect();
 			PreparedStatement s = con.prepareStatement("update "+super.getDatabase()+".dbo.Materiales set activo = ? where codigo = ?");
-			s.setBoolean(1, false);
+			s.setInt(1, 0);
 			s.setString(2, m.getCodigo());
 			s.execute();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
-	}
-
-	public List<Object> select(Object o) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public Material buscarMaterial(String codigo) {
-
-		Material m = new Material();
+		Connection con;
+		Material m = null;
 		try {
 			con = Conexion.connect();
-			
 			PreparedStatement s = con.prepareStatement("select * from "
 					+ super.getDatabase() + ".dbo.Materiales where codigo = ?");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();
 
-			while (rs.next()) {
-
-				String cod = rs.getString(1);
-				String cuit = rs.getString(2);
-				String nom = rs.getString(3);
-				float cantidad = rs.getFloat(4);
-				float puntoPedido = rs.getFloat(5);
-				float costo = rs.getFloat(6);
-
-				m.setCodigo(cod);
-				m.setNombre(nom);
-				m.setPuntoPedido(puntoPedido);
-				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit));
-				m.setCantidad(cantidad);
-				m.setCosto(costo);
-				//m = new Material(cod, nom, puntoPedido, AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit), cantidad, costo); // FALTA BUSCAR PROVEEDOR Y
-												// PASARLO AL CONSTRUCTOR
+			while (rs.next()) {				
+				m = new Material();
+				m.construirDesdeDB(rs.getString("codigo"),rs.getString("cuit"),
+						rs.getString("nombre"), rs.getFloat("cantidad"), rs.getFloat("punto_pedido"), rs.getFloat("costo"),
+						rs.getBoolean("activo"));			
 			}
-			
-		} catch (Exception e) {
-
-			System.out.println(e.getMessage());
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return m;
 	}
 	
-	/*
-	public ArrayList<MaterialView> listarMateriales() {
-
+	public Collection<Material> obtenerMateriales() {
+		Connection con;
+		Collection<Material> materiales = new ArrayList<Material>();
 		try {
 
-			ArrayList<MaterialView> materiales = new ArrayList<MaterialView>();
 			con = Conexion.connect();
-			Material m = null;
-			PreparedStatement s = con.prepareStatement("select * from "
-					+ super.getDatabase() + ".dbo.Materiales");
+			PreparedStatement s = con.prepareStatement("select * from "+ super.getDatabase() +".dbo.Materiales where activo = 1");
 			ResultSet rs = s.executeQuery();
 
 			while (rs.next()) {
-
-				String cod = rs.getString(1);
-				String cuit = rs.getString(2);
-				String nom = rs.getString(3);
-				float cantidad = rs.getFloat(4);
-				float puntoPedido = rs.getFloat(5);
-				float costo = rs.getFloat(6);
-				m = new Material(cod, nom, puntoPedido, new Proveedor("jose",
-						"1"), cantidad, costo);
-				MaterialView mv = m.generarMaterialView();
-				materiales.add(mv); // FALTA BUSCAR PROVEEDOR Y PASARLO AL
-									// CONSTRUCTOR
-			}
-
-			return materiales;
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-	}
-*/
-	
-	public ArrayList<Material> obtenerMateriales() {
-		
-		ArrayList<Material> materiales = new ArrayList<Material>();
-		try {
-
-			
-			con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("select * from "
-					+ super.getDatabase() + ".dbo.Materiales where activo = 1");
-			ResultSet rs = s.executeQuery();
-
-			while (rs.next()) {
-
 				Material m = new Material();
-				String cod = rs.getString(1);
-				String cuit = rs.getString(2); // USAR CON EL ADMPERSISTENCIA DE PROVEEDORES
-				String nom = rs.getString(3);
-				float cantidad = rs.getFloat(4);
-				float puntoPedido = rs.getFloat(5);
-				float costo = rs.getFloat(6);
-				
-				// SETEO DE LOS VALORES
-				
-				m.setCodigo(cod);
-				m.setNombre(nom);
-				m.setPuntoPedido(puntoPedido);
-				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit));
-				m.setCantidad(cantidad);
-				m.setCosto(costo);
-				materiales.add(m); 
+				m.construirDesdeDB(rs.getString("codigo"),rs.getString("cuit"), rs.getString("nombre"), rs.getFloat("cantidad"), rs.getFloat("punto_pedido"), rs.getFloat("costo"), rs.getBoolean("activo"));	
+				materiales.add(m);
 			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return materiales;
-
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaAltaProveedor extends javax.swing.JFrame implements ActionListener{
 	private JLabel nombre;
 	private JTextField tNombre;

@@ -1,7 +1,5 @@
 package gui;
 
-import implementacion.PrendaSinTemporada;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -15,6 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+@SuppressWarnings("serial")
 public class Menu extends JFrame implements ActionListener{
 	
 	private JMenuBar menubar;
@@ -72,6 +71,11 @@ public class Menu extends JFrame implements ActionListener{
 		modificarPrendaNoTemporada.setText("Modificar Prenda sin Temporada");
 		prendas.add(modificarPrendaNoTemporada);
 		modificarPrendaNoTemporada.addActionListener(this);
+		
+		modificarConjunto = new JMenuItem();
+		modificarConjunto.setText("Modificar Conjunto Prenda");
+		prendas.add(modificarConjunto);
+		modificarConjunto.addActionListener(this);
 		
 		prendas.add(new JSeparator());
 		
@@ -175,16 +179,16 @@ public class Menu extends JFrame implements ActionListener{
 			new VentanaModificarPrendaConTemporada();
 		}
 		if (e.getSource()==modificarPrendaNoTemporada){
-			
+			new VentanaModificarPrendaSinTemporada();
 		}
 		if (e.getSource()==modificarConjunto){
-			
+			new VentanaModificarConjuntoPrenda();
 		}
 		if (e.getSource()==bajaPrenda){
 			new VentanaBajaPrenda();
 		}
 		if (e.getSource()==listarPrenda){
-			new VentanaListaPrendas(); //anda pero le faltarian unas cosas
+			new VentanaListaPrendas();
 		}
 		if (e.getSource()==altaMaterial){
 			new VentanaAltaMaterial();

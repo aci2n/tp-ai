@@ -1,7 +1,10 @@
 package gui;
 
-import implementacion.Material;
+import implementacion.ConjuntoPrenda;
+import implementacion.ItemMaterial;
 import implementacion.Prenda;
+import implementacion.PrendaConTemporada;
+import implementacion.PrendaSinTemporada;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -15,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaListaPrendas extends JFrame{
 	
 	private JTable tabla;
@@ -46,6 +50,43 @@ public class VentanaListaPrendas extends JFrame{
 		}
 		
 		tabla = new JTable(){
+			public String getToolTipText(MouseEvent e) {
+				StringBuffer tip = new StringBuffer();				
+				java.awt.Point p = e.getPoint();
+				int fila = rowAtPoint(p);
+				
+				
+				
+				Prenda prenda = Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
+				if (prenda instanceof PrendaConTemporada) {
+					PrendaConTemporada prendaT = (PrendaConTemporada)Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
+					tip.append("<html><b>Materiales</b>:<br>");
+					for (ItemMaterial i : prendaT.getMateriales())
+						tip.append(i.getMaterial().getNombre()+"  --  "+i.getCantidad()+", ");
+					tip.setLength(tip.length() - 2);
+					tip.append("<br><b>Temporada</b>:<br>"+prendaT.getTemporada());
+					tip.append("<br><b>Porcentaje Venta</b>:<br>"+prendaT.getPorcentajeVenta());
+				}
+				if (prenda instanceof PrendaSinTemporada) {
+					PrendaSinTemporada prendaS = (PrendaSinTemporada)Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
+					tip.append("<html><b>Materiales</b>:<br>");
+					for (ItemMaterial i : prendaS.getMateriales())
+						tip.append(i.getMaterial().getNombre()+"  --  "+i.getCantidad()+", ");
+					tip.setLength(tip.length() - 2);
+				}
+				if (prenda instanceof ConjuntoPrenda) {
+					ConjuntoPrenda conjunto = (ConjuntoPrenda)Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
+					tip.append("<html><b>Prendas</b>:<br>");
+					for (Prenda pr : conjunto.getPrendas())
+						tip.append(pr.getNombre()+", ");
+					tip.setLength(tip.length() - 2);
+					tip.append("<html><br><b>Descuento</b>:<br>"+conjunto.getDescuento());
+				}	
+
+
+				return tip.toString();
+
+			}
 			public boolean isCellEditable(int rowIndex, int colIndex) {
 				return false;
 			}

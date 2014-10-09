@@ -9,10 +9,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import persistencia.AdministradorPersistenciaMaterial;
-
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionListener{
 	private JButton eliminar;
 	private JComboBox materiales;
