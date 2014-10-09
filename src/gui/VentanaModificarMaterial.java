@@ -28,7 +28,6 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 	private JLabel cantidad;
 	private JLabel puntoPedido;
 	private JLabel codigo;
-	private AdministradorPersistenciaMaterial apm = AdministradorPersistenciaMaterial.getInstance();
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -57,7 +56,6 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 			{				
 				materiales = new JComboBox();
 				getContentPane().add(materiales);
-				Controlador.getControlador().setMateriales(apm.obtenerMateriales());
 				for (Material m : Controlador.getControlador().getMateriales())
 					materiales.addItem(m.getCodigo());
 				materiales.setBounds(112, 16, 204, 24);
@@ -170,10 +168,7 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 					return;
 				}
 				Controlador.getControlador().modificarMaterial(materiales.getSelectedItem().toString(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
-				Material m = Controlador.getControlador().obtenerMaterial(materiales.getSelectedItem().toString());
-				if(m != null)
-					apm.update(m);
-			
+				Material m = Controlador.getControlador().obtenerMaterial(materiales.getSelectedItem().toString());		
 			}
 			else 					
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material y complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

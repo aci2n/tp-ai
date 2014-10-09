@@ -28,8 +28,9 @@ public class Controlador {
 	//SINGLETON
 	
 	public static Controlador getControlador(){
-		if(con == null)
+		if(con == null){
 			con = new Controlador();
+		}
 		return con;
 	}
 
@@ -213,7 +214,7 @@ public class Controlador {
 	}
 	
 	public Collection<Proveedor> getProveedores() {
-		
+			
 		return this.proveedores;
 	}
 

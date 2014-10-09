@@ -1,5 +1,7 @@
 package implementacion;
 
+import persistencia.AdministradorPersistenciaMaterial;
+
 public class Material {
 	private String codigo;
 	private String nombre;
@@ -18,6 +20,7 @@ public class Material {
 		setCantidad(cantidad2);
 		setCosto(costo2);
 		activo = true;
+		AdministradorPersistenciaMaterial.getInstance().insert(this);
 	}
 
 	public boolean sosElMaterial(String codigo2) {
@@ -28,26 +31,32 @@ public class Material {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setPuntoPedido(float puntoPedido) {
 		this.puntoPedido = puntoPedido;
+		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
+		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setCantidad(float cantidad) {
 		this.cantidad = cantidad;
+		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setCosto(float costo) {
 		this.costo = costo;
+		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public String getCodigo() {
@@ -72,6 +81,11 @@ public class Material {
 
 	public float getCosto() {
 		return costo;
+	}
+	
+	public void eliminar(){
+		this.activo=(false);
+		AdministradorPersistenciaMaterial.getInstance().delete(this);
 	}
 	
 	public MaterialView generarMaterialView(){

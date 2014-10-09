@@ -26,7 +26,6 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 	private JLabel costo;
 	private JLabel cantidad;
 	private JLabel puntoPedido;
-	private AdministradorPersistenciaMaterial apm = AdministradorPersistenciaMaterial.getInstance();
 
 
 	public static void main(String[] args) {
@@ -152,8 +151,6 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 				}
 				Controlador.getControlador().altaMaterial(tCodigo.getText(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));
 				Material m = Controlador.getControlador().obtenerMaterial(tCodigo.getText());
-				if(m != null)
-					apm.insert(m);
 			
 			}
 			else

@@ -13,12 +13,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import persistencia.AdministradorPersistenciaMaterial;
+import controlador.Controlador;
 
 public class VentanaListaMateriales extends JFrame{
 	
 	private JTable tabla;
-	private AdministradorPersistenciaMaterial apm = AdministradorPersistenciaMaterial.getInstance();
 	
 	public VentanaListaMateriales(){
 	
@@ -31,8 +30,7 @@ public class VentanaListaMateriales extends JFrame{
 		
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
-		//Collection<Material> materiales = Controlador.getControlador().getMateriales();
-		Collection<Material> materiales = apm.obtenerMateriales();
+		Collection<Material> materiales = Controlador.getControlador().getMateriales();
 		Collection<MaterialView> materialesView = new ArrayList<MaterialView>();
 		c.setLayout(new BorderLayout());
 		
