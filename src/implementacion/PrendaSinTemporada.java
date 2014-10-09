@@ -23,10 +23,10 @@ public class PrendaSinTemporada extends PrendaSimple {
 
 	public void setMateriales(Collection<ItemMaterial> materiales) {
 		this.materiales = materiales;
-		actualizarPrenda();
+		actualizar();
 	}
 
-	public void actualizarPrenda() {
+	public void actualizar() {
 		AdministradorPersistenciaPrendaSinTemporada.getInstancia().update(this);
 	}
 

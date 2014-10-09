@@ -12,7 +12,7 @@ public abstract class Prenda {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-		actualizarPrenda();
+		actualizar();
 	}
 
 	public String getNombre() {
@@ -21,10 +21,10 @@ public abstract class Prenda {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		actualizarPrenda();
+		actualizar();
 	}
 	
-	public abstract void actualizarPrenda();
+	public abstract void actualizar();
 	
 	public abstract void eliminar();
 	

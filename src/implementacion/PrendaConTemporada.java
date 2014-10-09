@@ -14,7 +14,7 @@ public class PrendaConTemporada extends PrendaSimple {
 		this.temporada = temporada;
 		this.porcentajeVenta = porcentajeVenta;
 		this.materiales = materiales;
-		actualizarPrenda();
+		actualizar();
 	}
 
 	public float calcularPrecio(){
@@ -31,12 +31,12 @@ public class PrendaConTemporada extends PrendaSimple {
 
 	public void setTemporada(String temporada) {
 		this.temporada = temporada;
-		actualizarPrenda();
+		actualizar();
 	}
 
 	public void setPorcentajeVenta(float porcentajeVenta) {
 		this.porcentajeVenta = porcentajeVenta;
-		actualizarPrenda();
+		actualizar();
 	}
 	
 	public Collection<ItemMaterial> getMateriales() {
@@ -45,10 +45,10 @@ public class PrendaConTemporada extends PrendaSimple {
 
 	public void setMateriales(Collection<ItemMaterial> materiales) {
 		this.materiales = materiales;
-		actualizarPrenda();
+		actualizar();
 	}
 
-	public void actualizarPrenda() {
+	public void actualizar() {
 		AdministradorPersistenciaPrendaConTemporada.getInstancia().update(this);
 	}
 

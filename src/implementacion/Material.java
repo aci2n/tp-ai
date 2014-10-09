@@ -9,17 +9,14 @@ public class Material {
 	private Proveedor proveedor;
 	private float cantidad;
 	private float costo;
-	private boolean activo;
 	
-	public Material(String codigo2, String nombre2, float puntoPedido2,
-			Proveedor proveedor2, float cantidad2, float costo2) {
-		setCodigo(codigo2);
-		setNombre(nombre2);
-		setPuntoPedido(puntoPedido2);
-		setProveedor(proveedor2);
-		setCantidad(cantidad2);
-		setCosto(costo2);
-		activo = true;
+	public Material(String codigo, String nombre, float puntoPedido, Proveedor proveedor, float cantidad, float costo) {
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.puntoPedido = puntoPedido;
+		this.proveedor = proveedor;
+		this.cantidad = cantidad;
+		this.costo = costo;
 		AdministradorPersistenciaMaterial.getInstance().insert(this);
 	}
 	
@@ -27,40 +24,40 @@ public class Material {
 		
 	}
 
-	public boolean sosElMaterial(String codigo2) {
-		if (codigo2.compareTo(codigo)==0)
+	public boolean sosElMaterial(String codigo) {
+		if (codigo != null && codigo.compareTo(codigo)==0)
 			return true;
 		return false;
 	}
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
+		actualizar();
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
+		actualizar();
 	}
 
 	public void setPuntoPedido(float puntoPedido) {
 		this.puntoPedido = puntoPedido;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
+		actualizar();
 	}
 
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
+		actualizar();
 	}
 
 	public void setCantidad(float cantidad) {
 		this.cantidad = cantidad;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
+		actualizar();
 	}
 
 	public void setCosto(float costo) {
 		this.costo = costo;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
+		actualizar();
 	}
 
 	public String getCodigo() {
@@ -87,15 +84,16 @@ public class Material {
 		return costo;
 	}
 	
+	public void actualizar() {
+		AdministradorPersistenciaMaterial.getInstance().update(this);
+	}
+	
 	public void eliminar(){
-		this.activo=(false);
 		AdministradorPersistenciaMaterial.getInstance().delete(this);
 	}
 	
 	public MaterialView generarMaterialView(){
-		
-		return new MaterialView(this.codigo, this.nombre, this.puntoPedido,
-			this.proveedor, this.cantidad, this.costo);
+		return new MaterialView(this.codigo, this.nombre, this.puntoPedido, this.proveedor, this.cantidad, this.costo);
 	}
 	
 }

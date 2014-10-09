@@ -15,7 +15,7 @@ public class ConjuntoPrenda extends Prenda {
 		this.nombre = nombre;
 		this.descuento = descuento;
 		this.prendas = prendas;
-		actualizarPrenda();
+		actualizar();
 	}
 
 	public float calcularPrecio() {

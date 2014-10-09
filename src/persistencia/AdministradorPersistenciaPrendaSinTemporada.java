@@ -49,7 +49,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 			s.setString(2, prenda.getCodigo());
 			
 			// Se eliminan los ItemMateriales previamente asociados y luego se hace insert de la nueva lista
-			s = con.prepareStatement("delete from " + super.getDatabase() + ".Prendas_Materiales where codigo = ?");
+			s = con.prepareStatement("delete from " + super.getDatabase() + ".Prendas_Materiales where codigo_prenda = ?");
 			s.setString(1, prenda.getCodigo());
 			
 			insertarItemMateriales(prenda);
