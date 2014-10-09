@@ -1,25 +1,23 @@
-package implementacion;
+package view;
 
 public class MaterialView {
 	
 	private String codigo;
 	private String nombre;
 	private float puntoPedido;
-	private Proveedor proveedor;
+	private ProveedorView proveedorView;
 	private float cantidad;
 	private float costo;
 	private boolean activo;
 
-	public MaterialView(String codigo, String nombre, float puntoPedido,
-			Proveedor proveedor, float cantidad, float costo){
-		
+	public MaterialView(String codigo, String nombre, float puntoPedido, ProveedorView proveedorView, float cantidad, float costo){
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.puntoPedido = puntoPedido;
-		this.proveedor = proveedor;
+		this.proveedorView = proveedorView;
 		this.cantidad = cantidad;
 		this.costo = costo;
-		activo = true;
+		this.activo = true;
 	}
 
 	public String getCodigo() {
@@ -46,12 +44,12 @@ public class MaterialView {
 		this.puntoPedido = puntoPedido;
 	}
 
-	public Proveedor getProveedor() {
-		return proveedor;
+	public ProveedorView getProveedorView() {
+		return this.proveedorView;
 	}
 
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
+	public void setProveedorView(ProveedorView proveedorView) {
+		this.proveedorView = proveedorView;
 	}
 
 	public float getCantidad() {
@@ -76,6 +74,10 @@ public class MaterialView {
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+
+	public boolean sosElMaterial(String codigo) {
+		return this.codigo.equals(codigo);
 	}
 
 }

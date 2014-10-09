@@ -3,6 +3,7 @@ package implementacion;
 import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaProveedor;
+import view.ProveedorView;
 
 
 public class Proveedor {
@@ -71,6 +72,10 @@ public class Proveedor {
 		this.cuit=cuit;
 		this.nombre=nombre;
 		this.activo=activo;
+	}
+	
+	public ProveedorView generarProveedorView() {
+		return new ProveedorView(this.nombre, this.cuit, this.activo);
 	}
 
 }

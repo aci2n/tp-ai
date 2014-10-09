@@ -1,8 +1,13 @@
 package implementacion;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaPrenda;
+import view.ConjuntoPrendaView;
+import view.ItemMaterialView;
+import view.PrendaConTemporadaView;
+import view.PrendaView;
 
 public class ConjuntoPrenda extends Prenda{
 	private float descuento;
@@ -55,6 +60,15 @@ public class ConjuntoPrenda extends Prenda{
 		setNombreDB(nombre);
 		this.descuento=descuento;
 		this.prendas=prendas;
+	}
+
+	@Override
+	public PrendaView generarPrendaView() {
+		Collection<PrendaView> prendasView = new ArrayList<PrendaView>();
+		for (Prenda prenda : this.prendas){
+			prendasView.add(prenda.generarPrendaView());
+		}
+		return new ConjuntoPrendaView(getCodigo(), getNombre(), isActivo(), calcularPrecio(), this.descuento, prendasView);
 	}	
 	
 	

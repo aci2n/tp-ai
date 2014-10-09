@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import view.ProveedorView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -76,11 +77,10 @@ public class VentanaAltaProveedor extends javax.swing.JFrame implements ActionLi
 		if (e.getSource()==agregar){
 			if (!tNombre.getText().equals("") && !tCuit.getText().equals("")){
 				Controlador con = Controlador.getControlador();
-				con.altaProveedor(tNombre.getText(), tCuit.getText());
-				
-			}
-			else
+				con.altaProveedor(new ProveedorView(tNombre.getText(), tCuit.getText(), true));
+			} else {
 				JOptionPane.showMessageDialog(null, "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);
+			}		
 		}
 	}
 

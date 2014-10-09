@@ -1,8 +1,12 @@
 package implementacion;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaPrenda;
+import view.ItemMaterialView;
+import view.PrendaConTemporadaView;
+import view.PrendaView;
 
 public class PrendaConTemporada extends PrendaSimple{
 	private String temporada;
@@ -55,13 +59,20 @@ public class PrendaConTemporada extends PrendaSimple{
 		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
 
-
 	public void construirDesdeDB(String codigo, String nombre, String temporada,float porcentajeVenta, Collection<ItemMaterial> items) {
 		setNombreDB(nombre);
 		setCodigoDB(codigo);
 		this.temporada=temporada;
 		this.porcentajeVenta=porcentajeVenta;
 		setMaterialesDB(items);
+	}
+
+	public PrendaView generarPrendaView() {
+		Collection<ItemMaterialView> itemsView = new ArrayList<ItemMaterialView>();
+		for (ItemMaterial item : getMateriales()) {
+			itemsView.add(item.generarItemMaterialView());
+		}
+		return new PrendaConTemporadaView(getCodigo(), getNombre(), isActivo(), calcularPrecio(), itemsView, this.temporada, this.porcentajeVenta);
 	}
 
 }

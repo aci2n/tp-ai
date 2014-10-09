@@ -9,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import view.ProveedorView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -67,8 +68,9 @@ public class VentanaBajaProveedor extends javax.swing.JFrame implements ActionLi
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==eliminar){
 			if (proveedores.getSelectedItem()!=null){
-				if (Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).isActivo()==true)
-					Controlador.getControlador().eliminarProveedor(proveedores.getSelectedItem().toString());
+				ProveedorView proveedorView = Controlador.getControlador().obtenerProveedorView(proveedores.getSelectedItem().toString());
+				if (proveedorView.isActivo())
+					Controlador.getControlador().eliminarProveedor(null);
 				//proveedores.removeItemAt(proveedores.getSelectedIndex());
 				else
 					JOptionPane.showMessageDialog(this.getComponent(0),"El proveedor seleccionado ya está inactivo.","Error",JOptionPane.ERROR_MESSAGE);

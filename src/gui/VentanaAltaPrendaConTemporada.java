@@ -19,6 +19,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import view.ItemMaterialView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -36,7 +37,7 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 	private JTextField tTemporada;
 	private JLabel porcentajeVenta;
 	private JLabel temporada;
-	Collection<ItemMaterial> itemMateriales = new ArrayList<ItemMaterial>();
+	Collection<ItemMaterialView> itemMateriales = new ArrayList<ItemMaterialView>();
 	DefaultTableModel modelo;
 	
 	/**
@@ -158,9 +159,9 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 		if (e.getSource()==agregarMaterial){
 			if (materialesComboBox.getSelectedItem()!= null && Controlador.getControlador().existeMaterial(materialesComboBox.getSelectedItem().toString())){
 				if (!contieneA(itemMateriales,materialesComboBox.getSelectedItem().toString())){
-					ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(materialesComboBox.getSelectedItem().toString()), (float)(Integer)cantidadMaterial.getValue());
+					ItemMaterialView i = new ItemMaterialView((float)(Integer)cantidadMaterial.getValue(), Controlador.getControlador().obtenerMaterialView(materialesComboBox.getSelectedItem().toString()));
 					itemMateriales.add(i);
-					Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
+					Object [] fila = {i.getMaterialView().getNombre(),i.getCantidad()};
 					modelo.addRow (fila);
 				}
 				else JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
@@ -177,6 +178,7 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 					JOptionPane.showMessageDialog(this.getComponent(0), "Porcentaje venta incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				
 				Controlador.getControlador().altaPrendaConTemporada(tCodigo.getText(), tNombre.getText(), tTemporada.getText(), Float.parseFloat(tPorcentajeVenta.getText()), itemMateriales);
 				modelo.setRowCount(0);
 				this.itemMateriales = new ArrayList<ItemMaterial>();
@@ -185,9 +187,9 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos y/o ingrese al menos 1 material.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	private boolean contieneA(Collection<ItemMaterial> items, String codigo){
-		for (ItemMaterial i : items)
-			if (i.getMaterial().sosElMaterial(codigo))
+	private boolean contieneA(Collection<ItemMaterialView> items, String codigo){
+		for (ItemMaterialView i : items)
+			if (i.getMaterialView().sosElMaterial(codigo))
 				return true;
 		return false;
 	}

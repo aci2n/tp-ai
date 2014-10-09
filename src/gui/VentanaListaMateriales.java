@@ -1,7 +1,6 @@
 package gui;
 
 import implementacion.Material;
-import implementacion.MaterialView;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -13,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import view.MaterialView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")

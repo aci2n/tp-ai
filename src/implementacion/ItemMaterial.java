@@ -1,5 +1,7 @@
 package implementacion;
 
+import view.ItemMaterialView;
+
 public class ItemMaterial {
 	private float cantidad;
 	private Material material;
@@ -23,5 +25,9 @@ public class ItemMaterial {
 	
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+	
+	public ItemMaterialView generarItemMaterialView() {
+		return new ItemMaterialView(this.cantidad, this.material.generarMaterialView());
 	}
 }

@@ -3,6 +3,7 @@ package implementacion;
 import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaPrenda;
+import view.PrendaView;
 
 public abstract class Prenda {
 	private String codigo;
@@ -67,5 +68,7 @@ public abstract class Prenda {
 	public static Prenda buscarPrenda(String codigo){
 		return AdministradorPersistenciaPrenda.getInstancia().buscarPrenda(codigo);
 	}
+	
+	public abstract PrendaView generarPrendaView();
 	
 }

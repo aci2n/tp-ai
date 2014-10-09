@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import controlador.Controlador;
 import persistencia.AdministradorPersistenciaMaterial;
+import view.MaterialView;
 
 public class Material {
 	private String codigo;
@@ -94,9 +95,7 @@ public class Material {
 	}
 	
 	public MaterialView generarMaterialView(){
-		
-		return new MaterialView(this.codigo, this.nombre, this.puntoPedido,
-			this.proveedor, this.cantidad, this.costo);
+		return new MaterialView(this.codigo, this.nombre, this.puntoPedido, this.proveedor.generarProveedorView(), this.cantidad, this.costo);
 	}
 	
 	public static Collection<Material> obtenerMateriales(){

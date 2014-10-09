@@ -13,6 +13,14 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
+import view.ConjuntoPrendaView;
+import view.ItemMaterialView;
+import view.MaterialView;
+import view.PrendaConTemporadaView;
+import view.PrendaSimpleView;
+import view.PrendaView;
+import view.ProveedorView;
+
 public class Controlador {
 	private Collection<Material> materiales;
 	private Collection<Proveedor> proveedores;
@@ -36,11 +44,11 @@ public class Controlador {
 
 	//ALTAS
 	
-	public void altaMaterial(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
-		if (!existeMaterial(codigo)){
-			Proveedor proveedor = obtenerProveedor(cuit);
-			if (proveedor!=null){
-				Material material = new Material(codigo, nombre, puntoPedido, proveedor, cantidad, costo);	
+	public void altaMaterial(MaterialView materialView){
+		if (!existeMaterial(materialView.getCodigo())){
+			Proveedor proveedor = obtenerProveedor(materialView.getProveedorView().getCuit());
+			if (proveedor != null){
+				Material material = new Material(materialView.getCodigo(), materialView.getNombre(), materialView.getPuntoPedido(), proveedor, materialView.getCantidad(), materialView.getCosto());	
 				materiales.add(material);
 				JOptionPane.showMessageDialog(null, "Material agregado correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -51,9 +59,9 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"Ya existe un material con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);			
 	}
 	
-	public void altaProveedor(String nombre, String cuit){
-		if (!existeProveedor(cuit)){
-			Proveedor proveedor = new Proveedor(nombre, cuit);
+	public void altaProveedor(ProveedorView proveedorView){
+		if (!existeProveedor(proveedorView.getCuit())){
+			Proveedor proveedor = new Proveedor(proveedorView.getNombre(), proveedorView.getCuit());
 			proveedores.add(proveedor);
 			JOptionPane.showMessageDialog(null, "Proveedor agregado correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -61,9 +69,16 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"Ya existe un proveedor con el CUIT ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
-	public void altaPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> items) {
-		if (!existePrenda(codigo)){
-			Prenda p = new PrendaConTemporada(codigo,nombre, temporada, porcentajeVenta, items);
+	public void altaPrendaConTemporada(PrendaConTemporadaView prendaConTemporadaView) {
+		if (!existePrenda(prendaConTemporadaView.getCodigo())){
+			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
+			for (ItemMaterialView itemView : prendaConTemporadaView.getMaterialesView()) {
+				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+				if (material != null) {
+					items.add(new ItemMaterial(material, itemView.getCantidad()));
+				}
+			}
+			Prenda p = new PrendaConTemporada(prendaConTemporadaView.getCodigo(), prendaConTemporadaView.getNombre(), prendaConTemporadaView.getTemporada(), prendaConTemporadaView.getPorcentajeVenta(), items);
 			prendas.add(p);
 			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -71,9 +86,16 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
-	public void altaConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
-		if (!existePrenda(codigo)){
-			Prenda p = new ConjuntoPrenda(codigo,nombre, descuento, prendas);
+	public void altaConjuntoPrenda(ConjuntoPrendaView conjuntoPrendaView) {
+		if (!existePrenda(conjuntoPrendaView.getCodigo())){
+			Collection<Prenda> prendas = new ArrayList<Prenda>();
+			for (PrendaView prendaView : conjuntoPrendaView.getPrendas()) {
+				Prenda prenda = obtenerPrenda(prendaView.getCodigo());
+				if (prenda != null) {
+					prendas.add(prenda);
+				}
+			}
+			Prenda p = new ConjuntoPrenda(conjuntoPrendaView.getCodigo(), conjuntoPrendaView.getNombre(), conjuntoPrendaView.getDescuento(), prendas);
 			this.prendas.add(p);
 			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -81,9 +103,16 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
-	public void altaPrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> items){
-		if (!existePrenda(codigo)){
-			Prenda p = new PrendaSinTemporada(codigo,nombre, items);
+	public void altaPrendaSinTemporada(PrendaSimpleView prendaSinTemporadaView){
+		if (!existePrenda(prendaSinTemporadaView.getCodigo())){
+			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
+			for (ItemMaterialView itemView : prendaSinTemporadaView.getMaterialesView()) {
+				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+				if (material != null) {
+					items.add(new ItemMaterial(material, itemView.getCantidad()));
+				}
+			}
+			Prenda p = new PrendaSinTemporada(prendaSinTemporadaView.getCodigo(), prendaSinTemporadaView.getNombre(), items);
 			prendas.add(p);
 			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -94,15 +123,16 @@ public class Controlador {
 	
 	//MODIFICAR
 	
-	public void modificarMaterial(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
-		if (existeMaterial(codigo)==true){
-			Proveedor proveedor = obtenerProveedor(cuit);
+	public void modificarMaterial(MaterialView materialView) {
+		if (existeMaterial(materialView.getCodigo())){
+			Proveedor proveedor = obtenerProveedor(materialView.getProveedorView().getCuit());
 			if (proveedor != null){
-				obtenerMaterial(codigo).setNombre(nombre);
-				obtenerMaterial(codigo).setPuntoPedido(puntoPedido);
-				obtenerMaterial(codigo).setCantidad(cantidad);
-				obtenerMaterial(codigo).setCosto(costo);
-				obtenerMaterial(codigo).setProveedor(proveedor);
+				Material material = obtenerMaterial(materialView.getCodigo());
+				material.setNombre(materialView.getNombre());
+				material.setPuntoPedido(materialView.getPuntoPedido());
+				material.setCantidad(materialView.getCantidad());
+				material.setCosto(materialView.getCosto());
+				material.setProveedor(proveedor);
 				JOptionPane.showMessageDialog(null, "Material modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
 			}
 			else
@@ -112,35 +142,49 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"No existe material con el código seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
-	public void modificarProveedor(String cuit, String nombre) {
-		if (existeProveedor(cuit)==true){
-			obtenerProveedor(cuit).setNombre(nombre);
+	public void modificarProveedor(ProveedorView proveedorView) {
+		if (existeProveedor(proveedorView.getCuit())){
+			Proveedor proveedor = obtenerProveedor(proveedorView.getCuit());
+			proveedor.setNombre(proveedorView.getNombre());
+			proveedor.setActivo(proveedorView.isActivo());
 			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
 			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
-	public void ModificarPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> itemMateriales) {
-		if (existePrenda(codigo)==true){
-			PrendaConTemporada prenda = (PrendaConTemporada)obtenerPrenda(codigo);
-			prenda.setCodigo(codigo);
-			prenda.setMateriales(itemMateriales);
-			prenda.setNombre(nombre);
-			prenda.setPorcentajeVenta(porcentajeVenta);
-			prenda.setTemporada(temporada);
+	public void ModificarPrendaConTemporada(PrendaConTemporadaView prendaConTemporadaView) {
+		if (existePrenda(prendaConTemporadaView.getCodigo())){
+			PrendaConTemporada prenda = (PrendaConTemporada) obtenerPrenda(prendaConTemporadaView.getCodigo());
+			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
+			for (ItemMaterialView itemView : prendaConTemporadaView.getMaterialesView()) {
+				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+				if (material != null) {
+					items.add(new ItemMaterial(material, itemView.getCantidad()));
+				}
+			}
+			prenda.setMateriales(items);
+			prenda.setNombre(prendaConTemporadaView.getNombre());
+			prenda.setPorcentajeVenta(prendaConTemporadaView.getPorcentajeVenta());
+			prenda.setTemporada(prendaConTemporadaView.getTemporada());
 			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
 			JOptionPane.showMessageDialog(null,"No existe la prenda.","Error",JOptionPane.ERROR_MESSAGE);		
 	}	
 	
-	public void ModificarPrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> itemMateriales) {
-		if (existePrenda(codigo)==true){
-			PrendaSinTemporada prenda = (PrendaSinTemporada)obtenerPrenda(codigo);
-			prenda.setCodigo(codigo);
-			prenda.setMateriales(itemMateriales);
-			prenda.setNombre(nombre);
+	public void ModificarPrendaSinTemporada(PrendaSimpleView prendaSinTemporadaView) {
+		if (existePrenda(prendaSinTemporadaView.getCodigo())){
+			PrendaSinTemporada prenda = (PrendaSinTemporada) obtenerPrenda(prendaSinTemporadaView.getCodigo());
+			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
+			for (ItemMaterialView itemView : prendaSinTemporadaView.getMaterialesView()) {
+				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+				if (material != null) {
+					items.add(new ItemMaterial(material, itemView.getCantidad()));
+				}
+			}
+			prenda.setMateriales(items);
+			prenda.setNombre(prendaSinTemporadaView.getNombre());
 			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
@@ -148,13 +192,19 @@ public class Controlador {
 		
 	}
 	
-	public void ModificarConjuntoPrenda(String codigo, String nombre,	float descuento, Collection<Prenda> prendas) {
-		if (existePrenda(codigo)==true){
-			ConjuntoPrenda prenda = (ConjuntoPrenda)obtenerPrenda(codigo);
-			prenda.setCodigo(codigo);
+	public void ModificarConjuntoPrenda(ConjuntoPrendaView conjuntoPrendaView) {
+		if (existePrenda(conjuntoPrendaView.getCodigo())){
+			ConjuntoPrenda prenda = (ConjuntoPrenda) obtenerPrenda(conjuntoPrendaView.getCodigo());
+			Collection<Prenda> prendas = new ArrayList<Prenda>();
+			for (PrendaView prendaView : conjuntoPrendaView.getPrendas()) {
+				Prenda pren = obtenerPrenda(prendaView.getCodigo());
+				if (pren != null) {
+					prendas.add(pren);
+				}
+			}
 			prenda.setPrendas(prendas);
-			prenda.setNombre(nombre);
-			prenda.setDescuento(descuento);
+			prenda.setNombre(conjuntoPrendaView.getNombre());
+			prenda.setDescuento(conjuntoPrendaView.getDescuento());
 			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
@@ -163,45 +213,45 @@ public class Controlador {
 	
 	//BAJAS
 	
-	public void eliminarMaterial(String codigo){
+	public void eliminarMaterial(MaterialView materialView){
 		for (Material m : materiales)
-			if (m.sosElMaterial(codigo)==true){
+			if (m.sosElMaterial(materialView.getCodigo())){
 				m.eliminar();
 				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 		for(Material m : Material.obtenerMateriales())
-			if (m.sosElMaterial(codigo)==true){
+			if (m.sosElMaterial(materialView.getCodigo())){
 				m.eliminar();
 				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 	}
 	
-	public void eliminarProveedor(String cuit) {
+	public void eliminarProveedor(ProveedorView proveedorView) {
 		for (Proveedor p : proveedores)
-			if (p.sosElProveedor(cuit)==true){
+			if (p.sosElProveedor(proveedorView.getCuit())){
 				p.eliminar();
 				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}		
 		for(Proveedor p : Proveedor.obtenerProveedores())
-			if (p.sosElProveedor(cuit)==true){
+			if (p.sosElProveedor(proveedorView.getCuit())){
 				p.eliminar();
 				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 	}
 
-	public void eliminarPrenda(String codigo) {
+	public void eliminarPrenda(PrendaView prendaView) {
 		for (Prenda pr : prendas)
-			if (pr.sosLaPrenda(codigo)==true){
+			if (pr.sosLaPrenda(prendaView.getCodigo())){
 				pr.eliminar();
 				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}	
 		for(Prenda pr : Prenda.obtenerPrendas())
-			if (pr.sosLaPrenda(codigo)==true){
+			if (pr.sosLaPrenda(prendaView.getCodigo())){
 				pr.eliminar();
 				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
@@ -212,30 +262,30 @@ public class Controlador {
 	
 	public boolean existeMaterial(String codigo){
 		for (Material m : materiales)
-			if (m.sosElMaterial(codigo)==true){
+			if (m.sosElMaterial(codigo)){
 				return true;
 			}
-		if (Material.buscarMaterial(codigo)!=null)
+		if (Material.buscarMaterial(codigo) != null)
 			return true;
 		return false;
 	}
 	
 	public boolean existeProveedor(String cuit){
 		for (Proveedor p : proveedores)
-			if (p.sosElProveedor(cuit)==true){
+			if (p.sosElProveedor(cuit)){
 				return true;
 			}
-		if (Proveedor.buscarProveedor(cuit)!=null)
+		if (Proveedor.buscarProveedor(cuit) != null)
 			return true;
 		return false;
 	}
 	
 	public boolean existePrenda(String codigo) {
 		for (Prenda p : prendas)
-			if (p.sosLaPrenda(codigo)==true){
+			if (p.sosLaPrenda(codigo)){
 				return true;
 			}
-		if (Prenda.buscarPrenda(codigo)!=null)
+		if (Prenda.buscarPrenda(codigo) != null)
 			return true;
 		return false;
 	}	
@@ -254,6 +304,14 @@ public class Controlador {
 		return prov;
 	}
 	
+	public ProveedorView obtenerProveedorView(String cuit){
+		Proveedor prov = obtenerProveedor(cuit);
+		if (prov != null) {
+			return prov.generarProveedorView();
+		}
+		return null;
+	}
+	
 	public Material obtenerMaterial(String codigo) {
 		Material mat = null;
 		for (Material m : materiales)
@@ -265,6 +323,14 @@ public class Controlador {
 			this.materiales.add(mat);
 		}
 		return mat;
+	}
+	
+	public MaterialView obtenerMaterialView(String codigo) {
+		Material mat = obtenerMaterial(codigo);
+		if (mat != null) {
+			return mat.generarMaterialView();
+		}
+		return null;
 	}
 	
 	public Prenda obtenerPrenda(String codigo) {
@@ -282,17 +348,39 @@ public class Controlador {
 	
 	//GETTERS
 
-	public Collection<Material> getMateriales() {
-			return Material.obtenerMateriales();
+	private Collection<Material> getMateriales() {
+		return Material.obtenerMateriales();
 	}
 	
-	public Collection<Proveedor> getProveedores() {
-		
-			return Proveedor.obtenerProveedores();
+	public Collection<MaterialView> getMaterialesView() {
+		Collection<MaterialView> materialesView = new ArrayList<MaterialView>();
+		for (Material material : getMateriales()) {
+			materialesView.add(material.generarMaterialView());
+		}
+		return materialesView;
+	}
+	
+	private Collection<Proveedor> getProveedores() {
+		return Proveedor.obtenerProveedores();
+	}
+	
+	public Collection<ProveedorView> getProveedoresView() {
+		Collection<ProveedorView> proveedoresView = new ArrayList<ProveedorView>();
+		for (Proveedor proveedor : getProveedores()) {
+			proveedoresView.add(proveedor.generarProveedorView());
+		}
+		return proveedoresView;
 	}
 
-	public Collection<Prenda> getPrendas() {
-
-			return Prenda.obtenerPrendas();
+	private Collection<Prenda> getPrendas() {
+		return Prenda.obtenerPrendas();
+	}
+	
+	public Collection<PrendaView> getPrendasView() {
+		Collection<PrendaView> prendasView = new ArrayList<PrendaView>();
+		for (Prenda prenda : getPrendas()) {
+			prendasView.add(prenda.generarPrendaView());
+		}
+		return prendasView;
 	}
 }

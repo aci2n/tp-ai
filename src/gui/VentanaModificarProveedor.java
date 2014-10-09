@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import view.ProveedorView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -91,14 +92,15 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==proveedores){
 			if (proveedores.getSelectedItem()!=null){
-				tNombre.setText(Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).getNombre());
-				activo.setSelected(Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).isActivo());
+				ProveedorView proveedorView = Controlador.getControlador().obtenerProveedorView(proveedores.getSelectedItem().toString());
+				tNombre.setText(proveedorView.getNombre());
+				activo.setSelected(proveedorView.isActivo());
 			}
 		}
 		if (e.getSource()==modificar){
 			if (proveedores.getSelectedItem()!=null && !tNombre.getText().equals("")){
-				Controlador.getControlador().modificarProveedor(proveedores.getSelectedItem().toString(), tNombre.getText());
-				Controlador.getControlador().obtenerProveedor(proveedores.getSelectedItem().toString()).setActivo(activo.isSelected());
+				ProveedorView proveedorView = new ProveedorView(tNombre.getText(), proveedores.getSelectedItem().toString(), activo.isSelected());
+				Controlador.getControlador().modificarProveedor(proveedorView);
 			}
 			else 					
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un proveedor y complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

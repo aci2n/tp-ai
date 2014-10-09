@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import view.PrendaView;
 import controlador.Controlador;
 
 
@@ -114,7 +115,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 			{
 				prendasComboBox = new JComboBox();
 				getContentPane().add(prendasComboBox);
-				for (Prenda p : Controlador.getControlador().getPrendas())
+				for (PrendaView p : Controlador.getControlador().getPrendasView())
 					prendasComboBox.addItem(p.getCodigo());
 				prendasComboBox.setBounds(12, 128, 168, 24);
 				prendasComboBox.setSelectedIndex(-1);
