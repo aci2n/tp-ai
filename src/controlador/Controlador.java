@@ -1,5 +1,6 @@
 package controlador;
 
+import implementacion.ConjuntoPrenda;
 import implementacion.ItemMaterial;
 import implementacion.Material;
 import implementacion.Prenda;
@@ -61,6 +62,16 @@ public class Controlador {
 	public void altaPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> items) {
 		if (!existePrenda(codigo)){
 			Prenda p = new PrendaConTemporada(codigo,nombre, temporada, porcentajeVenta, items);
+			prendas.add(p);
+			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
+	}
+	
+	public void altaConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
+		if (!existePrenda(codigo)){
+			Prenda p = new ConjuntoPrenda(codigo,nombre, descuento, prendas);
 			prendas.add(p);
 			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}

@@ -11,6 +11,10 @@ public class ConjuntoPrenda extends Prenda{
 		
 	}
 	
+	public ConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
+		
+	}
+
 	public float calcularPrecio() {
 		return 0;
 	}
