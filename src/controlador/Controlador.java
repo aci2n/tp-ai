@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 public class Controlador {
 	private Collection<Material> materiales;
 	private Collection<Proveedor> proveedores;
+	
 	private Collection<Prenda> prendas;
 	public static Controlador con;
 	
@@ -227,4 +228,9 @@ public class Controlador {
 	public void setMateriales(Collection<Material> materiales) {
 		this.materiales = materiales;
 	}	
+	
+	public void setProveedores(Collection<Proveedor> proveedores) {
+		this.proveedores = proveedores;
+	}
+
 }

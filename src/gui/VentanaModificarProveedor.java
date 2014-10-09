@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import persistencia.AdministradorPersistenciaProveedor;
+
 import controlador.Controlador;
 
 public class VentanaModificarProveedor extends javax.swing.JFrame implements ActionListener{
@@ -50,6 +52,8 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 				proveedores = new JComboBox();
 				getContentPane().add(proveedores);
 				proveedores.setBounds(78, 12, 265, 24);
+				// LINEA A AGREGAR
+				Controlador.getControlador().setProveedores(AdministradorPersistenciaProveedor.getInstancia().obtenerProveedores());
 				for (Proveedor p : Controlador.getControlador().getProveedores())
 					proveedores.addItem(p.getCuit());
 				proveedores.setSelectedIndex(-1);

@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import persistencia.AdministradorPersistenciaProveedor;
+
 import controlador.Controlador;
 
 public class VentanaListaProveedor extends JFrame{
@@ -29,7 +31,7 @@ public class VentanaListaProveedor extends JFrame{
 		
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
-		Collection<Proveedor> proveedores = Controlador.getControlador().getProveedores();
+		Collection<Proveedor> proveedores = AdministradorPersistenciaProveedor.getInstancia().obtenerProveedores();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS

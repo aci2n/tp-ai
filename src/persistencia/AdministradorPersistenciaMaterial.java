@@ -103,9 +103,10 @@ public class AdministradorPersistenciaMaterial extends
 
 	public Material buscarMaterial(String codigo) {
 
+		Material m = new Material();
 		try {
 			con = Conexion.connect();
-			Material m = null;
+			
 			PreparedStatement s = con.prepareStatement("select * from "
 					+ super.getDatabase() + ".dbo.Materiales where codigo = ?");
 			s.setString(1, codigo);
@@ -120,15 +121,21 @@ public class AdministradorPersistenciaMaterial extends
 				float puntoPedido = rs.getFloat(5);
 				float costo = rs.getFloat(6);
 
-				m = new Material(cod, nom, puntoPedido, AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit), cantidad, costo); // FALTA BUSCAR PROVEEDOR Y
+				m.setCodigo(cod);
+				m.setNombre(nom);
+				m.setPuntoPedido(puntoPedido);
+				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit));
+				m.setCantidad(cantidad);
+				m.setCosto(costo);
+				//m = new Material(cod, nom, puntoPedido, AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit), cantidad, costo); // FALTA BUSCAR PROVEEDOR Y
 												// PASARLO AL CONSTRUCTOR
 			}
-			return m;
+			
 		} catch (Exception e) {
 
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return m;
 	}
 	
 	/*
@@ -168,35 +175,41 @@ public class AdministradorPersistenciaMaterial extends
 */
 	
 	public ArrayList<Material> obtenerMateriales() {
-
+		
+		ArrayList<Material> materiales = new ArrayList<Material>();
 		try {
 
-			ArrayList<Material> materiales = new ArrayList<Material>();
+			
 			con = Conexion.connect();
-			Material m = null;
 			PreparedStatement s = con.prepareStatement("select * from "
 					+ super.getDatabase() + ".dbo.Materiales where activo = 1");
 			ResultSet rs = s.executeQuery();
 
 			while (rs.next()) {
 
+				Material m = new Material();
 				String cod = rs.getString(1);
 				String cuit = rs.getString(2); // USAR CON EL ADMPERSISTENCIA DE PROVEEDORES
 				String nom = rs.getString(3);
 				float cantidad = rs.getFloat(4);
 				float puntoPedido = rs.getFloat(5);
 				float costo = rs.getFloat(6);
-				m = new Material(cod, nom, puntoPedido, AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit), cantidad, costo);
-				// AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit)
+				
+				// SETEO DE LOS VALORES
+				
+				m.setCodigo(cod);
+				m.setNombre(nom);
+				m.setPuntoPedido(puntoPedido);
+				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit));
+				m.setCantidad(cantidad);
+				m.setCosto(costo);
 				materiales.add(m); 
 			}
-
-			return materiales;
-
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return null;
 		}
+		return materiales;
+
 	}
 
 }

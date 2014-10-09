@@ -13,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import persistencia.AdministradorPersistenciaMaterial;
+
 import controlador.Controlador;
 
 public class VentanaListaMateriales extends JFrame{

@@ -22,6 +22,10 @@ public class Material {
 		activo = true;
 		AdministradorPersistenciaMaterial.getInstance().insert(this);
 	}
+	
+	public Material(){
+		
+	}
 
 	public boolean sosElMaterial(String codigo2) {
 		if (codigo2.compareTo(codigo)==0)
