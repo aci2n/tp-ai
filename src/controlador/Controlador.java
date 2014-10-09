@@ -122,6 +122,18 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
+	public void ModificarPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> itemMateriales) {
+		if (existePrenda(codigo)==true){
+			obtenerPrenda(codigo).setNombre(nombre);
+			obtenerPrenda(codigo).setTemporada(temporada);
+			obtenerPrenda(codigo).setPorcentajeVenta(porcentajeVenta);
+			obtenerPrenda(codigo).setMateriales(itemMateriales);
+			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);		
+	}	
+	
 	//BAJAS
 	
 	public void eliminarMaterial(String codigo){
@@ -227,10 +239,16 @@ public class Controlador {
 
 	public void setMateriales(Collection<Material> materiales) {
 		this.materiales = materiales;
+<<<<<<< HEAD
 	}	
 	
 	public void setProveedores(Collection<Proveedor> proveedores) {
 		this.proveedores = proveedores;
 	}
 
+=======
+	}
+
+	
+>>>>>>> branch 'master' of https://github.com/alvarocalace/ninosvimostp.git
 }

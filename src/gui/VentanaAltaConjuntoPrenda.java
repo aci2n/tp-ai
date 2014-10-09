@@ -151,8 +151,8 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==agregarPrenda){
-			if (Controlador.getControlador().existePrenda(tCodigo.getText())){
-				Prenda p = Controlador.getControlador().obtenerPrenda(tCodigo.getText());
+			if (Controlador.getControlador().existePrenda(prendasComboBox.getSelectedItem().toString())){
+				Prenda p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString());
 				prendas.add(p);
 				Object [] fila = {p.getNombre()};
 				modelo.addRow (fila);

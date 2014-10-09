@@ -155,13 +155,14 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==agregarMaterial){
-			if (Controlador.getControlador().existeMaterial(tCodigo.getText())){
-				ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(tCodigo.getText()),(Float)cantidadMaterial.getValue());
+			if (materialesComboBox.getSelectedItem()!= null && Controlador.getControlador().existeMaterial(materialesComboBox.getSelectedItem().toString())){
+				ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(materialesComboBox.getSelectedItem().toString()), (float)(Integer)cantidadMaterial.getValue());
 				itemMateriales.add(i);
 				Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
 				modelo.addRow (fila);
 			}
-			JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		if (e.getSource()==confirmar){
 			if (!tCodigo.getText().equals("") && !tNombre.getText().equals("") && !tTemporada.getText().equals("") && !tPorcentajeVenta.getText().equals("")){

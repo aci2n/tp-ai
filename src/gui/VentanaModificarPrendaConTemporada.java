@@ -1,12 +1,16 @@
 package gui;
 import implementacion.ItemMaterial;
 import implementacion.Material;
+import implementacion.Prenda;
+import implementacion.PrendaConTemporada;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -21,16 +25,33 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
 
-public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements ActionListener{
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
+public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame implements ActionListener{
 	private JLabel codigo;
 	private JLabel nombre;
-	private JTextField tCodigo;
 	private JTextField tNombre;
+	private JComboBox comboCodigo;
 	private JTable tablaMateriales;
 	private JComboBox materialesComboBox;
 	private JButton agregarMaterial;
 	private JSpinner cantidadMaterial;
 	private JButton confirmar;
+	private JTextField tPorcentajeVenta;
+	private JTextField tTemporada;
+	private JLabel porcentajeVenta;
+	private JLabel temporada;
 	Collection<ItemMaterial> itemMateriales = new ArrayList<ItemMaterial>();
 	DefaultTableModel modelo;
 	
@@ -38,17 +59,17 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 	* Auto-generated main method to display this JFrame
 	*/
 	public static void main(String[] args) {
-		new VentanaAltaPrendaSinTemporada();
+		new VentanaModificarPrendaConTemporada();
 	}
 	
-	public VentanaAltaPrendaSinTemporada() {
+	public VentanaModificarPrendaConTemporada() {
 		comportamiento();
 		componentes();
 	}
 	
 	private void comportamiento(){
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.setTitle("Alta Prenda sin Temporada");
+		this.setTitle("Modificar Prenda con Temporada");
 		this.setSize(355, 461);
 		setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -72,14 +93,31 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 				nombre.setBounds(12, 41, 54, 17);
 			}
 			{
-				tCodigo = new JTextField();
-				getContentPane().add(tCodigo);
-				tCodigo.setBounds(96, 9, 239, 24);
+				temporada = new JLabel();
+				getContentPane().add(temporada);
+				temporada.setText("Temporada:");
+				temporada.setBounds(12, 70, 75, 17);
+			}
+			{
+				porcentajeVenta = new JLabel();
+				getContentPane().add(porcentajeVenta);
+				porcentajeVenta.setText("Porcentaje venta:");
+				porcentajeVenta.setBounds(12, 99, 110, 17);
 			}
 			{
 				tNombre = new JTextField();
 				getContentPane().add(tNombre);
 				tNombre.setBounds(96, 38, 239, 24);
+			}
+			{
+				tTemporada = new JTextField();
+				getContentPane().add(tTemporada);
+				tTemporada.setBounds(96, 67, 239, 24);
+			}
+			{
+				tPorcentajeVenta = new JTextField();
+				getContentPane().add(tPorcentajeVenta);
+				tPorcentajeVenta.setBounds(140, 96, 195, 24);
 			}
 			{
 				confirmar = new JButton();
@@ -95,6 +133,14 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 					materialesComboBox.addItem(m.getCodigo());
 				materialesComboBox.setBounds(12, 128, 168, 24);
 				materialesComboBox.setSelectedIndex(-1);
+			}
+			{
+				comboCodigo = new JComboBox();
+				getContentPane().add(comboCodigo);
+				for (Prenda p : Controlador.getControlador().getPrendas())
+					if(p instanceof PrendaConTemporada) //ni nos vimos patrones GRASP
+						comboCodigo.addItem(p.getCodigo());
+				comboCodigo.setBounds(96, 8, 239, 24);
 			}
 			{
 				cantidadMaterial = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
@@ -121,6 +167,7 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 				getContentPane().add(scrollPaneTabla);	
 				scrollPaneTabla.setBounds(12, 158, 323, 223);
 			}
+		
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,11 +182,18 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 				Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
 				modelo.addRow (fila);
 			}
-			JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		if (e.getSource()==confirmar){
-			if (!tCodigo.getText().equals("") && !tNombre.getText().equals("")){
-				Controlador.getControlador().altaPrendaSinTemporada(tCodigo.getText(), tNombre.getText(),itemMateriales);
+			if (comboCodigo.getSelectedItem() != null && !tNombre.getText().equals("") && !tTemporada.getText().equals("") && !tPorcentajeVenta.getText().equals("")){
+				try{
+					Float.parseFloat(tPorcentajeVenta.getText());
+				} catch(Exception exep){
+					JOptionPane.showMessageDialog(this.getComponent(0), "Porcentaje venta incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				Controlador.getControlador().ModificarPrendaConTemporada(comboCodigo.getSelectedItem().toString(), tNombre.getText(), tTemporada.getText(), Float.parseFloat(tPorcentajeVenta.getText()), itemMateriales);
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

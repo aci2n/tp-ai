@@ -37,4 +37,6 @@ public abstract class Prenda {
 		this.activo = activo;
 	}
 	
+	public abstract void actualizarPrenda();
+	
 }

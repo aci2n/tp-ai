@@ -28,4 +28,17 @@ public class PrendaConTemporada extends PrendaSimple{
 	public String getTemporada() {
 		return this.temporada;
 	}
+
+
+	public void setTemporada(String temporada) {
+		this.temporada = temporada;
+	}
+
+
+	public void setPorcentajeVenta(float porcentajeVenta) {
+		this.porcentajeVenta = porcentajeVenta;
+	}
+
+
+	
 }

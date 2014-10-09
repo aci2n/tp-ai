@@ -1,5 +1,7 @@
 package gui;
 
+import implementacion.PrendaSinTemporada;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -170,7 +172,7 @@ public class Menu extends JFrame implements ActionListener{
 			new VentanaAltaConjuntoPrenda();
 		}
 		if (e.getSource()==modificarPrendaTemporada){
-			
+			new VentanaModificarPrendaConTemporada();
 		}
 		if (e.getSource()==modificarPrendaNoTemporada){
 			
