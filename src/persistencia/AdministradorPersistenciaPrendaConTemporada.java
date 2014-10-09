@@ -1,6 +1,8 @@
 package persistencia;
 
 import implementacion.ItemMaterial;
+import implementacion.Material;
+import implementacion.Prenda;
 import implementacion.PrendaSimple;
 import implementacion.PrendaConTemporada;
 import implementacion.PrendaSinTemporada;
@@ -9,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPersistencia {
@@ -30,7 +33,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		try {
 			PrendaConTemporada prenda = (PrendaConTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("INSERT INTO " + super.getDatabase() + ".Prendas (codigo, nombre, temporada, porcentajeVenta) values (?, ?, ?, ?)");
+			PreparedStatement s = con.prepareStatement("INSERT INTO " + super.getDatabase() + ".dbo.Prendas (codigo, nombre, temporada, porcentajeVenta) values (?, ?, ?, ?)");
 			s.setString(1, prenda.getCodigo());
 			s.setString(2, prenda.getNombre());
 			s.setString(3, prenda.getTemporada());
@@ -46,13 +49,13 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		try {
 			PrendaConTemporada prenda = (PrendaConTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("UPDATE " + super.getDatabase() + ".Prendas SET nombre = ?, SET temporada = ? SET porcentaje_venta = ? WHERE codigo = ?");
+			PreparedStatement s = con.prepareStatement("UPDATE " + super.getDatabase() + ".dbo.Prendas SET nombre = ?, SET temporada = ? SET porcentaje_venta = ? WHERE codigo = ?");
 			s.setString(1, prenda.getNombre());
 			s.setString(2, prenda.getTemporada());
 			s.setFloat(3, prenda.getPorcentajeVenta());
 			s.setString(4, prenda.getCodigo());
 			
-			s = con.prepareStatement("DELETE FROM " + super.getDatabase() + ".Prendas_Materiales WHERE codigo_prenda = ?");
+			s = con.prepareStatement("DELETE FROM " + super.getDatabase() + ".dbo.Prendas_Materiales WHERE codigo_prenda = ?");
 			s.setString(1, prenda.getCodigo());
 			
 			insertarItemMateriales(prenda);
@@ -65,7 +68,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		try {
 			PrendaConTemporada prenda = (PrendaConTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".Prendas set activo = 0 where codigo = ?");
+			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".dbo.Prendas set activo = 0 where codigo = ?");
 			s.setString(1, prenda.getCodigo());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,7 +78,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 	private void insertarItemMateriales(PrendaSimple prenda) {
 		try {
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("INSERT INTO " + super.getDatabase() + ".Prendas_Materiales (codigo_material, codigo_prenda, cantidad) values (?, ?, ?)");
+			PreparedStatement s = con.prepareStatement("INSERT INTO " + super.getDatabase() + ".dbo.Prendas_Materiales (codigo_material, codigo_prenda, cantidad) values (?, ?, ?)");
 			
 			for (ItemMaterial itemMat : prenda.getMateriales()) {
 				s.setString(1, itemMat.getMaterial().getCodigo());
@@ -86,6 +89,58 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	public PrendaConTemporada buscarPrendaConTemporada(String codigo) {
+		PrendaConTemporada prenda = null;
+		try {
+			Connection con = Conexion.connect();
+			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".dbo.Prendas where codigo = ?");
+			ps.setString(1,codigo);
+			
+			ResultSet result = ps.executeQuery();
+			
+			while (result.next()){			
+				prenda.setCodigo(result.getString("codigo"));
+				prenda.setNombre(result.getString("nombre"));
+			}
+			
+			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
+						
+			ps = con.prepareStatement("select * from "+super.getDatabase()+".dbo.Prendas_Materiales where codigo_prenda = ?");
+			ps.setString(1, prenda.getCodigo());
+			
+			result = ps.executeQuery();
+			while (result.next()) {
+				Material m = AdministradorPersistenciaMaterial.getInstance().buscarMaterial(result.getString("codigo_material"));
+				ItemMaterial item = new ItemMaterial(m,(result.getFloat("cantidad")));
+				items.add(item);
+			}
+			prenda.setMateriales(items);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return prenda;
+	}
+	
+	public Collection<PrendaConTemporada> obtenerPrendasConTemporada() {
+		Collection<PrendaConTemporada> prendas = new ArrayList<PrendaConTemporada>();
+		try {
+			Connection con = Conexion.connect();
+			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".dbo.Prendas p where activo = 1 and temporada is not null and not exists(select * from " + super.getDatabase() + ".dbo.Conjuntos_Prendas c where c.codigo_conjunto = p.codigo)");
+
+			ResultSet result = ps.executeQuery();
+			
+			while (result.next()){			
+				Prenda prenda = buscarPrendaConTemporada(result.getString("codigo")); //negrada intensifies
+				prendas.add((PrendaConTemporada) prenda);
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return prendas;
+
 	}
 	
 }

@@ -3,6 +3,10 @@ package implementacion;
 public abstract class Prenda {
 	protected String codigo;
 	protected String nombre;
+	
+	public Prenda() {
+		
+	}
 		
 	public abstract float calcularPrecio();
 

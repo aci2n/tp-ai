@@ -35,14 +35,13 @@ public class AdministradorPersistenciaMaterial extends
 			con = Conexion.connect();
 			PreparedStatement s = con.prepareStatement("insert into "
 					+ super.getDatabase()
-					+ ".dbo.Materiales values (?,?,?,?,?,?,?)");
+					+ ".dbo.Materiales values (?,?,?,?,?,?)");
 			s.setString(1, m.getCodigo());
 			s.setString(2, m.getProveedor().getCuit());
 			s.setString(3, m.getNombre());
 			s.setFloat(4, m.getCantidad());
 			s.setFloat(5, m.getPuntoPedido());
 			s.setFloat(6, m.getCosto()); // FALTA VER LO DEL ATRIBUTO ACTIVO
-			s.setBoolean(7, true);
 			s.execute();
 
 		} catch (Exception e) {

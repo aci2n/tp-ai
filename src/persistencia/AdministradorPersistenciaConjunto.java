@@ -21,29 +21,27 @@ public class AdministradorPersistenciaConjunto extends AdministradorPersistencia
 	private AdministradorPersistenciaConjunto(){
 	}
 	
-	public AdministradorPersistenciaConjunto getInstance(){
+	public static AdministradorPersistenciaConjunto getInstance(){
 		if (instancia == null)
 			instancia = new AdministradorPersistenciaConjunto();
 		return instancia;
 	}
 	
 	public void insert(Object o) {
-		ConjuntoPrenda conjunto = (ConjuntoPrenda)o;
+		ConjuntoPrenda conjunto = (ConjuntoPrenda) o;
 		Connection con = Conexion.connect();
 		try{
-			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos (codigo, nombre, descuento, activo) VALUES (?,?,?,?)");
+			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas (codigo, nombre, descuento) VALUES (?,?,?)");
 			ps.setString(1, conjunto.getCodigo());
 			ps.setString(2, conjunto.getNombre());
 			ps.setFloat(3, conjunto.getDescuento());
-			ps.setInt(4,1);
 			
 			ps.execute();
 			
 			for (Prenda p : conjunto.getPrendas()){
-				ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas_Simples (codigo_conjunto,codigo_prenda_simple,activo) VALUES (?,?,?)");
+				ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas (codigo_conjunto, codigo_prenda) VALUES (?,?)");
 				ps.setString(1, conjunto.getCodigo());
 				ps.setString(2, p.getCodigo());
-				ps.setInt(3, 1);
 				
 				ps.execute();
 			}
@@ -59,26 +57,23 @@ public class AdministradorPersistenciaConjunto extends AdministradorPersistencia
 		ConjuntoPrenda conjunto = (ConjuntoPrenda)o;
 		Connection con = Conexion.connect();
 		try{
-			PreparedStatement ps = con.prepareStatement("UPDATE "+super.getDatabase()+".dbo.Conjuntos SET nombre = ?, descuento = ?, activo = ? WHERE codigo = ?");
+			PreparedStatement ps = con.prepareStatement("UPDATE "+super.getDatabase()+".dbo.Prendas SET nombre = ?, descuento = ? WHERE codigo = ?");
 			ps.setString(1, conjunto.getNombre());
 			ps.setFloat(2, conjunto.getDescuento());
-			int myInt = (conjunto.isActivo()) ? 1 : 0;
-			ps.setInt(3,myInt);
-			ps.setString(4, conjunto.getCodigo());
+			ps.setString(3, conjunto.getCodigo());
 			
 			ps.execute();
 			
-			ps = con.prepareStatement("DELETE FROM "+super.getDatabase()+".dbo.Conjuntos_Prendas_Simples WHERE codigo_conjunto = ?");
+			ps = con.prepareStatement("DELETE FROM "+super.getDatabase()+".dbo.Conjuntos_Prendas WHERE codigo_conjunto = ?");
 			ps.setString(1, conjunto.getCodigo());
 			
 			ps.execute();
 				
 			
 			for (Prenda p : conjunto.getPrendas()){
-				ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas_Simples (codigo_conjunto,codigo_prenda_simple,activo) VALUES (?,?,?)");
+				ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas (codigo_conjunto,codigo_prenda) VALUES (?,?)");
 				ps.setString(1, conjunto.getCodigo());
 				ps.setString(2, p.getCodigo());
-				ps.setInt(3, 1);
 				
 				ps.execute();
 			}
@@ -94,7 +89,7 @@ public class AdministradorPersistenciaConjunto extends AdministradorPersistencia
 		ConjuntoPrenda conjunto = (ConjuntoPrenda)o;
 		Connection con = Conexion.connect();
 		try{
-			PreparedStatement ps = con.prepareStatement( "UPDATE "+super.getDatabase()+".dbo.Conjuntos SET activo = ? WHERE cuit = ?");
+			PreparedStatement ps = con.prepareStatement( "UPDATE "+super.getDatabase()+".dbo.Prendas SET activo = ? WHERE cuit = ?");
 			ps.setInt(1, 0);
 			ps.setString(2, conjunto.getCodigo());
 			
@@ -110,7 +105,7 @@ public class AdministradorPersistenciaConjunto extends AdministradorPersistencia
 		ConjuntoPrenda conjunto = null;
 		Connection con = Conexion.connect();
 		try{
-			PreparedStatement ps = con.prepareStatement( "SELECT * FROM "+super.getDatabase()+".dbo.Conjuntos WHERE codigo_conjunto = ?");
+			PreparedStatement ps = con.prepareStatement( "SELECT * FROM "+super.getDatabase()+".dbo.Prenda WHERE codigo_conjunto = ?");
 			ps.setString(1, codigo);
 			
 			ResultSet res = ps.executeQuery();
@@ -118,18 +113,17 @@ public class AdministradorPersistenciaConjunto extends AdministradorPersistencia
 			while (res.next()){
 				conjunto = new ConjuntoPrenda();
 				conjunto.setCodigo(res.getString("codigo_conjunto"));
-				conjunto.setActivo(res.getBoolean("activo"));
 				conjunto.setNombre(res.getString("nombre"));
 			}
 			
-			ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+" .dbo.Conjuntos_Prendas_Simples WHERE codigo_conjunto = ?");
+			ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+" .dbo.Conjuntos_Prendas WHERE codigo_conjunto = ?");
+			ps.setString(1, codigo);
+			
 			res = ps.executeQuery();
-			
-			
 			
 			Collection<Prenda> prendas = new ArrayList<Prenda>();
 			while (res.next()){
-				Prenda p = Controlador.getControlador().obtenerPrenda(res.getString("codigo_prenda")); //falta implementar
+				Prenda p = AdministradorPersistenciaPrenda.getInstancia().buscarPrenda(res.getString("codigo_prenda")); //falta implementar
 				prendas.add(p);				
 			}
 			
@@ -154,7 +148,7 @@ public class AdministradorPersistenciaConjunto extends AdministradorPersistencia
 			ResultSet result = ps.executeQuery();
 			
 			while (result.next()){			
-				ConjuntoPrenda conjunto = this.buscarConjuntoPrenda(result.getString("codigo")); //negrada intensifies
+				ConjuntoPrenda conjunto = buscarConjuntoPrenda(result.getString("codigo")); //negrada intensifies
 				conjuntos.add(conjunto);
 			}
 		}

@@ -9,7 +9,7 @@ public abstract class AdministradorPersistencia {
 	public abstract void update(Object o);
 	public abstract void delete(Object o);
 	
-	public String getDatabase() {
-		return this.database;
+	public static String getDatabase() {
+		return database;
 	}
 }

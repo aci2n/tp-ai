@@ -31,7 +31,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		try {
 			PrendaSinTemporada prenda = (PrendaSinTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("insert into " + super.getDatabase() + ".Prendas (codigo, nombre) values (?, ?)");
+			PreparedStatement s = con.prepareStatement("insert into " + super.getDatabase() + ".dbo.Prendas (codigo, nombre) values (?, ?)");
 			s.setString(1, prenda.getCodigo());
 			s.setString(2, prenda.getNombre());
 			s.execute();
@@ -44,12 +44,12 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		try {
 			PrendaSinTemporada prenda = (PrendaSinTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".Prendas set nombre = ? where codigo = ?");
+			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".dbo.Prendas set nombre = ? where codigo = ?");
 			s.setString(1, prenda.getNombre());
 			s.setString(2, prenda.getCodigo());
 			
 			// Se eliminan los ItemMateriales previamente asociados y luego se hace insert de la nueva lista
-			s = con.prepareStatement("delete from " + super.getDatabase() + ".Prendas_Materiales where codigo_prenda = ?");
+			s = con.prepareStatement("delete from " + super.getDatabase() + ".dbo.Prendas_Materiales where codigo_prenda = ?");
 			s.setString(1, prenda.getCodigo());
 			
 			insertarItemMateriales(prenda);
@@ -62,7 +62,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		try {
 			PrendaSinTemporada prenda = (PrendaSinTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".Prendas set activo = 0 where codigo = ?");
+			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".dbo.Prendas set activo = 0 where codigo = ?");
 			s.setString(1, prenda.getCodigo());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,7 +73,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		PrendaSinTemporada prenda = null;
 		try {
 			Connection con = Conexion.connect();
-			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".Prendas where codigo = ?");
+			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".dbo.Prendas where codigo = ?");
 			ps.setString(1,codigo);
 			
 			ResultSet result = ps.executeQuery();
@@ -85,7 +85,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 			
 			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
 						
-			ps = con.prepareStatement("select * from "+super.getDatabase()+".Prendas_Materiales where codigo_prenda = ?");
+			ps = con.prepareStatement("select * from "+super.getDatabase()+".dbo.Prendas_Materiales where codigo_prenda = ?");
 			ps.setString(1, prenda.getCodigo());
 			
 			result = ps.executeQuery();
@@ -105,7 +105,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		Collection<PrendaSinTemporada> prendas = new ArrayList<PrendaSinTemporada>();
 		try {
 			Connection con = Conexion.connect();
-			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".Prendas p where activo = 1 and temporada is null and not exists(select * from Conjuntos_Prendas c where c.codigo_conjunto = p.codigo)");
+			PreparedStatement ps = con.prepareStatement("select * from " + super.getDatabase() + ".dbo.Prendas p where activo = 1 and temporada is null and not exists(select * from " + super.getDatabase() + ".dbo.Conjuntos_Prendas c where c.codigo_conjunto = p.codigo)");
 
 			ResultSet result = ps.executeQuery();
 			
@@ -124,7 +124,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 	private void insertarItemMateriales(PrendaSimple prenda) {
 		try {
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("insert into " + super.getDatabase() + ".Prendas_Materiales (codigo_material, codigo_prenda, cantidad) values (?, ?, ?)");
+			PreparedStatement s = con.prepareStatement("insert into " + super.getDatabase() + ".dbo.Prendas_Materiales (codigo_material, codigo_prenda, cantidad) values (?, ?, ?)");
 			
 			for (ItemMaterial itemMat : prenda.getMateriales()) {
 				s.setString(1, itemMat.getMaterial().getCodigo());
