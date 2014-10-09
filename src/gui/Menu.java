@@ -45,7 +45,7 @@ public class Menu extends JFrame implements ActionListener{
 		menubar.add(prendas);
 		
 		altaPrendaTemporada = new JMenuItem();
-		altaPrendaTemporada.setText("Alta Prenda de Temporada");
+		altaPrendaTemporada.setText("Alta Prenda con Temporada");
 		prendas.add(altaPrendaTemporada);
 		altaPrendaTemporada.addActionListener(this);
 		
@@ -161,10 +161,10 @@ public class Menu extends JFrame implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==altaPrendaTemporada){
-			
+			new VentanaAltaPrendaConTemporada();
 		}
 		if (e.getSource()==altaPrendaNoTemporada){
-
+			new VentanaAltaPrendaSinTemporada();
 		}
 		if (e.getSource()==altaConjunto){
 			

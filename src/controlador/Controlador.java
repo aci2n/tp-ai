@@ -5,6 +5,7 @@ import implementacion.ItemMaterial;
 import implementacion.Material;
 import implementacion.Prenda;
 import implementacion.PrendaConTemporada;
+import implementacion.PrendaSinTemporada;
 import implementacion.Proveedor;
 
 import java.util.ArrayList;
@@ -77,6 +78,16 @@ public class Controlador {
 		}
 		else
 			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
+	}
+	
+	public void altaPrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> items){
+		if (!existePrenda(codigo)){
+			Prenda p = new PrendaSinTemporada(codigo,nombre, items);
+			prendas.add(p);
+			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);	
 	}
 	
 	//MODIFICAR
@@ -214,6 +225,8 @@ public class Controlador {
 	public void setMateriales(Collection<Material> materiales) {
 		this.materiales = materiales;
 	}
+
+	
 
 	
 }

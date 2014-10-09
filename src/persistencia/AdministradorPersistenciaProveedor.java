@@ -38,7 +38,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			con.close();
 		}
 		catch(SQLException e){
-			JOptionPane.showMessageDialog(null,"No se pudo conectar a la base de datos.","Error",JOptionPane.ERROR_MESSAGE);			
+			e.printStackTrace();
 		}
 	}
 
@@ -56,7 +56,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			con.close();
 		}
 		catch(SQLException e){
-			JOptionPane.showMessageDialog(null,"No se pudo conectar a la base de datos.","Error",JOptionPane.ERROR_MESSAGE);			
+			e.printStackTrace();			
 		}
 	}
 
@@ -72,7 +72,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			con.close();
 		}
 		catch(SQLException e){
-			JOptionPane.showMessageDialog(null,"No se pudo conectar a la base de datos.","Error",JOptionPane.ERROR_MESSAGE);			
+			e.printStackTrace();			
 		}
 	}
 	
@@ -94,7 +94,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			con.close();
 		}
 		catch(SQLException e){
-			JOptionPane.showMessageDialog(null,"No se pudo conectar a la base de datos.","Error",JOptionPane.ERROR_MESSAGE);			
+			e.printStackTrace();			
 		}
 		return p;
 	}
@@ -117,7 +117,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			con.close();
 		}
 		catch(SQLException e){
-			JOptionPane.showMessageDialog(null,"No se pudo conectar a la base de datos.","Error",JOptionPane.ERROR_MESSAGE);			
+			e.printStackTrace();			
 		}
 		return proveedores;
 	}

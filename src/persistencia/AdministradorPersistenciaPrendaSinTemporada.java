@@ -79,7 +79,6 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 			ResultSet result = ps.executeQuery();
 			
 			while (result.next()){			
-				prenda = new PrendaSinTemporada();
 				prenda.setCodigo(result.getString("codigo"));
 				prenda.setNombre(result.getString("nombre"));
 			}
