@@ -3,14 +3,10 @@ package implementacion;
 import java.util.Collection;
 
 public abstract class PrendaSimple extends Prenda{
-	private Collection<ItemMaterial> materiales;
+	protected Collection<ItemMaterial> materiales;
 	
-	public Collection<ItemMaterial> getMateriales() {
-		return this.materiales;
-	}
+	public abstract Collection<ItemMaterial> getMateriales();
 	
-	public void setMateriales(Collection<ItemMaterial> materiales){
-		this.materiales=materiales;
-	}
+	public abstract void setMateriales(Collection<ItemMaterial> materiales);
 
 }

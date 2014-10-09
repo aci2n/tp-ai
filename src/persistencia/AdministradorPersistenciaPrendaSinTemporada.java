@@ -31,7 +31,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		try {
 			PrendaSinTemporada prenda = (PrendaSinTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("insert into (codigo, nombre) " + super.getDatabase() + ".Prendas_Simples values (?, ?)");
+			PreparedStatement s = con.prepareStatement("insert into (codigo, nombre) " + super.getDatabase() + ".Prendas values (?, ?)");
 			s.setString(1, prenda.getCodigo());
 			s.setString(2, prenda.getNombre());
 			s.execute();
@@ -44,12 +44,12 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		try {
 			PrendaSinTemporada prenda = (PrendaSinTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".Prendas_Simples set nombre = ? where codigo = ?");
+			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".Prendas set nombre = ? where codigo = ?");
 			s.setString(1, prenda.getNombre());
 			s.setString(2, prenda.getCodigo());
 			
 			// Se eliminan los ItemMateriales previamente asociados y luego se hace insert de la nueva lista
-			s = con.prepareStatement("delete from " + super.getDatabase() + ".Prendas_Simples_Materiales where codigo = ?");
+			s = con.prepareStatement("delete from " + super.getDatabase() + ".Prendas_Materiales where codigo = ?");
 			s.setString(1, prenda.getCodigo());
 			
 			insertarItemMateriales(prenda);

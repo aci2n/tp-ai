@@ -1,9 +1,8 @@
 package implementacion;
 
 public abstract class Prenda {
-	private String codigo;
-	private String nombre;
-	private boolean activo;
+	protected String codigo;
+	protected String nombre;
 		
 	public abstract float calcularPrecio();
 
@@ -13,6 +12,7 @@ public abstract class Prenda {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+		actualizarPrenda();
 	}
 
 	public String getNombre() {
@@ -21,22 +21,17 @@ public abstract class Prenda {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public boolean sosLaPrenda(String codigo2) {
-		if (this.codigo.compareTo(codigo2)==0)
-			return true;
-		return false;
-	}
-
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
+		actualizarPrenda();
 	}
 	
 	public abstract void actualizarPrenda();
+	
+	public abstract void eliminar();
+	
+	public boolean sosLaPrenda(String codigo) {
+		if (codigo != null && this.codigo.compareTo(codigo) == 0)
+			return true;
+		return false;
+	}
 	
 }

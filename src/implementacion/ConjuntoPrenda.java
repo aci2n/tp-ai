@@ -2,8 +2,7 @@ package implementacion;
 
 import java.util.Collection;
 
-public class ConjuntoPrenda extends Prenda{
-	private String codigo;
+public class ConjuntoPrenda extends Prenda {
 	private float descuento;
 	private Collection<Prenda> prendas;
 	
@@ -12,7 +11,11 @@ public class ConjuntoPrenda extends Prenda{
 	}
 	
 	public ConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
-		
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.descuento = descuento;
+		this.prendas = prendas;
+		actualizarPrenda();
 	}
 
 	public float calcularPrecio() {
@@ -27,7 +30,7 @@ public class ConjuntoPrenda extends Prenda{
 		return this.prendas;
 	}
 
-	public void setPrendas(Collection<Prenda> prendas2) {
-		this.setPrendas(prendas2);
+	public void setPrendas(Collection<Prenda> prendas) {
+		this.prendas = prendas;
 	}	
 }
