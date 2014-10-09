@@ -4,6 +4,11 @@ public class ItemMaterial {
 	private float cantidad;
 	private Material material;
 	
+	public ItemMaterial(Material material, Float cantidad) {
+		this.cantidad=cantidad;
+		this.material=material;
+	}
+
 	public float getCantidad() {
 		return this.cantidad;
 	}

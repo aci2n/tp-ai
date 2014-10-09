@@ -91,11 +91,8 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 			
 			result = ps.executeQuery();
 			while (result.next()) {
-				ItemMaterial item = new ItemMaterial();
-				item.setCantidad(result.getFloat("cantidad"));
-				
 				Material m = AdministradorPersistenciaMaterial.getInstance().buscarMaterial(result.getString("codigo_material"));
-				item.setMaterial(m);
+				ItemMaterial item = new ItemMaterial(m,(result.getFloat("cantidad")));
 				items.add(item);
 			}
 			prenda.setMateriales(items);

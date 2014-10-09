@@ -1,7 +1,9 @@
 package controlador;
 
+import implementacion.ItemMaterial;
 import implementacion.Material;
 import implementacion.Prenda;
+import implementacion.PrendaConTemporada;
 import implementacion.Proveedor;
 
 import java.util.ArrayList;
@@ -54,6 +56,16 @@ public class Controlador {
 		}
 		else
 			JOptionPane.showMessageDialog(null,"Ya existe un proveedor con el CUIT ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
+	}
+	
+	public void altaPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> items) {
+		if (!existePrenda(codigo)){
+			Prenda p = new PrendaConTemporada(codigo,nombre, temporada, porcentajeVenta, items);
+			prendas.add(p);
+			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
 	//MODIFICAR
@@ -134,6 +146,13 @@ public class Controlador {
 		return false;
 	}
 	
+	private boolean existePrenda(String codigo) {
+		for (Prenda p : prendas)
+			if (p.sosLaPrenda(codigo)==true){
+				return true;
+			}
+		return false;
+	}	
 	
 	//OBTENER
 	
