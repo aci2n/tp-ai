@@ -30,7 +30,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		try {
 			PrendaConTemporada prenda = (PrendaConTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("INSERT INTO (codigo, nombre, temporada, porcentajeVenta) " + super.getDatabase() + ".Prendas_Simples values (?, ?, ?, ?)");
+			PreparedStatement s = con.prepareStatement("INSERT INTO " + super.getDatabase() + ".Prendas (codigo, nombre, temporada, porcentajeVenta) values (?, ?, ?, ?)");
 			s.setString(1, prenda.getCodigo());
 			s.setString(2, prenda.getNombre());
 			s.setString(3, prenda.getTemporada());
@@ -46,13 +46,13 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		try {
 			PrendaConTemporada prenda = (PrendaConTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("UPDATE " + super.getDatabase() + ".Prendas_Simples SET nombre = ?, SET temporada = ? SET porcentaje_venta = ? WHERE codigo = ?");
+			PreparedStatement s = con.prepareStatement("UPDATE " + super.getDatabase() + ".Prendas SET nombre = ?, SET temporada = ? SET porcentaje_venta = ? WHERE codigo = ?");
 			s.setString(1, prenda.getNombre());
 			s.setString(2, prenda.getTemporada());
 			s.setFloat(3, prenda.getPorcentajeVenta());
 			s.setString(4, prenda.getCodigo());
 			
-			s = con.prepareStatement("DELETE FROM " + super.getDatabase() + ".Prendas_Simples_Materiales WHERE codigo = ?");
+			s = con.prepareStatement("DELETE FROM " + super.getDatabase() + ".Prendas_Materiales WHERE codigo_prenda = ?");
 			s.setString(1, prenda.getCodigo());
 			
 			insertarItemMateriales(prenda);
@@ -65,7 +65,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		try {
 			PrendaConTemporada prenda = (PrendaConTemporada) o;
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".Prendas_Simples set activo = 0 where codigo = ?");
+			PreparedStatement s = con.prepareStatement("update " + super.getDatabase() + ".Prendas set activo = 0 where codigo = ?");
 			s.setString(1, prenda.getCodigo());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,7 +75,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 	private void insertarItemMateriales(PrendaSimple prenda) {
 		try {
 			Connection con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("INSERT INTO " + super.getDatabase() + ".Prendas_Simples_Materiales (?, ?, ?)");
+			PreparedStatement s = con.prepareStatement("INSERT INTO " + super.getDatabase() + ".Prendas_Materiales (codigo_material, codigo_prenda, cantidad) values (?, ?, ?)");
 			
 			for (ItemMaterial itemMat : prenda.getMateriales()) {
 				s.setString(1, itemMat.getMaterial().getCodigo());
