@@ -99,11 +99,12 @@ public class Controlador {
 		if (existeMaterial(codigo)==true){
 			Proveedor proveedor = obtenerProveedor(cuit);
 			if (proveedor != null){
-				obtenerMaterial(codigo).setNombre(nombre);
-				obtenerMaterial(codigo).setPuntoPedido(puntoPedido);
-				obtenerMaterial(codigo).setCantidad(cantidad);
-				obtenerMaterial(codigo).setCosto(costo);
-				obtenerMaterial(codigo).setProveedor(proveedor);
+				Material material = obtenerMaterial(codigo);
+				material.setNombre(nombre);
+				material.setPuntoPedido(puntoPedido);
+				material.setCantidad(cantidad);
+				material.setCosto(costo);
+				material.setProveedor(proveedor);
 				JOptionPane.showMessageDialog(null, "Material modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
 			}
 			else
@@ -122,12 +123,26 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
+	public void modificarPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> itemMateriales) {
+		if (existePrenda(codigo)) {
+			PrendaConTemporada prenda = (PrendaConTemporada) obtenerPrenda(codigo);
+			prenda.setNombre(nombre);
+			prenda.setTemporada(temporada);
+			prenda.setPorcentajeVenta(porcentajeVenta);
+			prenda.setMateriales(itemMateriales);
+			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);		
+	}	
+	
 	public void ModificarPrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> itemMateriales) {
 		if (existePrenda(codigo)==true){
-			obtenerPrenda(codigo).setNombre(nombre);
-			obtenerPrenda(codigo).setTemporada(temporada);
-			obtenerPrenda(codigo).setPorcentajeVenta(porcentajeVenta);
-			obtenerPrenda(codigo).setMateriales(itemMateriales);
+			PrendaConTemporada prenda = (PrendaConTemporada) obtenerPrenda(codigo);
+			prenda.setNombre(nombre);
+			prenda.setTemporada(temporada);
+			prenda.setPorcentajeVenta(porcentajeVenta);
+			prenda.setMateriales(itemMateriales);
 			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
@@ -237,18 +252,8 @@ public class Controlador {
 	
 	//SETTERS
 
-	public void setMateriales(Collection<Material> materiales) {
+	public void setMateriales(Collection<Material> meriales) {
 		this.materiales = materiales;
-<<<<<<< HEAD
-	}	
-	
-	public void setProveedores(Collection<Proveedor> proveedores) {
-		this.proveedores = proveedores;
 	}
-
-=======
 	}
-
-	
->>>>>>> branch 'master' of https://github.com/alvarocalace/ninosvimostp.git
 }
