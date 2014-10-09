@@ -134,7 +134,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 				modelo = 
 						new DefaultTableModel(
 								new String[][] {},
-								new String[] { "Nombre", "Cantidad" });
+								new String[] { "Nombre"});
 				tablaMateriales = new JTable(modelo);
 				JScrollPane scrollPaneTabla = new JScrollPane(tablaMateriales);
 				tablaMateriales.setFillsViewportHeight(true); 
@@ -151,17 +151,23 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==agregarPrenda){
-			/*if (Controlador.getControlador().existeMaterial(tCodigo.getText())){
-				ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(tCodigo.getText()),(Float)cantidadMaterial.getValue());
-				itemMateriales.add(i);
-				Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
+			if (Controlador.getControlador().existePrenda(tCodigo.getText())){
+				Prenda p = Controlador.getControlador().obtenerPrenda(tCodigo.getText());
+				prendas.add(p);
+				Object [] fila = {p.getNombre()};
 				modelo.addRow (fila);
-			}*/
-			JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
+			}
+			JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione una prenda e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		if (e.getSource()==confirmar){
-			if (!tCodigo.getText().equals("") && !tNombre.getText().equals("")){
-				//Controlador.getControlador().altaConjuntoPrenda(tCodigo.getText(), tNombre.getText(),itemMateriales);
+			if (!tCodigo.getText().equals("") && !tNombre.getText().equals("") && !tDescuento.getText().equals("")){
+				try{
+					Float.parseFloat(tDescuento.getText());
+				} catch(Exception exep){
+					JOptionPane.showMessageDialog(this.getComponent(0), "Descuento incorrecta.","Error",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				Controlador.getControlador().altaConjuntoPrenda(tCodigo.getText(), tNombre.getText(),Float.parseFloat(tDescuento.getText()),prendas);
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);

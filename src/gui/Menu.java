@@ -167,7 +167,7 @@ public class Menu extends JFrame implements ActionListener{
 			new VentanaAltaPrendaSinTemporada();
 		}
 		if (e.getSource()==altaConjunto){
-			
+			new VentanaAltaConjuntoPrenda();
 		}
 		if (e.getSource()==modificarPrendaTemporada){
 			

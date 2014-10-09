@@ -90,6 +90,7 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);	
 	}
 	
+	
 	//MODIFICAR
 	
 	public void modificarMaterial(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
@@ -168,7 +169,7 @@ public class Controlador {
 		return false;
 	}
 	
-	private boolean existePrenda(String codigo) {
+	public boolean existePrenda(String codigo) {
 		for (Prenda p : prendas)
 			if (p.sosLaPrenda(codigo)==true){
 				return true;
@@ -224,9 +225,5 @@ public class Controlador {
 
 	public void setMateriales(Collection<Material> materiales) {
 		this.materiales = materiales;
-	}
-
-	
-
-	
+	}	
 }
