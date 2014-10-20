@@ -6,9 +6,9 @@ import persistencia.AdministradorPersistenciaPrenda;
 import view.PrendaView;
 
 public abstract class Prenda {
-	private String codigo;
-	private String nombre;
-	private boolean activo;
+	protected String codigo;
+	protected String nombre;
+	protected boolean activo;
 		
 	public abstract float calcularPrecio();
 

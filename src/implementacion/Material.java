@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import controlador.Controlador;
 import persistencia.AdministradorPersistenciaMaterial;
+import persistencia.AdministradorPersistenciaProveedor;
 import view.MaterialView;
 
 public class Material {
@@ -22,7 +23,7 @@ public class Material {
 		this.proveedor=proveedor;
 		this.cantidad=cantidad;
 		this.costo=costo;
-		activo = true;
+		this.activo = true;
 		AdministradorPersistenciaMaterial.getInstance().insert(this);
 	}
 	
@@ -115,13 +116,13 @@ public class Material {
 	}
 
 	public void construirDesdeDB(String codigo, String cuit, String nombre, float cantidad, float puntoPedido, float costo, boolean activo) {
-		this.codigo=codigo;
-		this.proveedor=Controlador.getControlador().obtenerProveedor(cuit);
-		this.nombre=nombre;
-		this.cantidad=cantidad;
-		this.puntoPedido=puntoPedido;
-		this.costo=costo;
-		this.activo=activo;		
+		this.codigo = codigo;
+		this.proveedor = AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit);
+		this.nombre = nombre;
+		this.cantidad = cantidad;
+		this.puntoPedido = puntoPedido;
+		this.costo = costo;
+		this.activo = activo;		
 	}
 	
 	

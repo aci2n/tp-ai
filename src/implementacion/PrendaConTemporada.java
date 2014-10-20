@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaPrenda;
-import view.ItemMaterialView;
-import view.PrendaConTemporadaView;
 import view.PrendaView;
 
 public class PrendaConTemporada extends PrendaSimple{
 	private String temporada;
 	private float porcentajeVenta;
 	
-	public PrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> items) {
-		setCodigoDB(codigo); //fijarse si esto no jode con la persistencia despues
-		setNombreDB(nombre);
+	public PrendaConTemporada(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> materiales) {
+		this.codigo = codigo;
+		this.nombre = nombre;
 		this.temporada=temporada;
 		this.porcentajeVenta=porcentajeVenta;
-		setMaterialesDB(items);
-		setActivoDB(true);
+		this.materiales = materiales;
+		this.activo = activo;
 		AdministradorPersistenciaPrenda.getInstancia().insert(this);
 	}
 

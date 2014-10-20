@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaPrenda;
-import view.ConjuntoPrendaView;
-import view.ItemMaterialView;
-import view.PrendaConTemporadaView;
 import view.PrendaView;
 
 public class ConjuntoPrenda extends Prenda{
@@ -17,12 +14,12 @@ public class ConjuntoPrenda extends Prenda{
 		
 	}
 	
-	public ConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
-		this.setCodigoDB(codigo);
-		this.setNombreDB(nombre);
-		this.descuento=descuento;
-		this.prendas=prendas;
-		this.setActivoDB(true);
+	public ConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas, boolean activo) {
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.descuento = descuento;
+		this.prendas = prendas;
+		this.activo = activo;
 		AdministradorPersistenciaPrenda.getInstancia().insert(this);
 	}
 
@@ -56,8 +53,8 @@ public class ConjuntoPrenda extends Prenda{
 	}
 
 	public void construirDesdeDB(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
-		setCodigoDB(codigo);
-		setNombreDB(nombre);
+		this.codigo = codigo;
+		this.nombre = nombre;
 		this.descuento=descuento;
 		this.prendas=prendas;
 	}

@@ -7,8 +7,8 @@ public class ItemMaterial {
 	private Material material;
 	
 	public ItemMaterial(Material material, Float cantidad) {
-		this.cantidad=cantidad;
-		this.material=material;
+		this.cantidad = cantidad;
+		this.material = material;
 	}
 
 	public float getCantidad() {

@@ -5,16 +5,16 @@ import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaPrenda;
 import view.ItemMaterialView;
-import view.PrendaSimpleView;
+import view.PrendaSinTemporadaView;
 import view.PrendaView;
 
 public class PrendaSinTemporada extends PrendaSimple{
 
-	public PrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> items) {
-		setActivoDB(true);
-		setCodigoDB(codigo);
-		setNombreDB(nombre);
-		setMaterialesDB(items);
+	public PrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> materiales, boolean activo) {
+		this.activo = activo;
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.materiales = materiales;
 		AdministradorPersistenciaPrenda.getInstancia().insert(this);
 	}
 
@@ -30,11 +30,11 @@ public class PrendaSinTemporada extends PrendaSimple{
 		return precio;
 	}
 
-	public void construirDesdeDB(String codigo, String nombre, Collection<ItemMaterial> items) {
-		setActivoDB(true);
-		setCodigoDB(codigo);
-		setNombreDB(nombre);
-		setMaterialesDB(items);
+	public void construirDesdeDB(String codigo, String nombre, Collection<ItemMaterial> materiales) {
+		this.activo = true;
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.materiales = materiales;
 	}
 
 	public PrendaView generarPrendaView() {
@@ -42,7 +42,7 @@ public class PrendaSinTemporada extends PrendaSimple{
 		for (ItemMaterial item : getMateriales()) {
 			itemsView.add(item.generarItemMaterialView());
 		}
-		return new PrendaSimpleView(getCodigo(), getNombre(), isActivo(), calcularPrecio(), itemsView);
+		return new PrendaSinTemporadaView(this.codigo, this.nombre, this.materiales, this.calcularPrecio(), this.activo);
 	}
 	
 }
