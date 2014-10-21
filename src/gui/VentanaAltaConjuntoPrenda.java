@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import view.ConjuntoPrendaView;
 import view.PrendaView;
 import controlador.Controlador;
 
@@ -44,7 +45,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 	private JComboBox prendasComboBox;
 	private JButton agregarPrenda;
 	private JButton confirmar;
-	Collection<Prenda> prendas = new ArrayList<Prenda>();
+	Collection<PrendaView> prendas = new ArrayList<PrendaView>();
 	DefaultTableModel modelo;
 	
 	/**
@@ -151,7 +152,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 		if (e.getSource()==agregarPrenda){
 			if (prendasComboBox.getSelectedItem()!= null && Controlador.getControlador().existePrenda(prendasComboBox.getSelectedItem().toString())){
 				if (!contieneA(prendas,prendasComboBox.getSelectedItem().toString())){
-					Prenda p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString());
+					PrendaView p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString()).generarPrendaView();
 					prendas.add(p);
 					Object [] fila = {p.getNombre()};
 					modelo.addRow (fila);
@@ -170,18 +171,19 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 					JOptionPane.showMessageDialog(this.getComponent(0), "Descuento incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Controlador.getControlador().altaConjuntoPrenda(tCodigo.getText(), tNombre.getText(),Float.parseFloat(tDescuento.getText()), prendas);
+				ConjuntoPrendaView conjuntoVw = new ConjuntoPrendaView(tCodigo.getText(),tNombre.getText(), Float.parseFloat(tDescuento.getText()),prendas);
+				Controlador.getControlador().altaConjuntoPrenda(conjuntoVw);
 				modelo.setRowCount(0);
-				this.prendas = new ArrayList<Prenda>();
+				this.prendas = new ArrayList<PrendaView>();
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos y/o agregue al menos 1 prenda al conjunto.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	private boolean contieneA(Collection<Prenda> prendas, String codigo){
-		for (Prenda p : prendas)
-			if (p.sosLaPrenda(codigo))
+	private boolean contieneA(Collection<PrendaView> prendas, String codigo){
+		for (PrendaView p : prendas)
+			if (p.getCodigo()==codigo)
 				return true;
 		return false;
 	}

@@ -14,12 +14,12 @@ public class ConjuntoPrenda extends Prenda{
 		
 	}
 	
-	public ConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas, boolean activo) {
+	public ConjuntoPrenda(String codigo, String nombre, float descuento, Collection<Prenda> prendas) {
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.descuento = descuento;
 		this.prendas = prendas;
-		this.activo = activo;
+		this.activo = true;
 		AdministradorPersistenciaPrenda.getInstancia().insert(this);
 	}
 

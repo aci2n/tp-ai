@@ -17,7 +17,7 @@ import view.ConjuntoPrendaView;
 import view.ItemMaterialView;
 import view.MaterialView;
 import view.PrendaConTemporadaView;
-import view.PrendaSimpleView;
+import view.PrendaSinTemporadaView;
 import view.PrendaView;
 import view.ProveedorView;
 
@@ -46,7 +46,7 @@ public class Controlador {
 	
 	public void altaMaterial(MaterialView materialView){
 		if (!existeMaterial(materialView.getCodigo())){
-			Proveedor proveedor = obtenerProveedor(materialView.getProveedorView().getCuit());
+			Proveedor proveedor = obtenerProveedor(materialView.getCuit());
 			if (proveedor != null){
 				Material material = new Material(materialView.getCodigo(), materialView.getNombre(), materialView.getPuntoPedido(), proveedor, materialView.getCantidad(), materialView.getCosto());	
 				materiales.add(material);
@@ -173,7 +173,7 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null,"No existe la prenda.","Error",JOptionPane.ERROR_MESSAGE);		
 	}	
 	
-	public void ModificarPrendaSinTemporada(PrendaSimpleView prendaSinTemporadaView) {
+	public void ModificarPrendaSinTemporada(PrendaSinTemporadaView prendaSinTemporadaView) {
 		if (existePrenda(prendaSinTemporadaView.getCodigo())){
 			PrendaSinTemporada prenda = (PrendaSinTemporada) obtenerPrenda(prendaSinTemporadaView.getCodigo());
 			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();

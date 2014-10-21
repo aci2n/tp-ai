@@ -5,16 +5,16 @@ public class MaterialView {
 	private String codigo;
 	private String nombre;
 	private float puntoPedido;
-	private ProveedorView proveedorView;
+	private String cuit;
 	private float cantidad;
 	private float costo;
 	private boolean activo;
 
-	public MaterialView(String codigo, String nombre, float puntoPedido, ProveedorView proveedorView, float cantidad, float costo){
+	public MaterialView(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.puntoPedido = puntoPedido;
-		this.proveedorView = proveedorView;
+		this.cuit=cuit;
 		this.cantidad = cantidad;
 		this.costo = costo;
 		this.activo = true;
@@ -44,12 +44,13 @@ public class MaterialView {
 		this.puntoPedido = puntoPedido;
 	}
 
-	public ProveedorView getProveedorView() {
-		return this.proveedorView;
+
+	public String getCuit() {
+		return cuit;
 	}
 
-	public void setProveedorView(ProveedorView proveedorView) {
-		this.proveedorView = proveedorView;
+	public void setCuit(String cuit) {
+		this.cuit = cuit;
 	}
 
 	public float getCantidad() {

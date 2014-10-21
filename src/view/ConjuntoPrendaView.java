@@ -1,12 +1,16 @@
 package view;
 
+import implementacion.Prenda;
+
 import java.util.Collection;
 
 public class ConjuntoPrendaView extends PrendaView {
 	private float descuento;
 	private Collection<PrendaView> prendas;
 	
-	public ConjuntoPrendaView(float descuento, Collection<PrendaView> prendas) {
+	public ConjuntoPrendaView(String codigo, String nombre, float descuento, Collection<PrendaView> prendas) {
+		this.codigo = codigo;
+		this.nombre = nombre;
 		this.descuento = descuento;
 		this.prendas = prendas;
 	}

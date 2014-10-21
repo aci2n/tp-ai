@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import view.MaterialView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -147,11 +148,12 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 					JOptionPane.showMessageDialog(this.getComponent(0), "Punto de pedido incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Controlador.getControlador().altaMaterial(tCodigo.getText(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));	
+			}
+				MaterialView materialVw = new MaterialView(tCodigo.getText(), tNombre.getText(), Float.parseFloat(tPuntoPedido.getText()), tCuit.getText(), Float.parseFloat(tCantidad.getText()), Float.parseFloat(tCosto.getText()));	
+				Controlador.getControlador().altaMaterial(materialVw);	
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Por favor complete correctamente los campos.","Error",JOptionPane.ERROR_MESSAGE);
-
 		}
-	}
 }
+
