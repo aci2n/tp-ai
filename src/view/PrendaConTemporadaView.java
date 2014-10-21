@@ -10,19 +10,14 @@ public class PrendaConTemporadaView extends PrendaView {
 	private float porcentajeVenta;
 	private Collection<ItemMaterialView> materiales;
 	
-	
-	public PrendaConTemporadaView(String codigo, String nombre, String temporada, float porcentajeVenta, Collection<ItemMaterial> materiales, float precio, boolean activo) {
+	public PrendaConTemporadaView(String codigo, String nombre, boolean activo,  Collection<ItemMaterialView> materiales, String temporada,float porcentajeVenta) {
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.temporada = temporada;
 		this.porcentajeVenta = porcentajeVenta;
-		this.precio = precio;
 		this.activo = activo;
-		this.materiales = new ArrayList<ItemMaterialView>();
-		for (ItemMaterial item : materiales) {
-			this.materiales.add(item.generarItemMaterialView());
+		this.materiales = materiales;
 		}
-	}
 
 	public String getTemporada() {
 		return temporada;

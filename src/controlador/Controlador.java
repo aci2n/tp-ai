@@ -72,8 +72,8 @@ public class Controlador {
 	public void altaPrendaConTemporada(PrendaConTemporadaView prendaConTemporadaView) {
 		if (!existePrenda(prendaConTemporadaView.getCodigo())){
 			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
-			for (ItemMaterialView itemView : prendaConTemporadaView.getMaterialesView()) {
-				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+			for (ItemMaterialView itemView : prendaConTemporadaView.getMateriales()) {
+				Material material = obtenerMaterial(itemView.getMaterial().getCodigo());
 				if (material != null) {
 					items.add(new ItemMaterial(material, itemView.getCantidad()));
 				}
@@ -107,7 +107,7 @@ public class Controlador {
 		if (!existePrenda(prendaSinTemporadaView.getCodigo())){
 			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
 			for (ItemMaterialView itemView : prendaSinTemporadaView.getMaterialesView()) {
-				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+				Material material = obtenerMaterial(itemView.getMaterial().getCodigo());
 				if (material != null) {
 					items.add(new ItemMaterial(material, itemView.getCantidad()));
 				}
@@ -157,8 +157,8 @@ public class Controlador {
 		if (existePrenda(prendaConTemporadaView.getCodigo())){
 			PrendaConTemporada prenda = (PrendaConTemporada) obtenerPrenda(prendaConTemporadaView.getCodigo());
 			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
-			for (ItemMaterialView itemView : prendaConTemporadaView.getMaterialesView()) {
-				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+			for (ItemMaterialView itemView : prendaConTemporadaView.getMateriales()) {
+				Material material = obtenerMaterial(itemView.getMaterial().getCodigo());
 				if (material != null) {
 					items.add(new ItemMaterial(material, itemView.getCantidad()));
 				}
@@ -177,8 +177,8 @@ public class Controlador {
 		if (existePrenda(prendaSinTemporadaView.getCodigo())){
 			PrendaSinTemporada prenda = (PrendaSinTemporada) obtenerPrenda(prendaSinTemporadaView.getCodigo());
 			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
-			for (ItemMaterialView itemView : prendaSinTemporadaView.getMaterialesView()) {
-				Material material = obtenerMaterial(itemView.getMaterialView().getCodigo());
+			for (ItemMaterialView itemView : prendaSinTemporadaView.getMateriales()) {
+				Material material = obtenerMaterial(itemView.getMaterial().getCodigo());
 				if (material != null) {
 					items.add(new ItemMaterial(material, itemView.getCantidad()));
 				}

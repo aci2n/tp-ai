@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaPrenda;
+import view.ItemMaterialView;
+import view.PrendaConTemporadaView;
 import view.PrendaView;
 
 public class PrendaConTemporada extends PrendaSimple{
@@ -16,7 +18,7 @@ public class PrendaConTemporada extends PrendaSimple{
 		this.temporada=temporada;
 		this.porcentajeVenta=porcentajeVenta;
 		this.materiales = materiales;
-		this.activo = activo;
+		this.activo = true;
 		AdministradorPersistenciaPrenda.getInstancia().insert(this);
 	}
 
@@ -70,7 +72,7 @@ public class PrendaConTemporada extends PrendaSimple{
 		for (ItemMaterial item : getMateriales()) {
 			itemsView.add(item.generarItemMaterialView());
 		}
-		return new PrendaConTemporadaView(getCodigo(), getNombre(), isActivo(), calcularPrecio(), itemsView, this.temporada, this.porcentajeVenta);
+		return new PrendaConTemporadaView(getCodigo(), getNombre(), isActivo(),  itemsView, this.temporada, this.porcentajeVenta);
 	}
 
 }
