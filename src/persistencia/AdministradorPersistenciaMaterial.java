@@ -92,16 +92,20 @@ public class AdministradorPersistenciaMaterial extends
 		Material m = null;
 		try {
 			con = Conexion.connect();
-			PreparedStatement s = con.prepareStatement("select * from "
-					+ super.getDatabase() + ".dbo.Materiales where codigo = ?");
+			PreparedStatement s = con.prepareStatement("select * from "+super.getDatabase()+ ".dbo.Materiales where codigo = ?");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();
 
 			while (rs.next()) {				
 				m = new Material();
-				m.construirDesdeDB(rs.getString("codigo"),rs.getString("cuit"),
-						rs.getString("nombre"), rs.getFloat("cantidad"), rs.getFloat("punto_pedido"), rs.getFloat("costo"),
-						rs.getBoolean("activo"));			
+	
+				m.setCodigo(rs.getString("codigo"));
+				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(rs.getString("cuit")));
+				m.setNombre(rs.getString("nombre")); 
+				m.setCantidad(rs.getFloat("cantidad")); 
+				m.setPuntoPedido(rs.getFloat("punto_pedido")); 
+				m.setCosto(rs.getFloat("costo"));
+				m.setActivo(rs.getBoolean("activo"));			
 			}
 			con.close();
 		} catch (SQLException e) {
@@ -121,7 +125,15 @@ public class AdministradorPersistenciaMaterial extends
 
 			while (rs.next()) {
 				Material m = new Material();
-				m.construirDesdeDB(rs.getString("codigo"),rs.getString("cuit"), rs.getString("nombre"), rs.getFloat("cantidad"), rs.getFloat("punto_pedido"), rs.getFloat("costo"), rs.getBoolean("activo"));	
+				
+				m.setCodigo(rs.getString("codigo"));
+				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(rs.getString("cuit")));
+				m.setNombre(rs.getString("nombre")); 
+				m.setCantidad(rs.getFloat("cantidad")); 
+				m.setPuntoPedido(rs.getFloat("punto_pedido")); 
+				m.setCosto(rs.getFloat("costo"));
+				m.setActivo(rs.getBoolean("activo"));					
+				
 				materiales.add(m);
 			}
 			con.close();

@@ -29,7 +29,6 @@ public class Proveedor {
 	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		AdministradorPersistenciaProveedor.getInstancia().update(this);
 	}
 	
 	public String getNombre() {
@@ -42,22 +41,14 @@ public class Proveedor {
 
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
-		AdministradorPersistenciaProveedor.getInstancia().update(this);
-	}
-
-	public void eliminar() {
-		setActivo(false);
-		AdministradorPersistenciaProveedor.getInstancia().delete(this);
 	}
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
-		AdministradorPersistenciaProveedor.getInstancia().update(this);
 	}	
 	
 	public static Proveedor buscarProveedor(String cuit){
-		Proveedor p = AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit);
-		return p;
+		return AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit);
 	}
 	
 	public static Collection<Proveedor> obtenerProveedores(){
@@ -67,15 +58,17 @@ public class Proveedor {
 	public boolean isActivo() {
 		return activo;
 	}
-	
-	public void construirDesdeDB(String cuit, String nombre, boolean activo){
-		this.cuit=cuit;
-		this.nombre=nombre;
-		this.activo=activo;
-	}
-	
+		
 	public ProveedorView generarProveedorView() {
 		return new ProveedorView(this.nombre, this.cuit, this.activo);
 	}
 
+	public void eliminar(){
+		this.activo=false;
+		AdministradorPersistenciaProveedor.getInstancia().delete(this);
+	}
+	
+	public void actualizar(){
+		AdministradorPersistenciaProveedor.getInstancia().update(this);
+	}
 }

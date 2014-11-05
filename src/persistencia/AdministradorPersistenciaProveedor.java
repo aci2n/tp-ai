@@ -25,8 +25,8 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 	}
 	public void insert(Object o) {
 		Proveedor p = (Proveedor)o;
-		Connection con = Conexion.connect();
 		try{
+			Connection con = Conexion.connect();
 			PreparedStatement ps = con.prepareStatement( "INSERT INTO "+super.getDatabase()+".dbo.Proveedores (cuit, nombre, activo) VALUES (?,?,?)");
 			ps.setString(1, p.getCuit());
 			ps.setString(2, p.getNombre());
@@ -42,8 +42,8 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 
 	public void update(Object o) {
 		Proveedor p = (Proveedor)o;
-		Connection con = Conexion.connect();
 		try{
+			Connection con = Conexion.connect();
 			PreparedStatement ps = con.prepareStatement( "UPDATE "+super.getDatabase()+".dbo.Proveedores SET nombre = ?, activo = ? WHERE cuit = ?");
 			int myInt = (p.isActivo()) ? 1 : 0;
 			ps.setString(1, p.getNombre());
@@ -60,8 +60,8 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 
 	public void delete(Object o) {
 		Proveedor p = (Proveedor)o;
-		Connection con = Conexion.connect();
 		try{
+			Connection con = Conexion.connect();
 			PreparedStatement ps = con.prepareStatement( "UPDATE "+super.getDatabase()+".dbo.Proveedores SET activo = ? WHERE cuit = ?");
 			ps.setInt(1, 0);
 			ps.setString(2, p.getCuit());
@@ -76,8 +76,9 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 	
 	public Proveedor buscarProveedor(String cuit){
 		Proveedor p = null;
-		Connection con = Conexion.connect();
 		try{
+			Connection con = Conexion.connect();
+
 			PreparedStatement ps = con.prepareStatement( "SELECT * FROM "+super.getDatabase()+".dbo.Proveedores WHERE cuit = ?");
 			ps.setString(1, cuit);
 			
@@ -85,7 +86,9 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 			
 			while (res.next()){
 				p = new Proveedor();
-				p.construirDesdeDB(res.getString("cuit"), res.getString("nombre"), res.getBoolean("activo"));
+				p.setCuit(res.getString("cuit"));
+				p.setNombre(res.getString("nombre"));
+				p.setActivo(res.getBoolean("activo"));
 			}
 			con.close();
 		}
@@ -97,15 +100,18 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 	
 	public Collection<Proveedor> obtenerProveedores(){
 		Collection<Proveedor> proveedores = new ArrayList<Proveedor>();
-		Connection con = Conexion.connect();
 		try{
+			Connection con = Conexion.connect();
+
 			PreparedStatement ps = con.prepareStatement( "SELECT * FROM "+super.getDatabase()+".dbo.Proveedores");
 			
 			ResultSet res = ps.executeQuery();
 			
 			while (res.next()){
 				Proveedor p = new Proveedor();
-				p.construirDesdeDB(res.getString("cuit"), res.getString("nombre"), res.getBoolean("activo"));
+				p.setCuit(res.getString("cuit"));
+				p.setNombre(res.getString("nombre"));
+				p.setActivo(res.getBoolean("activo"));				
 				proveedores.add(p);
 			}
 			con.close();

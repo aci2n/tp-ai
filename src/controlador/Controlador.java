@@ -11,8 +11,6 @@ import implementacion.Proveedor;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JOptionPane;
-
 import view.ConjuntoPrendaView;
 import view.ItemMaterialView;
 import view.MaterialView;
@@ -28,9 +26,9 @@ public class Controlador {
 	public static Controlador con;
 	
 	public Controlador() {
-		prendas = new ArrayList<Prenda>();
-		materiales = new ArrayList<Material>();
-		proveedores = new ArrayList<Proveedor>();
+		proveedores = Proveedor.obtenerProveedores();
+		prendas = Prenda.obtenerPrendas();
+		materiales = Material.obtenerMateriales();
 	}
 		
 	//SINGLETON
@@ -50,23 +48,15 @@ public class Controlador {
 			if (proveedor != null){
 				Material material = new Material(materialView.getCodigo(), materialView.getNombre(), materialView.getPuntoPedido(), proveedor, materialView.getCantidad(), materialView.getCosto());	
 				materiales.add(material);
-				JOptionPane.showMessageDialog(null, "Material agregado correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 			}
-			else
-				JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT ingresado.","Error",JOptionPane.ERROR_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"Ya existe un material con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);			
 	}
 	
 	public void altaProveedor(ProveedorView proveedorView){
 		if (!existeProveedor(proveedorView.getCuit())){
 			Proveedor proveedor = new Proveedor(proveedorView.getNombre(), proveedorView.getCuit());
 			proveedores.add(proveedor);
-			JOptionPane.showMessageDialog(null, "Proveedor agregado correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"Ya existe un proveedor con el CUIT ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
 	public void altaPrendaConTemporada(PrendaConTemporadaView prendaConTemporadaView) {
@@ -80,10 +70,7 @@ public class Controlador {
 			}
 			Prenda p = new PrendaConTemporada(prendaConTemporadaView.getCodigo(), prendaConTemporadaView.getNombre(), prendaConTemporadaView.getTemporada(), prendaConTemporadaView.getPorcentajeVenta(), items);
 			prendas.add(p);
-			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
 	public void altaConjuntoPrenda(ConjuntoPrendaView conjuntoPrendaView) {
@@ -97,27 +84,21 @@ public class Controlador {
 			}
 			Prenda p = new ConjuntoPrenda(conjuntoPrendaView.getCodigo(), conjuntoPrendaView.getNombre(), conjuntoPrendaView.getDescuento(), prendas);
 			this.prendas.add(p);
-			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);					
 	}
 	
-	public void altaPrendaSinTemporada(PrendaSimpleView prendaSinTemporadaView){
+	public void altaPrendaSinTemporada(PrendaSinTemporadaView prendaSinTemporadaView){
 		if (!existePrenda(prendaSinTemporadaView.getCodigo())){
 			Collection<ItemMaterial> items = new ArrayList<ItemMaterial>();
-			for (ItemMaterialView itemView : prendaSinTemporadaView.getMaterialesView()) {
+			for (ItemMaterialView itemView : prendaSinTemporadaView.getMateriales()) {
 				Material material = obtenerMaterial(itemView.getMaterial().getCodigo());
 				if (material != null) {
 					items.add(new ItemMaterial(material, itemView.getCantidad()));
 				}
 			}
-			Prenda p = new PrendaSinTemporada(prendaSinTemporadaView.getCodigo(), prendaSinTemporadaView.getNombre(), items);
+			Prenda p = new PrendaSinTemporada(prendaSinTemporadaView.getCodigo(), prendaSinTemporadaView.getNombre(), items, prendaSinTemporadaView.isActivo());
 			prendas.add(p);
-			JOptionPane.showMessageDialog(null, "Prenda agregada correctamente.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"Ya existe una prenda con el código ingresado.","Error",JOptionPane.ERROR_MESSAGE);	
 	}
 	
 	
@@ -125,7 +106,7 @@ public class Controlador {
 	
 	public void modificarMaterial(MaterialView materialView) {
 		if (existeMaterial(materialView.getCodigo())){
-			Proveedor proveedor = obtenerProveedor(materialView.getProveedorView().getCuit());
+			Proveedor proveedor = obtenerProveedor(materialView.getCuit());
 			if (proveedor != null){
 				Material material = obtenerMaterial(materialView.getCodigo());
 				material.setNombre(materialView.getNombre());
@@ -133,13 +114,8 @@ public class Controlador {
 				material.setCantidad(materialView.getCantidad());
 				material.setCosto(materialView.getCosto());
 				material.setProveedor(proveedor);
-				JOptionPane.showMessageDialog(null, "Material modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
 			}
-			else
-				JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT ingresado.","Error",JOptionPane.ERROR_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"No existe material con el código seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
 	public void modificarProveedor(ProveedorView proveedorView) {
@@ -147,10 +123,7 @@ public class Controlador {
 			Proveedor proveedor = obtenerProveedor(proveedorView.getCuit());
 			proveedor.setNombre(proveedorView.getNombre());
 			proveedor.setActivo(proveedorView.isActivo());
-			JOptionPane.showMessageDialog(null, "Proveedor modificado.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"No existe proveedor con el CUIT seleccionado.","Error",JOptionPane.ERROR_MESSAGE);	//no se tendría que llegar nunca aca pero bue
 	}
 	
 	public void ModificarPrendaConTemporada(PrendaConTemporadaView prendaConTemporadaView) {
@@ -167,10 +140,7 @@ public class Controlador {
 			prenda.setNombre(prendaConTemporadaView.getNombre());
 			prenda.setPorcentajeVenta(prendaConTemporadaView.getPorcentajeVenta());
 			prenda.setTemporada(prendaConTemporadaView.getTemporada());
-			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"No existe la prenda.","Error",JOptionPane.ERROR_MESSAGE);		
 	}	
 	
 	public void ModificarPrendaSinTemporada(PrendaSinTemporadaView prendaSinTemporadaView) {
@@ -185,11 +155,7 @@ public class Controlador {
 			}
 			prenda.setMateriales(items);
 			prenda.setNombre(prendaSinTemporadaView.getNombre());
-			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
-		}
-		else
-			JOptionPane.showMessageDialog(null,"No existe la prenda.","Error",JOptionPane.ERROR_MESSAGE);		
-		
+		}		
 	}
 	
 	public void ModificarConjuntoPrenda(ConjuntoPrendaView conjuntoPrendaView) {
@@ -205,10 +171,7 @@ public class Controlador {
 			prenda.setPrendas(prendas);
 			prenda.setNombre(conjuntoPrendaView.getNombre());
 			prenda.setDescuento(conjuntoPrendaView.getDescuento());
-			JOptionPane.showMessageDialog(null, "Prenda modificada.","OK",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else
-			JOptionPane.showMessageDialog(null,"No existe el conjunto.","Error",JOptionPane.ERROR_MESSAGE);			
 	}
 	
 	//BAJAS
@@ -217,13 +180,11 @@ public class Controlador {
 		for (Material m : materiales)
 			if (m.sosElMaterial(materialView.getCodigo())){
 				m.eliminar();
-				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 		for(Material m : Material.obtenerMateriales())
 			if (m.sosElMaterial(materialView.getCodigo())){
 				m.eliminar();
-				JOptionPane.showMessageDialog(null,"Material eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 	}
@@ -232,13 +193,11 @@ public class Controlador {
 		for (Proveedor p : proveedores)
 			if (p.sosElProveedor(proveedorView.getCuit())){
 				p.eliminar();
-				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}		
 		for(Proveedor p : Proveedor.obtenerProveedores())
 			if (p.sosElProveedor(proveedorView.getCuit())){
 				p.eliminar();
-				JOptionPane.showMessageDialog(null,"Proveedor eliminado.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 	}
@@ -247,13 +206,11 @@ public class Controlador {
 		for (Prenda pr : prendas)
 			if (pr.sosLaPrenda(prendaView.getCodigo())){
 				pr.eliminar();
-				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}	
 		for(Prenda pr : Prenda.obtenerPrendas())
 			if (pr.sosLaPrenda(prendaView.getCodigo())){
 				pr.eliminar();
-				JOptionPane.showMessageDialog(null,"Prenda eliminada.","OK",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 	}
@@ -348,7 +305,7 @@ public class Controlador {
 	
 	//GETTERS
 
-	private Collection<Material> getMateriales() {
+	public Collection<Material> getMateriales() {
 		return Material.obtenerMateriales();
 	}
 	

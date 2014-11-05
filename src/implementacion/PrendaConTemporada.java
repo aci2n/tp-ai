@@ -3,7 +3,8 @@ package implementacion;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import persistencia.AdministradorPersistenciaPrenda;
+import persistencia.AdministradorPersistenciaConjuntoPrenda;
+import persistencia.AdministradorPersistenciaPrendaConTemporada;
 import view.ItemMaterialView;
 import view.PrendaConTemporadaView;
 import view.PrendaView;
@@ -19,7 +20,7 @@ public class PrendaConTemporada extends PrendaSimple{
 		this.porcentajeVenta=porcentajeVenta;
 		this.materiales = materiales;
 		this.activo = true;
-		AdministradorPersistenciaPrenda.getInstancia().insert(this);
+		AdministradorPersistenciaPrendaConTemporada.getInstancia().insert(this);
 	}
 
 
@@ -37,7 +38,15 @@ public class PrendaConTemporada extends PrendaSimple{
 		return (precio + porcentaje);
 	}
 
-
+	public void actualizar(){
+		AdministradorPersistenciaConjuntoPrenda.getInstancia().update(this);
+	}
+	
+	public void eliminar(){
+		this.activo=false;
+		AdministradorPersistenciaConjuntoPrenda.getInstancia().delete(this);
+	}
+	
 	public float getPorcentajeVenta() {
 		return this.porcentajeVenta;
 	}
@@ -50,21 +59,10 @@ public class PrendaConTemporada extends PrendaSimple{
 
 	public void setTemporada(String temporada) {
 		this.temporada = temporada;
-		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
-
 
 	public void setPorcentajeVenta(float porcentajeVenta) {
 		this.porcentajeVenta = porcentajeVenta;
-		AdministradorPersistenciaPrenda.getInstancia().update(this);
-	}
-
-	public void construirDesdeDB(String codigo, String nombre, String temporada,float porcentajeVenta, Collection<ItemMaterial> items) {
-		setNombreDB(nombre);
-		setCodigoDB(codigo);
-		this.temporada=temporada;
-		this.porcentajeVenta=porcentajeVenta;
-		setMaterialesDB(items);
 	}
 
 	public PrendaView generarPrendaView() {

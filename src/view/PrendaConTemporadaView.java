@@ -1,8 +1,5 @@
 package view;
 
-import implementacion.ItemMaterial;
-
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class PrendaConTemporadaView extends PrendaView {

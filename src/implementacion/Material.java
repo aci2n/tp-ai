@@ -2,9 +2,7 @@ package implementacion;
 
 import java.util.Collection;
 
-import controlador.Controlador;
 import persistencia.AdministradorPersistenciaMaterial;
-import persistencia.AdministradorPersistenciaProveedor;
 import view.MaterialView;
 
 public class Material {
@@ -38,32 +36,26 @@ public class Material {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setPuntoPedido(float puntoPedido) {
 		this.puntoPedido = puntoPedido;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setCantidad(float cantidad) {
 		this.cantidad = cantidad;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public void setCosto(float costo) {
 		this.costo = costo;
-		AdministradorPersistenciaMaterial.getInstance().update(this);
 	}
 
 	public String getCodigo() {
@@ -91,12 +83,16 @@ public class Material {
 	}
 	
 	public void eliminar(){
-		this.activo=(false);
+		this.activo=false;
 		AdministradorPersistenciaMaterial.getInstance().delete(this);
 	}
 	
+	public void actualizar(){
+		AdministradorPersistenciaMaterial.getInstance().update(this);
+	}
+	
 	public MaterialView generarMaterialView(){
-		return new MaterialView(this.codigo, this.nombre, this.puntoPedido, this.proveedor.generarProveedorView(), this.cantidad, this.costo);
+		return new MaterialView(this.codigo, this.nombre, this.puntoPedido, this.proveedor.getCuit(), this.cantidad, this.costo);
 	}
 	
 	public static Collection<Material> obtenerMateriales(){
@@ -113,17 +109,5 @@ public class Material {
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
-	}
-
-	public void construirDesdeDB(String codigo, String cuit, String nombre, float cantidad, float puntoPedido, float costo, boolean activo) {
-		this.codigo = codigo;
-		this.proveedor = AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(cuit);
-		this.nombre = nombre;
-		this.cantidad = cantidad;
-		this.puntoPedido = puntoPedido;
-		this.costo = costo;
-		this.activo = activo;		
-	}
-	
-	
+	}	
 }

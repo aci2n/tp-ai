@@ -1,7 +1,5 @@
 package view;
 
-import implementacion.Prenda;
-
 import java.util.Collection;
 
 public class ConjuntoPrendaView extends PrendaView {

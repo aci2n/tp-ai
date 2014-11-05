@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import view.ProveedorView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -29,7 +30,7 @@ public class VentanaListaProveedor extends JFrame{
 		
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
-		Collection<Proveedor> proveedores = Controlador.getControlador().getProveedores();
+		Collection<ProveedorView> proveedores = Controlador.getControlador().getProveedoresView();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS
@@ -40,7 +41,7 @@ public class VentanaListaProveedor extends JFrame{
 		
 		// FILAS 
 		
-		for(Proveedor p : proveedores){
+		for(ProveedorView p : proveedores){
 			String activo;
 			if (p.isActivo())
 				activo="Sí";

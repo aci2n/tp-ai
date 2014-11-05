@@ -1,8 +1,11 @@
 package implementacion;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-import persistencia.AdministradorPersistenciaPrenda;
+import persistencia.AdministradorPersistenciaConjuntoPrenda;
+import persistencia.AdministradorPersistenciaPrendaConTemporada;
+import persistencia.AdministradorPersistenciaPrendaSinTemporada;
 import view.PrendaView;
 
 public abstract class Prenda {
@@ -18,7 +21,6 @@ public abstract class Prenda {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
 
 	public String getNombre() {
@@ -27,7 +29,6 @@ public abstract class Prenda {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		AdministradorPersistenciaPrenda.getInstancia().update(this);
 	}
 
 	public boolean sosLaPrenda(String codigo) {
@@ -43,32 +44,30 @@ public abstract class Prenda {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
-	
-	public void setCodigoDB(String codigo){
-		this.codigo = codigo;
-	}
-	
-	public void setNombreDB(String nombre){
-		this.nombre = nombre;
-	}
-	
-	public void setActivoDB(boolean activo){
-		this.activo = activo;
-	}
-	
-	public void eliminar(){
-		this.activo=false;
-		AdministradorPersistenciaPrenda.getInstancia().delete(this);
-	}
 
-	public static Collection<Prenda> obtenerPrendas() {
-		return AdministradorPersistenciaPrenda.getInstancia().obtenerPrendas();
+	public abstract void eliminar();
+	
+	public abstract void actualizar();
+	
+	public static Collection<Prenda> obtenerPrendas() { //ver si esto anda
+		Collection<Prenda> prendas = new ArrayList<Prenda>();
+		prendas.addAll(AdministradorPersistenciaConjuntoPrenda.getInstancia().obtenerConjuntosPrenda()); 
+		prendas.addAll(AdministradorPersistenciaPrendaConTemporada.getInstancia().obtenerPrendasConTemporada());
+		prendas.addAll(AdministradorPersistenciaPrendaSinTemporada.getInstancia().obtenerPrendasSinTemporada());
+		return prendas;
 	}
 	
 	public static Prenda buscarPrenda(String codigo){
-		return AdministradorPersistenciaPrenda.getInstancia().buscarPrenda(codigo);
+		Prenda p = null;
+		p = AdministradorPersistenciaConjuntoPrenda.getInstancia().buscarPrenda(codigo);
+		if (p==null){
+			p=AdministradorPersistenciaPrendaConTemporada.getInstancia().buscarPrenda(codigo);
+			if(p == null){
+				p=AdministradorPersistenciaPrendaSinTemporada.getInstancia().buscarPrenda(codigo);
+			}
+		}
+		return p;	
 	}
 	
 	public abstract PrendaView generarPrendaView();
-	
 }
