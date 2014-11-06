@@ -3,7 +3,6 @@ package implementacion;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import persistencia.AdministradorPersistenciaConjuntoPrenda;
 import persistencia.AdministradorPersistenciaPrendaSinTemporada;
 import view.ItemMaterialView;
 import view.PrendaSinTemporadaView;
@@ -11,8 +10,8 @@ import view.PrendaView;
 
 public class PrendaSinTemporada extends PrendaSimple{
 
-	public PrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> materiales, boolean activo) {
-		this.activo = activo;
+	public PrendaSinTemporada(String codigo, String nombre, Collection<ItemMaterial> materiales) {
+		this.activo = true;
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.materiales = materiales;
@@ -32,12 +31,12 @@ public class PrendaSinTemporada extends PrendaSimple{
 	}
 	
 	public void actualizar(){
-		AdministradorPersistenciaConjuntoPrenda.getInstancia().update(this);
+		AdministradorPersistenciaPrendaSinTemporada.getInstancia().update(this);
 	}
 	
 	public void eliminar(){
 		this.activo=false;
-		AdministradorPersistenciaConjuntoPrenda.getInstancia().delete(this);
+		AdministradorPersistenciaPrendaSinTemporada.getInstancia().delete(this);
 	}
 
 	public PrendaView generarPrendaView() {
@@ -45,7 +44,7 @@ public class PrendaSinTemporada extends PrendaSimple{
 		for (ItemMaterial item : getMateriales()) {
 			itemsView.add(item.generarItemMaterialView());
 		}
-		return new PrendaSinTemporadaView(this.codigo, this.nombre, this.materiales, this.calcularPrecio(), this.activo);
+		return new PrendaSinTemporadaView(this.codigo, this.nombre, itemsView, this.activo);
 	}
 	
 }

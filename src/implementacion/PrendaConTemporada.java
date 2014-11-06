@@ -3,7 +3,6 @@ package implementacion;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import persistencia.AdministradorPersistenciaConjuntoPrenda;
 import persistencia.AdministradorPersistenciaPrendaConTemporada;
 import view.ItemMaterialView;
 import view.PrendaConTemporadaView;
@@ -39,12 +38,12 @@ public class PrendaConTemporada extends PrendaSimple{
 	}
 
 	public void actualizar(){
-		AdministradorPersistenciaConjuntoPrenda.getInstancia().update(this);
+		AdministradorPersistenciaPrendaConTemporada.getInstancia().update(this);
 	}
 	
 	public void eliminar(){
 		this.activo=false;
-		AdministradorPersistenciaConjuntoPrenda.getInstancia().delete(this);
+		AdministradorPersistenciaPrendaConTemporada.getInstancia().delete(this);
 	}
 	
 	public float getPorcentajeVenta() {

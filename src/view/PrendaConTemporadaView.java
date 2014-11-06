@@ -12,8 +12,8 @@ public class PrendaConTemporadaView extends PrendaView {
 		this.nombre = nombre;
 		this.temporada = temporada;
 		this.porcentajeVenta = porcentajeVenta;
-		this.activo = activo;
 		this.materiales = materiales;
+		this.precio=calcularPrecio();
 		}
 
 	public String getTemporada() {
@@ -43,5 +43,15 @@ public class PrendaConTemporadaView extends PrendaView {
 
 	public void setMateriales(Collection<ItemMaterialView> materiales) {
 		this.materiales = materiales;
+	}
+	
+	protected float calcularPrecio(){
+		float precio = 0;
+		Collection<ItemMaterialView> materiales = this.materiales;
+		for(ItemMaterialView im : materiales){
+			precio = precio + (im.getMaterial().getCosto())*(im.getCantidad());
+		}
+		float porcentaje = (precio * this.porcentajeVenta) / 100; 
+		return (precio + porcentaje);
 	}
 }

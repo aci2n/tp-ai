@@ -1,22 +1,15 @@
 package view;
 
-import implementacion.ItemMaterial;
-
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class PrendaSinTemporadaView extends PrendaView {
 	private Collection<ItemMaterialView> materiales;
 	
-	public PrendaSinTemporadaView(String codigo, String nombre, Collection<ItemMaterial> materiales, float precio, boolean activo) {
+	public PrendaSinTemporadaView(String codigo, String nombre, Collection<ItemMaterialView> materiales, boolean activo) {
 		this.codigo = codigo;
 		this.nombre = nombre;
-		this.precio = precio;
-		this.activo = activo;
-		this.materiales = new ArrayList<ItemMaterialView>();
-		for (ItemMaterial item : materiales) {
-			this.materiales.add(item.generarItemMaterialView());
-		}
+		this.materiales = materiales;
+		this.precio=calcularPrecio();
 	}
 
 	public Collection<ItemMaterialView> getMateriales() {
@@ -25,5 +18,14 @@ public class PrendaSinTemporadaView extends PrendaView {
 
 	public void setMateriales(Collection<ItemMaterialView> materiales) {
 		this.materiales = materiales;
+	}
+	
+	protected float calcularPrecio(){
+		float precio = 0;
+		Collection<ItemMaterialView> materiales = this.materiales;
+		for(ItemMaterialView im : materiales){
+			precio = precio + (im.getMaterial().getCosto())*(im.getCantidad());
+		}
+		return precio;
 	}
 }

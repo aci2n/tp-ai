@@ -8,7 +8,6 @@ public class MaterialView {
 	private String cuit;
 	private float cantidad;
 	private float costo;
-	private boolean activo;
 
 	public MaterialView(String codigo, String nombre, float puntoPedido, String cuit, float cantidad, float costo){
 		this.codigo = codigo;
@@ -17,7 +16,6 @@ public class MaterialView {
 		this.cuit=cuit;
 		this.cantidad = cantidad;
 		this.costo = costo;
-		this.activo = true;
 	}
 
 	public String getCodigo() {
@@ -67,14 +65,6 @@ public class MaterialView {
 
 	public void setCosto(float costo) {
 		this.costo = costo;
-	}
-
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
 	}
 
 	public boolean sosElMaterial(String codigo) {

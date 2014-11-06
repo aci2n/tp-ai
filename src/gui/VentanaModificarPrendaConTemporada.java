@@ -1,7 +1,4 @@
 package gui;
-import implementacion.ItemMaterial;
-import implementacion.Material;
-import implementacion.Prenda;
 import implementacion.PrendaConTemporada;
 
 import java.awt.event.ActionEvent;
@@ -21,6 +18,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import view.ItemMaterialView;
+import view.MaterialView;
+import view.PrendaConTemporadaView;
+import view.PrendaView;
 import controlador.Controlador;
 
 
@@ -51,7 +52,7 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 	private JTextField tTemporada;
 	private JLabel porcentajeVenta;
 	private JLabel temporada;
-	Collection<ItemMaterial> itemMateriales = new ArrayList<ItemMaterial>();
+	Collection<ItemMaterialView> itemMateriales = new ArrayList<ItemMaterialView>();
 	DefaultTableModel modelo;
 	
 	/**
@@ -128,7 +129,7 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 			{
 				materialesComboBox = new JComboBox();
 				getContentPane().add(materialesComboBox);
-				for (Material m : Controlador.getControlador().getMateriales())
+				for (MaterialView m : Controlador.getControlador().getMaterialesView())
 					materialesComboBox.addItem(m.getCodigo());
 				materialesComboBox.setBounds(12, 128, 168, 24);
 				materialesComboBox.setSelectedIndex(-1);
@@ -136,8 +137,8 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 			{
 				comboCodigo = new JComboBox();
 				getContentPane().add(comboCodigo);
-				for (Prenda p : Controlador.getControlador().getPrendas())
-					if(p instanceof PrendaConTemporada) //ni nos vimos patrones GRASP
+				for (PrendaView p : Controlador.getControlador().getPrendasView())
+					if(p instanceof PrendaConTemporadaView) //ni nos vimos patrones GRASP
 						comboCodigo.addItem(p.getCodigo());
 				comboCodigo.setBounds(96, 8, 239, 24);
 				comboCodigo.setSelectedIndex(-1);
@@ -187,17 +188,18 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 		if (e.getSource()==agregarMaterial){
 			if (materialesComboBox.getSelectedItem()!= null && Controlador.getControlador().existeMaterial(materialesComboBox.getSelectedItem().toString())){
 				if (!contieneA(itemMateriales,materialesComboBox.getSelectedItem().toString())){
-					ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(materialesComboBox.getSelectedItem().toString()), (float)(Integer)cantidadMaterial.getValue());
+					ItemMaterialView i = new ItemMaterialView((float)(Integer)cantidadMaterial.getValue(), Controlador.getControlador().obtenerMaterialView(materialesComboBox.getSelectedItem().toString()));
 					itemMateriales.add(i);
 					Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
 					modelo.addRow (fila);
 				}
-				else JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
-
+				else 
+					JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
 		}
+		
 		if (e.getSource()==confirmar){
 			if (comboCodigo.getSelectedItem() != null && !tNombre.getText().equals("") && !tTemporada.getText().equals("") && !tPorcentajeVenta.getText().equals("") && !itemMateriales.isEmpty()){
 				try{
@@ -206,16 +208,18 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 					JOptionPane.showMessageDialog(this.getComponent(0), "Porcentaje venta incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Controlador.getControlador().ModificarPrendaConTemporada(comboCodigo.getSelectedItem().toString(), tNombre.getText(), tTemporada.getText(), Float.parseFloat(tPorcentajeVenta.getText()), itemMateriales);
+				PrendaConTemporadaView preCTVw = new PrendaConTemporadaView(comboCodigo.getSelectedItem().toString(), tNombre.getText(), true, itemMateriales, tTemporada.getText(), Float.parseFloat(tPorcentajeVenta.getText()));
+				Controlador.getControlador().ModificarPrendaConTemporada(preCTVw);
 				modelo.setRowCount(0);
-				this.itemMateriales = new ArrayList<ItemMaterial>();
+				this.itemMateriales = new ArrayList<ItemMaterialView>();
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos y/o ingrese al menos 1 material.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	private boolean contieneA(Collection<ItemMaterial> items, String codigo){
-		for (ItemMaterial i : items)
+
+	private boolean contieneA(Collection<ItemMaterialView> items, String codigo){
+		for (ItemMaterialView i : items)
 			if (i.getMaterial().sosElMaterial(codigo))
 				return true;
 		return false;

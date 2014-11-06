@@ -1,11 +1,5 @@
 package gui;
 
-import implementacion.ConjuntoPrenda;
-import implementacion.ItemMaterial;
-import implementacion.Prenda;
-import implementacion.PrendaConTemporada;
-import implementacion.PrendaSinTemporada;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.MouseEvent;
@@ -16,6 +10,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import view.ConjuntoPrendaView;
+import view.ItemMaterialView;
+import view.PrendaConTemporadaView;
+import view.PrendaSinTemporadaView;
+import view.PrendaView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -34,7 +33,7 @@ public class VentanaListaPrendas extends JFrame{
 	private void componentes(){
 		
 		Container c = this.getContentPane();
-		Collection<Prenda> prendas = Controlador.getControlador().getPrendas();
+		Collection<PrendaView> prendas = Controlador.getControlador().getPrendasView();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS
@@ -45,8 +44,8 @@ public class VentanaListaPrendas extends JFrame{
 		
 		// FILAS 
 		
-		for(Prenda pr : prendas){
-			Object[] nuevo = {pr.getCodigo(), pr.getNombre(), pr.calcularPrecio()};
+		for(PrendaView pr : prendas){
+			Object[] nuevo = {pr.getCodigo(), pr.getNombre(),pr.getPrecio()};
 			modelo.addRow(nuevo);
 		}
 		
@@ -55,35 +54,32 @@ public class VentanaListaPrendas extends JFrame{
 				StringBuffer tip = new StringBuffer();				
 				java.awt.Point p = e.getPoint();
 				int fila = rowAtPoint(p);
-				
-				
-				
-				Prenda prenda = Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
-				if (prenda instanceof PrendaConTemporada) {
-					PrendaConTemporada prendaT = (PrendaConTemporada)Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
+								
+				PrendaView prenda = Controlador.getControlador().obtenerPrendaView(modelo.getValueAt(fila, 0).toString());
+				if (prenda instanceof PrendaConTemporadaView) {
+					PrendaConTemporadaView prendaT = (PrendaConTemporadaView)prenda;
 					tip.append("<html><b>Materiales</b>:<br>");
-					for (ItemMaterial i : prendaT.getMateriales())
+					for (ItemMaterialView i : prendaT.getMateriales())
 						tip.append(i.getMaterial().getNombre()+"  --  "+i.getCantidad()+", ");
 					tip.setLength(tip.length() - 2);
 					tip.append("<br><b>Temporada</b>:<br>"+prendaT.getTemporada());
 					tip.append("<br><b>Porcentaje Venta</b>:<br>"+prendaT.getPorcentajeVenta());
 				}
-				if (prenda instanceof PrendaSinTemporada) {
-					PrendaSinTemporada prendaS = (PrendaSinTemporada)Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
+				if (prenda instanceof PrendaSinTemporadaView) {
+					PrendaSinTemporadaView prendaS = (PrendaSinTemporadaView)prenda;
 					tip.append("<html><b>Materiales</b>:<br>");
-					for (ItemMaterial i : prendaS.getMateriales())
+					for (ItemMaterialView i : prendaS.getMateriales())
 						tip.append(i.getMaterial().getNombre()+"  --  "+i.getCantidad()+", ");
 					tip.setLength(tip.length() - 2);
 				}
-				if (prenda instanceof ConjuntoPrenda) {
-					ConjuntoPrenda conjunto = (ConjuntoPrenda)Controlador.getControlador().obtenerPrenda(modelo.getValueAt(fila, 0).toString());
+				if (prenda instanceof ConjuntoPrendaView) {
+					ConjuntoPrendaView conjunto = (ConjuntoPrendaView)prenda;
 					tip.append("<html><b>Prendas</b>:<br>");
-					for (Prenda pr : conjunto.getPrendas())
+					for (PrendaView pr : conjunto.getPrendas())
 						tip.append(pr.getNombre()+", ");
 					tip.setLength(tip.length() - 2);
 					tip.append("<html><br><b>Descuento</b>:<br>"+conjunto.getDescuento());
-				}	
-
+				}	 
 
 				return tip.toString();
 

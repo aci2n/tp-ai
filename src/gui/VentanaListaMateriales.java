@@ -1,10 +1,7 @@
 package gui;
 
-import implementacion.Material;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JFrame;
@@ -31,13 +28,8 @@ public class VentanaListaMateriales extends JFrame{
 		
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
-		Collection<Material> materiales = Controlador.getControlador().getMateriales();
-		Collection<MaterialView> materialesView = new ArrayList<MaterialView>();
+		Collection<MaterialView> materialesView = Controlador.getControlador().getMaterialesView();
 		c.setLayout(new BorderLayout());
-		
-		for(Material m : materiales){
-			materialesView.add(m.generarMaterialView());
-		}
 		
 		// COLUMNAS
 		
@@ -52,7 +44,7 @@ public class VentanaListaMateriales extends JFrame{
 		
 		for(MaterialView m : materialesView){
 			
-			Object[] nuevo = {m.getCodigo(), m.getNombre(), m.getPuntoPedido(), m.getProveedor().getNombre(), m.getCantidad(), m.getCosto()};
+			Object[] nuevo = {m.getCodigo(), m.getNombre(), m.getPuntoPedido(), m.getCuit(), m.getCantidad(), m.getCosto()};
 			modelo.addRow(nuevo);
 		}
 		

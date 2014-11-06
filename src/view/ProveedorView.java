@@ -3,20 +3,10 @@ package view;
 public class ProveedorView {
 	private String nombre;
 	private String cuit;
-	private boolean activo;
 	
-	public ProveedorView(String nombre, String cuit, boolean activo) {
+	public ProveedorView(String nombre, String cuit) {
 		this.nombre = nombre;
 		this.cuit = cuit;
-		this.setActivo(activo);
-	}
-
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
 	}
 
 	public String getNombre() {

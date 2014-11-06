@@ -9,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import view.MaterialView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -42,7 +43,7 @@ public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionLis
 				materiales = new JComboBox();
 				getContentPane().add(materiales);
 				materiales.setBounds(70, 12, 243, 24);
-				for (Material m : Controlador.getControlador().getMateriales())
+				for (MaterialView m : Controlador.getControlador().getMaterialesView())
 					materiales.addItem(m.getCodigo());
 				materiales.setSelectedIndex(-1);
 			}

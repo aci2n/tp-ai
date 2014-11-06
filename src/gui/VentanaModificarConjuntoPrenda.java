@@ -1,6 +1,5 @@
 package gui;
 import implementacion.ConjuntoPrenda;
-import implementacion.Prenda;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import view.ConjuntoPrendaView;
+import view.PrendaView;
 import controlador.Controlador;
 
 
@@ -44,7 +45,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 	private JButton confirmar;
 	private JTextField tDescuento;
 	private JLabel descuento;
-	Collection<Prenda> prendas = new ArrayList<Prenda>();
+	Collection<PrendaView> prendas = new ArrayList<PrendaView>();
 	DefaultTableModel modelo;
 	
 	/**
@@ -110,7 +111,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 			{
 				prendasComboBox = new JComboBox();
 				getContentPane().add(prendasComboBox);
-				for (Prenda p : Controlador.getControlador().getPrendas())
+				for (PrendaView p : Controlador.getControlador().getPrendasView())
 					prendasComboBox.addItem(p.getCodigo());
 				prendasComboBox.setBounds(12, 128, 168, 24);
 				prendasComboBox.setSelectedIndex(-1);
@@ -118,8 +119,8 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 			{
 				comboCodigo = new JComboBox();
 				getContentPane().add(comboCodigo);
-				for (Prenda p : Controlador.getControlador().getPrendas())
-					if(p instanceof ConjuntoPrenda) //ni nos vimos patrones GRASP
+				for (PrendaView p : Controlador.getControlador().getPrendasView())
+					if(p instanceof ConjuntoPrendaView) //ni nos vimos patrones GRASP
 						comboCodigo.addItem(p.getCodigo());
 				comboCodigo.setBounds(96, 8, 239, 24);
 				comboCodigo.setSelectedIndex(-1);
@@ -162,23 +163,22 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 		}
 		if (e.getSource()==agregarPrenda){
 			if (prendasComboBox.getSelectedItem()!= null && Controlador.getControlador().existePrenda(prendasComboBox.getSelectedItem().toString())){
-				if (!contieneA(prendas,prendasComboBox.getSelectedItem().toString())){
-					if(!seContieneASiMismo(Controlador.getControlador().obtenerPrenda(comboCodigo.getSelectedItem().toString()),
-							Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString()))){
-							Prenda p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString());
-							prendas.add(p);
-							Object [] fila = {p.getNombre()};
-							modelo.addRow (fila);
-						}
+				if(!seContieneASiMismo(prendasComboBox.getSelectedItem().toString(),comboCodigo.getSelectedItem().toString())){
+					if (!yaExiste(prendasComboBox.getSelectedItem().toString())){
+						PrendaView p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString()).generarPrendaView();
+						prendas.add(p);
+						Object [] fila = {p.getNombre()};
+						modelo.addRow (fila);
+					}
 					else
-						JOptionPane.showMessageDialog(this.getComponent(0), "Un conjunto no puede contenerse a sí mismo.","Error",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else
-					JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
-				}
+					JOptionPane.showMessageDialog(this.getComponent(0), "Un conjunto no puede contenerse a sí mismo.","Error",JOptionPane.ERROR_MESSAGE);
+			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione una prenda.","Error",JOptionPane.ERROR_MESSAGE);
-			}
+		}
 		if (e.getSource()==confirmar){
 			if (comboCodigo.getSelectedItem() != null && !tNombre.getText().equals("") && !tDescuento.getText().equals("") && !prendas.isEmpty()){
 				try{
@@ -187,27 +187,32 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 					JOptionPane.showMessageDialog(this.getComponent(0), "Descuento incorrecto.","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Controlador.getControlador().ModificarConjuntoPrenda(comboCodigo.getSelectedItem().toString(), tNombre.getText(), Float.parseFloat(tDescuento.getText()), prendas);
+				ConjuntoPrendaView conjuntoView = new ConjuntoPrendaView(comboCodigo.getSelectedItem().toString(), tNombre.getText(), Float.parseFloat(tDescuento.getText()), prendas);
+				Controlador.getControlador().ModificarConjuntoPrenda(conjuntoView);
 				modelo.setRowCount(0);
-				this.prendas = new ArrayList<Prenda>();
+				this.prendas = new ArrayList<PrendaView>();
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos y/o agregue al menos 1 prenda al conjunto.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
-	private boolean seContieneASiMismo(Prenda principal, Prenda agregada) {
-		if (principal == agregada)
+	private boolean seContieneASiMismo(String codigoPrendaAInsertar, String codigoPrendaActual){ //calabria estaria orgulloso
+		if (codigoPrendaAInsertar.equals(codigoPrendaActual))
 			return true;
-		if (agregada instanceof ConjuntoPrenda){
-			return contieneA(((ConjuntoPrenda) agregada).getPrendas(),principal.getCodigo());
+		PrendaView p = Controlador.getControlador().obtenerPrendaView(codigoPrendaAInsertar);
+		if(p!=null && p instanceof ConjuntoPrendaView){
+			ConjuntoPrendaView conjunto = (ConjuntoPrendaView)p;
+			for (PrendaView pre : conjunto.getPrendas())
+				if(seContieneASiMismo (pre.getCodigo(),codigoPrendaActual))
+					return true;
 		}
 		return false;
 	}
-
-	private boolean contieneA(Collection<Prenda> prendas, String codigo){
-		for (Prenda p : prendas)
-			if (p.sosLaPrenda(codigo))
+	
+	private boolean yaExiste(String codigoPrendaAInsertar){
+		for (PrendaView p : this.prendas)
+			if (p.sosLaPrenda(codigoPrendaAInsertar))
 				return true;
 		return false;
 	}

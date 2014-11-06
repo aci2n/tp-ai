@@ -60,7 +60,7 @@ public class Proveedor {
 	}
 		
 	public ProveedorView generarProveedorView() {
-		return new ProveedorView(this.nombre, this.cuit, this.activo);
+		return new ProveedorView(this.nombre, this.cuit);
 	}
 
 	public void eliminar(){

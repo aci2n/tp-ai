@@ -31,20 +31,19 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		PrendaSinTemporada p = (PrendaSinTemporada)o;
 		try{
 			
-			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas(codigo,nombre,activo) VALUES (?,?,?,?)");
+			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas(codigo,nombre,activo,tipo_prenda) VALUES (?,?,?,?)");
 			ps.setString(1, p.getCodigo());
 			ps.setString(2,p.getNombre());
 			ps.setInt(3,1);
-			ps.setString(1,"sintemporada");
+			ps.setString(4,"sintemporada");
 			
 			ps.execute();
 			
 			for (ItemMaterial i : p.getMateriales()){
-				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?,?)");
+				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?)");
 				psItemMaterial.setString(1, i.getMaterial().getCodigo());
 				psItemMaterial.setString(2, p.getCodigo());
 				psItemMaterial.setFloat(3, i.getCantidad());
-				psItemMaterial.setInt(4, 1);
 				psItemMaterial.execute();
 			}
 			
@@ -74,11 +73,10 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 			
 			ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?,?)");
 			for (ItemMaterial i : p.getMateriales()){
-				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?,?)");
+				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?)");
 				psItemMaterial.setString(1, i.getMaterial().getCodigo());
 				psItemMaterial.setString(2, p.getCodigo());
 				psItemMaterial.setFloat(3, i.getCantidad());
-				psItemMaterial.setInt(4, 1);
 				psItemMaterial.execute();
 			}
 			
@@ -112,7 +110,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		Collection<PrendaSinTemporada> prendasSinTemporada = new ArrayList<PrendaSinTemporada>();
 		Collection <ItemMaterial> itemsMaterial = new ArrayList<ItemMaterial>();
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where activo = 1 AND tipo_prenda = 'sintemporada'");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'sintemporada'");
 			ResultSet res = ps.executeQuery();
 			while (res.next()){
 				PrendaSinTemporada prendaSinTemporada = new PrendaSinTemporada();
@@ -126,6 +124,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 				prendaSinTemporada.setCodigo(res.getString("codigo"));
 				prendaSinTemporada.setNombre(res.getString("nombre"));
 				prendaSinTemporada.setMateriales(itemsMaterial);
+				prendaSinTemporada.setActivo(res.getBoolean("activo"));
 				prendasSinTemporada.add(prendaSinTemporada);
 			}
 			con.close();
@@ -142,7 +141,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		Collection <ItemMaterial> itemsMaterial = new ArrayList<ItemMaterial>();
 		PrendaSinTemporada prendaSinTemporada = null;
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where activo = 1 AND tipo_prenda = 'contemporada' AND codigo_prenda = ?");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where activo = 1 AND tipo_prenda = 'sintemporada' AND codigo = ?");
 			ps.setString(1, codigo);
 			ResultSet res = ps.executeQuery();
 			while (res.next()){
@@ -155,6 +154,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 					itemsMaterial.add(item);
 				}
 				prendaSinTemporada.setCodigo(res.getString("codigo"));
+				prendaSinTemporada.setActivo(res.getBoolean("activo"));
 				prendaSinTemporada.setNombre(res.getString("nombre"));
 				prendaSinTemporada.setMateriales(itemsMaterial);
 			}

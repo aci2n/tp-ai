@@ -31,7 +31,7 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 		ConjuntoPrenda c = (ConjuntoPrenda)o;
 		try{
 			
-			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas(codigo,nombre,descuento,activo) VALUES (?,?,?,?)");
+			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas(codigo,nombre,descuento,activo,tipo_prenda) VALUES (?,?,?,?,?)");
 			ps.setString(1, c.getCodigo());
 			ps.setString(2,c.getNombre());
 			ps.setFloat(3, c.getDescuento());
@@ -41,10 +41,9 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 			ps.execute();
 			
 			for (Prenda p : c.getPrendas()){
-				PreparedStatement psInsertarPrenda = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas VALUES (?,?,?)");
-				psInsertarPrenda.setString(1, p.getCodigo());
-				psInsertarPrenda.setString(2, c.getCodigo());
-				psInsertarPrenda.setInt(3, 1);
+				PreparedStatement psInsertarPrenda = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas VALUES (?,?)");
+				psInsertarPrenda.setString(1, c.getCodigo());
+				psInsertarPrenda.setString(2, p.getCodigo());
 				psInsertarPrenda.execute();
 			}
 			
@@ -75,10 +74,9 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 			
 			ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas VALUES (?,?,?)");
 			for (Prenda p : c.getPrendas()){
-				PreparedStatement psInsertarPrenda = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas VALUES (?,?,?)");
-				psInsertarPrenda.setString(1, p.getCodigo());
-				psInsertarPrenda.setString(2, c.getCodigo());
-				psInsertarPrenda.setInt(3, 1);
+				PreparedStatement psInsertarPrenda = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Conjuntos_Prendas VALUES (?,?)");
+				psInsertarPrenda.setString(1, c.getCodigo());
+				psInsertarPrenda.setString(2, p.getCodigo());
 				psInsertarPrenda.execute();
 			}
 			
@@ -109,13 +107,13 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 	
 	public Collection<ConjuntoPrenda> obtenerConjuntosPrenda(){
 		Collection<ConjuntoPrenda> conjuntosPrenda = new ArrayList<ConjuntoPrenda>();
-		Collection <Prenda> prendas = new ArrayList<Prenda>();
 		try {
 			Connection con = Conexion.connect();
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where activo = 1 AND tipo_prenda = 'conjunto'");
 			ResultSet res = ps.executeQuery();
 			while (res.next()){
 				ConjuntoPrenda conjuntoPrenda = new ConjuntoPrenda();
+				Collection <Prenda> prendas = new ArrayList<Prenda>();
 				PreparedStatement psPrendas = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Conjuntos_Prendas where codigo_conjunto = ?");
 				psPrendas.setString(1, res.getString("codigo"));
 				ResultSet resPrendas = psPrendas.executeQuery();
@@ -125,6 +123,8 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 				}
 				conjuntoPrenda.setCodigo(res.getString("codigo"));
 				conjuntoPrenda.setNombre(res.getString("nombre"));
+				conjuntoPrenda.setDescuento(res.getFloat("descuento"));
+				conjuntoPrenda.setActivo(res.getBoolean("activo"));
 				conjuntoPrenda.setPrendas(prendas);
 				conjuntosPrenda.add(conjuntoPrenda);
 			}
@@ -142,7 +142,8 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 		ConjuntoPrenda conjuntoPrenda = null;
 		Collection <Prenda> prendas = new ArrayList<Prenda>();
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where activo = 1 AND tipo_prenda = 'conjunto'");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'conjunto' AND codigo = ?");
+			ps.setString(1, codigo);
 			ResultSet res = ps.executeQuery();
 			while (res.next()){
 				conjuntoPrenda = new ConjuntoPrenda();
@@ -155,6 +156,8 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 				}
 				conjuntoPrenda.setCodigo(res.getString("codigo"));
 				conjuntoPrenda.setNombre(res.getString("nombre"));
+				conjuntoPrenda.setDescuento(res.getFloat("descuento"));
+				conjuntoPrenda.setActivo(res.getBoolean("activo"));
 				conjuntoPrenda.setPrendas(prendas);
 			}
 			con.close();

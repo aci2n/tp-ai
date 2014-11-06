@@ -31,7 +31,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		PrendaConTemporada p = (PrendaConTemporada)o;
 		try{
 			
-			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas(codigo,nombre,temporada,porcentaje_venta,activo) VALUES (?,?,?,?,?,?)");
+			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas(codigo,nombre,temporada,porcentaje_venta,activo,tipo_prenda) VALUES (?,?,?,?,?,?)");
 			ps.setString(1, p.getCodigo());
 			ps.setString(2,p.getNombre());
 			ps.setString(3, p.getTemporada());
@@ -42,11 +42,10 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 			ps.execute();
 			
 			for (ItemMaterial i : p.getMateriales()){
-				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?,?)");
+				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?)");
 				psItemMaterial.setString(1, i.getMaterial().getCodigo());
 				psItemMaterial.setString(2, p.getCodigo());
 				psItemMaterial.setFloat(3, i.getCantidad());
-				psItemMaterial.setInt(4, 1);
 				psItemMaterial.execute();
 			}
 			
@@ -78,11 +77,10 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 			
 			ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?,?)");
 			for (ItemMaterial i : p.getMateriales()){
-				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?,?)");
+				PreparedStatement psItemMaterial = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas_Materiales VALUES (?,?,?)");
 				psItemMaterial.setString(1, i.getMaterial().getCodigo());
 				psItemMaterial.setString(2, p.getCodigo());
 				psItemMaterial.setFloat(3, i.getCantidad());
-				psItemMaterial.setInt(4, 1);
 				psItemMaterial.execute();
 			}
 			
@@ -129,7 +127,8 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 				}
 				prendaConTemporada.setCodigo(res.getString("codigo"));
 				prendaConTemporada.setNombre(res.getString("nombre"));
-				prendaConTemporada.setTemporada(res.getString("temproada"));
+				prendaConTemporada.setActivo(res.getBoolean("activo"));
+				prendaConTemporada.setTemporada(res.getString("temporada"));
 				prendaConTemporada.setPorcentajeVenta(res.getFloat("porcentaje_venta"));
 				prendaConTemporada.setMateriales(itemsMaterial);
 				prendasConTemporada.add(prendaConTemporada);
@@ -148,7 +147,7 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 		Collection <ItemMaterial> itemsMaterial = new ArrayList<ItemMaterial>();
 		PrendaConTemporada prendaConTemporada = null;
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where activo = 1 AND tipo_prenda = 'contemporada' AND codigo_prenda = ?");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'contemporada' AND codigo = ?");
 			ps.setString(1, codigo);
 			ResultSet res = ps.executeQuery();
 			while (res.next()){
@@ -162,7 +161,8 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 				}
 				prendaConTemporada.setCodigo(res.getString("codigo"));
 				prendaConTemporada.setNombre(res.getString("nombre"));
-				prendaConTemporada.setTemporada(res.getString("temproada"));
+				prendaConTemporada.setActivo(res.getBoolean("activo"));
+				prendaConTemporada.setTemporada(res.getString("temporada"));
 				prendaConTemporada.setPorcentajeVenta(res.getFloat("porcentaje_venta"));
 				prendaConTemporada.setMateriales(itemsMaterial);
 			}

@@ -11,6 +11,7 @@ public class ConjuntoPrendaView extends PrendaView {
 		this.nombre = nombre;
 		this.descuento = descuento;
 		this.prendas = prendas;
+		this.precio=calcularPrecio();
 	}
 
 	public float getDescuento() {
@@ -29,4 +30,12 @@ public class ConjuntoPrendaView extends PrendaView {
 		this.prendas = prendas;
 	}
 	
+	protected float calcularPrecio(){
+		float pre = 0;
+		for(PrendaView p : prendas){
+			pre = pre + p.getPrecio();
+		}
+		float descuento = (pre * this.descuento) / 100;
+		return (pre - descuento);
+	}
 }

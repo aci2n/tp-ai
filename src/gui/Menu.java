@@ -13,6 +13,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import controlador.Controlador;
+
 @SuppressWarnings("serial")
 public class Menu extends JFrame implements ActionListener{
 	
@@ -30,13 +32,14 @@ public class Menu extends JFrame implements ActionListener{
 	}
 	
 	private void componentes(){
+		Controlador.getControlador();
 		Container c = this.getContentPane();
 		c.setLayout(new BorderLayout());
 		menubar = new JMenuBar();
 		this.setJMenuBar(menubar);
 		
 		imagen = new JLabel();
-		imagen.setIcon(new ImageIcon( getClass().getResource("/img/kvn.jpg")));
+		imagen.setIcon(new ImageIcon( getClass().getResource("/gui/kvn.jpg")));
 		
 		c.add(imagen,BorderLayout.CENTER);
 		

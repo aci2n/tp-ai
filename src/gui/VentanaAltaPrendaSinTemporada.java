@@ -1,7 +1,4 @@
 package gui;
-import implementacion.ItemMaterial;
-import implementacion.Material;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,6 +16,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import view.ItemMaterialView;
+import view.MaterialView;
+import view.PrendaSinTemporadaView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -32,7 +32,7 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 	private JButton agregarMaterial;
 	private JSpinner cantidadMaterial;
 	private JButton confirmar;
-	Collection<ItemMaterial> itemMateriales = new ArrayList<ItemMaterial>();
+	Collection<ItemMaterialView> itemMateriales = new ArrayList<ItemMaterialView>();
 	DefaultTableModel modelo;
 	
 	/**
@@ -92,7 +92,7 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 			{
 				materialesComboBox = new JComboBox();
 				getContentPane().add(materialesComboBox);
-				for (Material m : Controlador.getControlador().getMateriales())
+				for (MaterialView m : Controlador.getControlador().getMaterialesView())
 					materialesComboBox.addItem(m.getCodigo());
 				materialesComboBox.setBounds(12, 128, 168, 24);
 				materialesComboBox.setSelectedIndex(-1);
@@ -131,30 +131,33 @@ public class VentanaAltaPrendaSinTemporada extends javax.swing.JFrame implements
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==agregarMaterial){
 			if (materialesComboBox.getSelectedItem()!= null && Controlador.getControlador().existeMaterial(materialesComboBox.getSelectedItem().toString())){
-				if (!contieneA(itemMateriales,materialesComboBox.getSelectedItem().toString())){
-					ItemMaterial i = new ItemMaterial(Controlador.getControlador().obtenerMaterial(materialesComboBox.getSelectedItem().toString()), (float)(Integer)cantidadMaterial.getValue());
+				if(!contieneA(itemMateriales,materialesComboBox.getSelectedItem().toString())){
+					ItemMaterialView i = new ItemMaterialView((float)(Integer)cantidadMaterial.getValue(), Controlador.getControlador().obtenerMaterialView(materialesComboBox.getSelectedItem().toString()));
 					itemMateriales.add(i);
 					Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
 					modelo.addRow (fila);
 				}
-				else JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
-
+				else
+					JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione un material e ingrese una cantidad.","Error",JOptionPane.ERROR_MESSAGE);
 		}
+		
 		if (e.getSource()==confirmar){
 			if (!tCodigo.getText().equals("") && !tNombre.getText().equals("") && !itemMateriales.isEmpty()){
-				Controlador.getControlador().altaPrendaSinTemporada(tCodigo.getText(), tNombre.getText(),itemMateriales);
+				PrendaSinTemporadaView prendaSTVw = new PrendaSinTemporadaView(tCodigo.getText(), tNombre.getText(), itemMateriales, true);
+				Controlador.getControlador().altaPrendaSinTemporada(prendaSTVw);
 				modelo.setRowCount(0);
-				this.itemMateriales = new ArrayList<ItemMaterial>();
+				this.itemMateriales = new ArrayList<ItemMaterialView>();
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor complete correctamente los campos y/o ingrese al menos 1 material.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	private boolean contieneA(Collection<ItemMaterial> items, String codigo){
-		for (ItemMaterial i : items)
+	
+	private boolean contieneA(Collection<ItemMaterialView> items, String codigo){
+		for (ItemMaterialView i : items)
 			if (i.getMaterial().sosElMaterial(codigo))
 				return true;
 		return false;

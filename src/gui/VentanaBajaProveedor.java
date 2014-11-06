@@ -1,6 +1,4 @@
 package gui;
-import implementacion.Proveedor;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -43,7 +41,7 @@ public class VentanaBajaProveedor extends javax.swing.JFrame implements ActionLi
 				proveedores = new JComboBox();
 				getContentPane().add(proveedores);
 				proveedores.setBounds(70, 12, 243, 24);	
-				for (Proveedor p : Controlador.getControlador().getProveedores())
+				for (ProveedorView p : Controlador.getControlador().getProveedoresView())
 					proveedores.addItem(p.getCuit());
 				proveedores.setSelectedIndex(-1);
 			}
@@ -69,11 +67,12 @@ public class VentanaBajaProveedor extends javax.swing.JFrame implements ActionLi
 		if (e.getSource()==eliminar){
 			if (proveedores.getSelectedItem()!=null){
 				ProveedorView proveedorView = Controlador.getControlador().obtenerProveedorView(proveedores.getSelectedItem().toString());
-				if (proveedorView.isActivo())
-					Controlador.getControlador().eliminarProveedor(null);
-				//proveedores.removeItemAt(proveedores.getSelectedIndex());
+				if (proveedorView!=null){
+					Controlador.getControlador().eliminarProveedor(proveedorView.getCuit());
+					proveedores.removeItemAt(proveedores.getSelectedIndex());
+				}
 				else
-					JOptionPane.showMessageDialog(this.getComponent(0),"El proveedor seleccionado ya está inactivo.","Error",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this.getComponent(0),"El proveedor seleccionado no existe.","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0),"Por favor elija un proveedor a eliminar.","Error",JOptionPane.ERROR_MESSAGE);

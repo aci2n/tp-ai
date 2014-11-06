@@ -1,11 +1,8 @@
 package gui;
-import implementacion.Proveedor;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,7 +18,7 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 	private JTextField tNombre;
 	private JLabel cuit;
 	private JButton modificar;
-	private JCheckBox activo;
+	//private JCheckBox activo;
 
 	public static void main(String[] args) {
 		new VentanaModificarProveedor();
@@ -49,7 +46,7 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 				proveedores = new JComboBox();
 				getContentPane().add(proveedores);
 				proveedores.setBounds(78, 12, 265, 24);
-				for (Proveedor p : Controlador.getControlador().getProveedores())
+				for (ProveedorView p : Controlador.getControlador().getProveedoresView())
 					proveedores.addItem(p.getCuit());
 				proveedores.setSelectedIndex(-1);
 				proveedores.addActionListener(this);
@@ -67,12 +64,12 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 				nombre.setText("Nombre:");
 				nombre.setBounds(12, 48, 54, 17);
 			}
-			{
+			/*{
 				activo = new JCheckBox();
 				getContentPane().add(activo);
 				activo.setText("Activo");
 				activo.setBounds(12, 81, 80, 17);
-			}
+			}*/
 			{
 				tNombre = new JTextField();
 				getContentPane().add(tNombre);
@@ -94,12 +91,12 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 			if (proveedores.getSelectedItem()!=null){
 				ProveedorView proveedorView = Controlador.getControlador().obtenerProveedorView(proveedores.getSelectedItem().toString());
 				tNombre.setText(proveedorView.getNombre());
-				activo.setSelected(proveedorView.isActivo());
+				//activo.setSelected(proveedorView.isActivo());
 			}
 		}
 		if (e.getSource()==modificar){
 			if (proveedores.getSelectedItem()!=null && !tNombre.getText().equals("")){
-				ProveedorView proveedorView = new ProveedorView(tNombre.getText(), proveedores.getSelectedItem().toString(), activo.isSelected());
+				ProveedorView proveedorView = new ProveedorView(tNombre.getText(), proveedores.getSelectedItem().toString());
 				Controlador.getControlador().modificarProveedor(proveedorView);
 			}
 			else 					

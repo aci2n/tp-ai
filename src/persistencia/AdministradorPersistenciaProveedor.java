@@ -44,11 +44,9 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 		Proveedor p = (Proveedor)o;
 		try{
 			Connection con = Conexion.connect();
-			PreparedStatement ps = con.prepareStatement( "UPDATE "+super.getDatabase()+".dbo.Proveedores SET nombre = ?, activo = ? WHERE cuit = ?");
-			int myInt = (p.isActivo()) ? 1 : 0;
+			PreparedStatement ps = con.prepareStatement( "UPDATE "+super.getDatabase()+".dbo.Proveedores SET nombre = ? WHERE cuit = ?");
 			ps.setString(1, p.getNombre());
-			ps.setInt(2, myInt);
-			ps.setString(3, p.getCuit());
+			ps.setString(2, p.getCuit());
 			
 			ps.execute();
 			con.close();
@@ -103,7 +101,7 @@ public class AdministradorPersistenciaProveedor extends AdministradorPersistenci
 		try{
 			Connection con = Conexion.connect();
 
-			PreparedStatement ps = con.prepareStatement( "SELECT * FROM "+super.getDatabase()+".dbo.Proveedores");
+			PreparedStatement ps = con.prepareStatement( "SELECT * FROM "+super.getDatabase()+".dbo.Proveedores where activo = 1");
 			
 			ResultSet res = ps.executeQuery();
 			

@@ -1,7 +1,5 @@
 package gui;
 
-import implementacion.Proveedor;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.util.Collection;
@@ -37,17 +35,16 @@ public class VentanaListaProveedor extends JFrame{
 		
 		modelo.addColumn("Nombre");
 		modelo.addColumn("CUIT");
-		modelo.addColumn("Activo");
 		
 		// FILAS 
 		
 		for(ProveedorView p : proveedores){
-			String activo;
+			/*String activo;
 			if (p.isActivo())
 				activo="Sí";
 			else
-				activo="No";
-			Object[] nuevo = {p.getNombre(), p.getCuit(),activo};
+				activo="No";*/
+			Object[] nuevo = {p.getNombre(), p.getCuit()};
 			modelo.addRow(nuevo);
 		}
 		

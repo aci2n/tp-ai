@@ -149,14 +149,18 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==agregarPrenda){
 			if (prendasComboBox.getSelectedItem()!= null && Controlador.getControlador().existePrenda(prendasComboBox.getSelectedItem().toString())){
-				if (!contieneA(prendas,prendasComboBox.getSelectedItem().toString())){
-					PrendaView p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString()).generarPrendaView();
-					prendas.add(p);
-					Object [] fila = {p.getNombre()};
-					modelo.addRow (fila);
+				//if (!seContieneASiMismo(prendasComboBox.getSelectedItem().toString(),prendasComboBox.getSelectedItem().toString())){
+					if (!yaExiste(prendasComboBox.getSelectedItem().toString())){
+						PrendaView p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString()).generarPrendaView();
+						prendas.add(p);
+						Object [] fila = {p.getNombre()};
+						modelo.addRow (fila);
 					}
-				else
-					JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
+				//}
+				//else
+				//	JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
 				}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione una prenda.","Error",JOptionPane.ERROR_MESSAGE);
@@ -179,11 +183,23 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 		}
 	}
 
-	private boolean contieneA(Collection<PrendaView> prendas, String codigo){
-		for (PrendaView p : prendas)
-			if (p.getCodigo()==codigo)
+	/*private boolean seContieneASiMismo(String codigoPrendaAInsertar, String codigoPrendaActual){ //calabria estaria orgulloso
+		if (codigoPrendaAInsertar.equals(codigoPrendaActual))
+			return true;
+		PrendaView p = Controlador.getControlador().obtenerPrendaView(codigoPrendaAInsertar);
+		if(p!=null && p instanceof ConjuntoPrendaView){
+			ConjuntoPrendaView conjunto = (ConjuntoPrendaView)p;
+			for (PrendaView pre : conjunto.getPrendas())
+				if(seContieneASiMismo (pre.getCodigo(),codigoPrendaActual))
+					return true;
+		}
+		return false;
+	}	*/
+	
+	private boolean yaExiste(String codigoPrendaAInsertar){
+		for (PrendaView p : this.prendas)
+			if (p.sosLaPrenda(codigoPrendaAInsertar))
 				return true;
 		return false;
 	}
-		
 }

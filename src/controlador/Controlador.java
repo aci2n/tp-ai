@@ -5,6 +5,7 @@ import implementacion.ItemMaterial;
 import implementacion.Material;
 import implementacion.Prenda;
 import implementacion.PrendaConTemporada;
+import implementacion.PrendaSimple;
 import implementacion.PrendaSinTemporada;
 import implementacion.Proveedor;
 
@@ -27,8 +28,8 @@ public class Controlador {
 	
 	public Controlador() {
 		proveedores = Proveedor.obtenerProveedores();
-		prendas = Prenda.obtenerPrendas();
 		materiales = Material.obtenerMateriales();
+		prendas = Prenda.obtenerPrendas();
 	}
 		
 	//SINGLETON
@@ -96,7 +97,7 @@ public class Controlador {
 					items.add(new ItemMaterial(material, itemView.getCantidad()));
 				}
 			}
-			Prenda p = new PrendaSinTemporada(prendaSinTemporadaView.getCodigo(), prendaSinTemporadaView.getNombre(), items, prendaSinTemporadaView.isActivo());
+			Prenda p = new PrendaSinTemporada(prendaSinTemporadaView.getCodigo(), prendaSinTemporadaView.getNombre(), items);
 			prendas.add(p);
 		}
 	}
@@ -114,6 +115,7 @@ public class Controlador {
 				material.setCantidad(materialView.getCantidad());
 				material.setCosto(materialView.getCosto());
 				material.setProveedor(proveedor);
+				material.actualizar();
 			}
 		}
 	}
@@ -122,7 +124,7 @@ public class Controlador {
 		if (existeProveedor(proveedorView.getCuit())){
 			Proveedor proveedor = obtenerProveedor(proveedorView.getCuit());
 			proveedor.setNombre(proveedorView.getNombre());
-			proveedor.setActivo(proveedorView.isActivo());
+			proveedor.actualizar();
 		}
 	}
 	
@@ -140,6 +142,7 @@ public class Controlador {
 			prenda.setNombre(prendaConTemporadaView.getNombre());
 			prenda.setPorcentajeVenta(prendaConTemporadaView.getPorcentajeVenta());
 			prenda.setTemporada(prendaConTemporadaView.getTemporada());
+			prenda.actualizar();
 		}
 	}	
 	
@@ -155,6 +158,7 @@ public class Controlador {
 			}
 			prenda.setMateriales(items);
 			prenda.setNombre(prendaSinTemporadaView.getNombre());
+			prenda.actualizar();
 		}		
 	}
 	
@@ -171,48 +175,57 @@ public class Controlador {
 			prenda.setPrendas(prendas);
 			prenda.setNombre(conjuntoPrendaView.getNombre());
 			prenda.setDescuento(conjuntoPrendaView.getDescuento());
+			prenda.actualizar();
 		}
 	}
 	
 	//BAJAS
 	
-	public void eliminarMaterial(MaterialView materialView){
-		for (Material m : materiales)
-			if (m.sosElMaterial(materialView.getCodigo())){
+	public void eliminarMaterial(String codigo){
+		for (Material m : materiales){
+			if (m.sosElMaterial(codigo)){
 				m.eliminar();
+				this.materiales.remove(m);
+				for (Prenda p : prendas) //que borre todas las prendas que lo tienen
+					if (p instanceof PrendaSimple) //fijarse si se les ocurre una forma mejor de hacer esto
+						for (ItemMaterial im : ((PrendaSimple) p).getMateriales())
+							if (im.getMaterial().sosElMaterial(codigo)){
+								eliminarPrenda(p.getCodigo());
+								return;
+							}
 				return;
 			}
-		for(Material m : Material.obtenerMateriales())
-			if (m.sosElMaterial(materialView.getCodigo())){
-				m.eliminar();
-				return;
-			}
+		}
 	}
 	
-	public void eliminarProveedor(ProveedorView proveedorView) {
+	public void eliminarProveedor(String cuit) {
 		for (Proveedor p : proveedores)
-			if (p.sosElProveedor(proveedorView.getCuit())){
+			if (p.sosElProveedor(cuit)){
 				p.eliminar();
-				return;
-			}		
-		for(Proveedor p : Proveedor.obtenerProveedores())
-			if (p.sosElProveedor(proveedorView.getCuit())){
-				p.eliminar();
+				this.proveedores.remove(p);
+				for (Material m : materiales)
+					if (m.getProveedor().sosElProveedor(cuit)){
+						eliminarMaterial(m.getCodigo());
+						return;
+					}
 				return;
 			}
 	}
 
-	public void eliminarPrenda(PrendaView prendaView) {
+	public void eliminarPrenda(String codigo) {
 		for (Prenda pr : prendas)
-			if (pr.sosLaPrenda(prendaView.getCodigo())){
+			if (pr.sosLaPrenda(codigo)){
 				pr.eliminar();
+				this.prendas.remove(pr);
+				for (Prenda p : prendas) //que borre todas las prendas que lo tienen
+					if (p instanceof ConjuntoPrenda) //fijarse si se les ocurre una forma mejor de hacer esto
+						for (Prenda pre : ((ConjuntoPrenda) p).getPrendas())
+							if (pre.sosLaPrenda(codigo)){
+								eliminarPrenda(p.getCodigo());
+								return;
+							}
 				return;
 			}	
-		for(Prenda pr : Prenda.obtenerPrendas())
-			if (pr.sosLaPrenda(prendaView.getCodigo())){
-				pr.eliminar();
-				return;
-			}
 	}
 	
 	//EXISTE
@@ -222,7 +235,7 @@ public class Controlador {
 			if (m.sosElMaterial(codigo)){
 				return true;
 			}
-		if (Material.buscarMaterial(codigo) != null)
+		if (Material.buscarMaterial(codigo)!=null)
 			return true;
 		return false;
 	}
@@ -232,7 +245,7 @@ public class Controlador {
 			if (p.sosElProveedor(cuit)){
 				return true;
 			}
-		if (Proveedor.buscarProveedor(cuit) != null)
+		if (Proveedor.buscarProveedor(cuit)!=null)
 			return true;
 		return false;
 	}
@@ -242,7 +255,7 @@ public class Controlador {
 			if (p.sosLaPrenda(codigo)){
 				return true;
 			}
-		if (Prenda.buscarPrenda(codigo) != null)
+		if (Prenda.buscarPrenda(codigo)!=null)
 			return true;
 		return false;
 	}	
@@ -250,92 +263,70 @@ public class Controlador {
 	//OBTENER
 	
 	public Proveedor obtenerProveedor(String cuit){
-		Proveedor prov = null;
 		for (Proveedor p : proveedores)
 			if (p.sosElProveedor(cuit)==true)
-				prov = p;
-		if (prov == null){
-			prov = Proveedor.buscarProveedor(cuit);
-			this.proveedores.add(prov);
-		}
-		return prov;
+				return p;
+		return null;
 	}
 	
 	public ProveedorView obtenerProveedorView(String cuit){
 		Proveedor prov = obtenerProveedor(cuit);
-		if (prov != null) {
+		if (prov != null)
 			return prov.generarProveedorView();
-		}
 		return null;
 	}
 	
 	public Material obtenerMaterial(String codigo) {
-		Material mat = null;
 		for (Material m : materiales)
-			if (m.sosElMaterial(codigo)==true){
-				mat = m;
-			}
-		if (mat == null){
-			mat = Material.buscarMaterial(codigo);
-			this.materiales.add(mat);
-		}
-		return mat;
+			if (m.sosElMaterial(codigo)==true)
+				return m;
+		return null;
 	}
 	
 	public MaterialView obtenerMaterialView(String codigo) {
 		Material mat = obtenerMaterial(codigo);
-		if (mat != null) {
+		if (mat != null)
 			return mat.generarMaterialView();
-		}
 		return null;
 	}
 	
 	public Prenda obtenerPrenda(String codigo) {
-		Prenda pre = null;
 		for (Prenda p : prendas)
-			if (p.sosLaPrenda(codigo)==true){
-				pre = p;
-			}
-		if (pre == null){
-			pre = Prenda.buscarPrenda(codigo);
-			this.prendas.add(pre);
-		}
-		return pre;
+			if (p.sosLaPrenda(codigo)==true)
+				return p;
+		return null;
+	}
+	
+	public PrendaView obtenerPrendaView(String codigo) {
+		Prenda p = obtenerPrenda(codigo);
+		if (p != null)
+			return p.generarPrendaView();
+		return null;
 	}
 	
 	//GETTERS
-
-	public Collection<Material> getMateriales() {
-		return Material.obtenerMateriales();
-	}
 	
 	public Collection<MaterialView> getMaterialesView() {
 		Collection<MaterialView> materialesView = new ArrayList<MaterialView>();
-		for (Material material : getMateriales()) {
+		for (Material material : this.materiales) {
 			materialesView.add(material.generarMaterialView());
 		}
 		return materialesView;
 	}
 	
-	private Collection<Proveedor> getProveedores() {
-		return Proveedor.obtenerProveedores();
-	}
 	
 	public Collection<ProveedorView> getProveedoresView() {
 		Collection<ProveedorView> proveedoresView = new ArrayList<ProveedorView>();
-		for (Proveedor proveedor : getProveedores()) {
+		for (Proveedor proveedor : this.proveedores) {
 			proveedoresView.add(proveedor.generarProveedorView());
 		}
 		return proveedoresView;
 	}
 
-	private Collection<Prenda> getPrendas() {
-		return Prenda.obtenerPrendas();
-	}
 	
 	public Collection<PrendaView> getPrendasView() {
 		Collection<PrendaView> prendasView = new ArrayList<PrendaView>();
-		for (Prenda prenda : getPrendas()) {
+		for (Prenda prenda : this.prendas) {
 			prendasView.add(prenda.generarPrendaView());
 		}
 		return prendasView;

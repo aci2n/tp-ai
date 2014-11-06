@@ -1,7 +1,5 @@
 package gui;
 
-import implementacion.Prenda;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import view.PrendaView;
 import controlador.Controlador;
 
 
@@ -57,7 +56,7 @@ public class VentanaBajaPrenda extends javax.swing.JFrame implements ActionListe
 				prendas = new JComboBox();
 				getContentPane().add(prendas);
 				prendas.setBounds(70, 12, 243, 24);
-				for (Prenda pr : Controlador.getControlador().getPrendas())
+				for (PrendaView pr : Controlador.getControlador().getPrendasView())
 					prendas.addItem(pr.getCodigo());
 				prendas.setSelectedIndex(-1);
 			}
