@@ -1,6 +1,4 @@
 package gui;
-import implementacion.PrendaSinTemporada;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -153,7 +151,7 @@ public class VentanaModificarPrendaSinTemporada extends javax.swing.JFrame imple
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==comboCodigo){
 			if (comboCodigo.getSelectedItem()!=null){
-				PrendaSinTemporada p = (PrendaSinTemporada)Controlador.getControlador().obtenerPrenda(comboCodigo.getSelectedItem().toString());
+				PrendaSinTemporadaView p = (PrendaSinTemporadaView)Controlador.getControlador().obtenerPrendaView(comboCodigo.getSelectedItem().toString());
 				tNombre.setText(p.getNombre());
 			}
 		}

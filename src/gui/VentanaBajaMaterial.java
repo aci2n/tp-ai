@@ -1,6 +1,4 @@
 package gui;
-import implementacion.Material;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -69,7 +67,7 @@ public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionLis
 		if (e.getSource()==eliminar){
 			if (materiales.getSelectedItem()!=null){
 				
-				Material m = Controlador.getControlador().obtenerMaterial(materiales.getSelectedItem().toString());
+				MaterialView m = Controlador.getControlador().obtenerMaterialView(materiales.getSelectedItem().toString());
 				if(m != null){
 					Controlador.getControlador().eliminarMaterial(m.getCodigo());
 					materiales.removeItemAt(materiales.getSelectedIndex());

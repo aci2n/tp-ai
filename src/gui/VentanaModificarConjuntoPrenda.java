@@ -1,6 +1,4 @@
 package gui;
-import implementacion.ConjuntoPrenda;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -156,7 +154,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==comboCodigo){
 			if (comboCodigo.getSelectedItem()!=null){
-				ConjuntoPrenda p = (ConjuntoPrenda)Controlador.getControlador().obtenerPrenda(comboCodigo.getSelectedItem().toString());
+				ConjuntoPrendaView p = (ConjuntoPrendaView)Controlador.getControlador().obtenerPrendaView(comboCodigo.getSelectedItem().toString());
 				tNombre.setText(p.getNombre());
 				tDescuento.setText(Float.toString(p.getDescuento()));
 			}
@@ -165,7 +163,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 			if (prendasComboBox.getSelectedItem()!= null && Controlador.getControlador().existePrenda(prendasComboBox.getSelectedItem().toString())){
 				if(!seContieneASiMismo(prendasComboBox.getSelectedItem().toString(),comboCodigo.getSelectedItem().toString())){
 					if (!yaExiste(prendasComboBox.getSelectedItem().toString())){
-						PrendaView p = Controlador.getControlador().obtenerPrenda(prendasComboBox.getSelectedItem().toString()).generarPrendaView();
+						PrendaView p = Controlador.getControlador().obtenerPrendaView(prendasComboBox.getSelectedItem().toString());
 						prendas.add(p);
 						Object [] fila = {p.getNombre()};
 						modelo.addRow (fila);

@@ -1,6 +1,4 @@
 package gui;
-import implementacion.Material;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -138,13 +136,12 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==materiales){
 			if (materiales.getSelectedItem()!=null){
-				Material material = Controlador.getControlador().obtenerMaterial(materiales.getSelectedItem().toString());
-				//MaterialView material = m.generarMaterialView();
+				MaterialView material = Controlador.getControlador().obtenerMaterialView(materiales.getSelectedItem().toString());
 				tNombre.setText(material.getNombre());
 				tPuntoPedido.setText(Float.toString(material.getPuntoPedido()));
 				tCantidad.setText(Float.toString(material.getCantidad()));
 				tCosto.setText(Float.toString(material.getCosto()));
-				tCuit.setText(material.getProveedor().getCuit());				
+				tCuit.setText(material.getCuit());				
 			}
 		}
 		if (e.getSource()==modificar){

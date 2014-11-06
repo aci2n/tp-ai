@@ -262,7 +262,7 @@ public class Controlador {
 	
 	//OBTENER
 	
-	public Proveedor obtenerProveedor(String cuit){
+	private Proveedor obtenerProveedor(String cuit){
 		for (Proveedor p : proveedores)
 			if (p.sosElProveedor(cuit)==true)
 				return p;
@@ -276,7 +276,7 @@ public class Controlador {
 		return null;
 	}
 	
-	public Material obtenerMaterial(String codigo) {
+	private Material obtenerMaterial(String codigo) {
 		for (Material m : materiales)
 			if (m.sosElMaterial(codigo)==true)
 				return m;
@@ -290,7 +290,7 @@ public class Controlador {
 		return null;
 	}
 	
-	public Prenda obtenerPrenda(String codigo) {
+	private Prenda obtenerPrenda(String codigo) {
 		for (Prenda p : prendas)
 			if (p.sosLaPrenda(codigo)==true)
 				return p;

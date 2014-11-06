@@ -1,6 +1,4 @@
 package gui;
-import implementacion.PrendaConTemporada;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -179,7 +177,7 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==comboCodigo){
 			if (comboCodigo.getSelectedItem()!=null){
-				PrendaConTemporada p = (PrendaConTemporada)Controlador.getControlador().obtenerPrenda(comboCodigo.getSelectedItem().toString());
+				PrendaConTemporadaView p = (PrendaConTemporadaView)Controlador.getControlador().obtenerPrendaView(comboCodigo.getSelectedItem().toString());
 				tNombre.setText(p.getNombre());
 				tPorcentajeVenta.setText(Float.toString(p.getPorcentajeVenta()));
 				tTemporada.setText(p.getTemporada());
