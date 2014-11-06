@@ -27,10 +27,9 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 	}
 
 	public void insert(Object o) {
-		Connection con = Conexion.connect();
 		ConjuntoPrenda c = (ConjuntoPrenda)o;
 		try{
-			
+			Connection con = Conexion.connect();
 			PreparedStatement ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Prendas(codigo,nombre,descuento,activo,tipo_prenda) VALUES (?,?,?,?,?)");
 			ps.setString(1, c.getCodigo());
 			ps.setString(2,c.getNombre());

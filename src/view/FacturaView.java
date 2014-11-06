@@ -40,5 +40,7 @@ public class FacturaView {
 		return precio;
 	}	
 	
-	
+	public boolean sosLaFactura(int numero){
+		return this.numeroFactura==numero;
+	}
 }

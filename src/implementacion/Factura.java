@@ -10,11 +10,15 @@ import view.ItemPrendaView;
 public class Factura {
 	private Collection<ItemPrenda> prendas;
 	private int numeroFactura;
-	private static int contador;
+	private static int contador = 1;
 	
 	public Factura(Collection<ItemPrenda> prendas){
 		this.prendas=prendas;
 		numeroFactura=contador++;
+		AdministradorPersistenciaFactura.getInstancia().insert(this);
+	}
+
+	public Factura() {
 	}
 
 	public Collection<ItemPrenda> getPrendas() {
@@ -53,5 +57,13 @@ public class Factura {
 
 	public static Collection<Factura> obtenerFacturas() {
 		return AdministradorPersistenciaFactura.getInstancia().obtenerFacturas();
+	}
+
+	public static int getContador() {
+		return contador;
+	}
+	
+	public boolean sosLaFactura(int numero){
+		return this.numeroFactura==numero;
 	}
 }

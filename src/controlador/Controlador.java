@@ -1,3 +1,10 @@
+/* hay que ver como hacemo para que cuando levante desde la base de datos 
+ * no cree una instancia distinta a la que esta en el controlador
+ * porque despues cuando actualizas ponele descontar stock se cambia
+ * en la base de datos pero no en el controlador y queda medio mal
+ * aunque ni se nota casi
+ */
+
 package controlador;
 
 import implementacion.ConjuntoPrenda;
@@ -15,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import view.ConjuntoPrendaView;
+import view.FacturaView;
 import view.ItemMaterialView;
 import view.ItemPrendaView;
 import view.MaterialView;
@@ -345,5 +353,16 @@ public class Controlador {
 			prendasView.add(prenda.generarPrendaView());
 		}
 		return prendasView;
+	}
+	
+	public int getNroFactura(){
+		return Factura.getContador();
+	}
+
+	public Collection<FacturaView> getFacturasView() {
+		Collection<FacturaView> facturasView = new ArrayList<FacturaView>();
+		for (Factura factura : this.facturas)
+			facturasView.add(factura.generarFacturaView());
+		return facturasView;
 	}
 }

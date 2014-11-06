@@ -33,7 +33,7 @@ public class VentanaListaPrendas extends JFrame{
 	private void componentes(){
 		
 		Container c = this.getContentPane();
-		Collection<PrendaView> prendas = Controlador.getControlador().getPrendasView();
+		final Collection<PrendaView> prendas = Controlador.getControlador().getPrendasView();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS
@@ -55,7 +55,7 @@ public class VentanaListaPrendas extends JFrame{
 				java.awt.Point p = e.getPoint();
 				int fila = rowAtPoint(p);
 								
-				PrendaView prenda = Controlador.getControlador().obtenerPrendaView(modelo.getValueAt(fila, 0).toString());
+				PrendaView prenda = obtenerPrendaViewLocal(modelo.getValueAt(fila, 0).toString());
 				if (prenda instanceof PrendaConTemporadaView) {
 					PrendaConTemporadaView prendaT = (PrendaConTemporadaView)prenda;
 					tip.append("<html><b>Materiales</b>:<br>");
@@ -84,6 +84,14 @@ public class VentanaListaPrendas extends JFrame{
 				return tip.toString();
 
 			}
+			
+			final PrendaView obtenerPrendaViewLocal(String codigo) {
+				for (PrendaView pv : prendas)
+					if (pv.sosLaPrenda(codigo))
+						return pv;
+				return null;
+			}
+			
 			public boolean isCellEditable(int rowIndex, int colIndex) {
 				return false;
 			}

@@ -163,7 +163,8 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 					Object [] fila = {i.getMaterial().getNombre(),i.getCantidad()};
 					modelo.addRow (fila);
 				}
-				else JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
+				else 
+					JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese materiales duplicados.","Error",JOptionPane.ERROR_MESSAGE);
 
 			}
 			else

@@ -15,6 +15,19 @@ import javax.swing.JSeparator;
 
 import controlador.Controlador;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 @SuppressWarnings("serial")
 public class Menu extends JFrame implements ActionListener{
 	
@@ -23,6 +36,9 @@ public class Menu extends JFrame implements ActionListener{
 	private JMenuItem altaPrendaTemporada, altaPrendaNoTemporada, altaConjunto, bajaPrenda, modificarPrendaTemporada, modificarPrendaNoTemporada,
 	modificarConjunto, listarPrenda, altaProveedor, bajaProveedor, modificarProveedor, listarProveedor, altaMaterial, 
 	bajaMaterial, modificarMaterial, listarMaterial;
+	private JMenuItem miListarFacturas;
+	private JMenuItem miGenerarFactura;
+	private JMenu facturas;
 	private JLabel imagen;
 	
 	
@@ -130,7 +146,7 @@ public class Menu extends JFrame implements ActionListener{
 		proveedores = new JMenu();
 		proveedores.setText("Proveedores");
 		menubar.add(proveedores);
-		
+	
 		altaProveedor = new JMenuItem();
 		altaProveedor.setText("Alta Proveedor");
 		proveedores.add(altaProveedor);
@@ -155,7 +171,24 @@ public class Menu extends JFrame implements ActionListener{
 		listarProveedor = new JMenuItem();
 		listarProveedor.setText("Listar Proveedores");
 		proveedores.add(listarProveedor);
-		listarProveedor.addActionListener(this);		
+		listarProveedor.addActionListener(this);
+		
+		//FACTURAS
+		
+		facturas = new JMenu();
+		menubar.add(facturas);
+		facturas.setText("Facturas");
+
+		miGenerarFactura = new JMenuItem();
+		facturas.add(miGenerarFactura);
+		miGenerarFactura.setText("Generar Factura");
+		
+		miListarFacturas = new JMenuItem();
+		facturas.add(miListarFacturas);
+		miListarFacturas.setText("Listar Facturas");
+		miListarFacturas.addActionListener(this);
+
+		miGenerarFactura.addActionListener(this);
 	}
 	
 	private void comportamiento(){
@@ -216,7 +249,13 @@ public class Menu extends JFrame implements ActionListener{
 		}		
 		if (e.getSource()==listarProveedor){
 			new VentanaListaProveedor();
-		}	
+		}
+		if (e.getSource()==miGenerarFactura){
+			new VentanaGenerarFactura();
+		}
+		if (e.getSource()==miListarFacturas){
+			new VentanaListaFacturas();
+		}
 	}
 		
 	public static void main(String[] args){

@@ -112,7 +112,7 @@ public class Material {
 	}
 
 	public void modificarStock(float cantidad) {
-		this.cantidad=this.cantidad+cantidad;
+		setCantidad(this.cantidad+cantidad);
 		this.actualizar();
 	}	
 }

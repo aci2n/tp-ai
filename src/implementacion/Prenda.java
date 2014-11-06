@@ -49,11 +49,11 @@ public abstract class Prenda {
 	
 	public abstract void actualizar();
 	
-	public static Collection<Prenda> obtenerPrendas() { //ver si esto anda
+	public static Collection<Prenda> obtenerPrendas() {
 		Collection<Prenda> prendas = new ArrayList<Prenda>();
-		prendas.addAll(AdministradorPersistenciaConjuntoPrenda.getInstancia().obtenerConjuntosPrenda()); 
-		prendas.addAll(AdministradorPersistenciaPrendaConTemporada.getInstancia().obtenerPrendasConTemporada());
 		prendas.addAll(AdministradorPersistenciaPrendaSinTemporada.getInstancia().obtenerPrendasSinTemporada());
+		prendas.addAll(AdministradorPersistenciaPrendaConTemporada.getInstancia().obtenerPrendasConTemporada());
+		prendas.addAll(AdministradorPersistenciaConjuntoPrenda.getInstancia().obtenerConjuntosPrenda()); 
 		return prendas;
 	}
 	
