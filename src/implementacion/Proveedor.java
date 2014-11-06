@@ -1,12 +1,14 @@
 package implementacion;
 
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 import persistencia.AdministradorPersistenciaProveedor;
 import view.ProveedorView;
 
 
-public class Proveedor {
+public class Proveedor implements Observer {
 	private String nombre;
 	private String cuit;
 	private boolean activo;
@@ -70,5 +72,18 @@ public class Proveedor {
 	
 	public void actualizar(){
 		AdministradorPersistenciaProveedor.getInstancia().update(this);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		//	Acá se hace algo para notificar a los proveedores.
+		//	@arg es null
+		//	@o es el material que disparó la notificación
+		Material material = (Material) o;
+		System.out.println("Se notificó al proveedor " + this.nombre + "\nMaterial: " + material.getNombre() + "\nCantidad: " + material.getCantidad() + "\n Punto de pedido: " + material.getPuntoPedido() + "\n----------\n");
+	}
+	
+	private void generarOrdenDeCompra(Material material, float cantidadAComprar) {
+		//	TODO
 	}
 }

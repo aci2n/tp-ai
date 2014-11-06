@@ -48,7 +48,7 @@ public class Controlador {
 	}
 		
 	//SINGLETON
-	
+
 	public static Controlador getControlador(){
 		if(con == null){
 			con = new Controlador();
@@ -63,6 +63,7 @@ public class Controlador {
 			Proveedor proveedor = obtenerProveedor(materialView.getCuit());
 			if (proveedor != null){
 				Material material = new Material(materialView.getCodigo(), materialView.getNombre(), materialView.getPuntoPedido(), proveedor, materialView.getCantidad(), materialView.getCosto());	
+				material.addObserver(proveedor);
 				materiales.add(material);
 			}
 		}

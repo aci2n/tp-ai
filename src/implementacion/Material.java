@@ -1,11 +1,15 @@
 package implementacion;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import persistencia.AdministradorPersistenciaMaterial;
 import view.MaterialView;
 
-public class Material {
+public class Material extends Observable {
 	private String codigo;
 	private String nombre;
 	private float puntoPedido;
@@ -48,10 +52,14 @@ public class Material {
 
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
+		this.addObserver(proveedor);
 	}
 
 	public void setCantidad(float cantidad) {
 		this.cantidad = cantidad;
+		setChanged();
+		if (this.cantidad < this.puntoPedido) 
+			this.notifyObservers();
 	}
 
 	public void setCosto(float costo) {
@@ -118,5 +126,5 @@ public class Material {
 
 	public boolean tenesElProveedor(String cuit) {
 		return proveedor.sosElProveedor(cuit);
-	}	
+	}
 }
