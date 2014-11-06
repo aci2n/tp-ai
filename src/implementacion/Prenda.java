@@ -72,4 +72,8 @@ public abstract class Prenda {
 	public abstract PrendaView generarPrendaView();
 
 	public abstract void descontarStock(float cantidad);
+	
+	public abstract boolean tenesElMaterial(String codigo);
+	
+	public abstract boolean tenesLaPrenda(String codigo);
 }

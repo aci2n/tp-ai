@@ -1,8 +1,10 @@
-/* hay que ver como hacemo para que cuando levante desde la base de datos 
+/* 
+ * hay que ver como hacemo para que cuando levante desde la base de datos 
  * no cree una instancia distinta a la que esta en el controlador
  * porque despues cuando actualizas ponele descontar stock se cambia
  * en la base de datos pero no en el controlador y queda medio mal
  * aunque ni se nota casi
+ * otra: arreglar concurrentmodificationexception en los eliminar
  */
 
 package controlador;
@@ -14,12 +16,12 @@ import implementacion.ItemPrenda;
 import implementacion.Material;
 import implementacion.Prenda;
 import implementacion.PrendaConTemporada;
-import implementacion.PrendaSimple;
 import implementacion.PrendaSinTemporada;
 import implementacion.Proveedor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import view.ConjuntoPrendaView;
 import view.FacturaView;
@@ -205,6 +207,64 @@ public class Controlador {
 	//BAJAS
 	
 	public void eliminarMaterial(String codigo){
+		Iterator<Material> iterM = materiales.iterator();
+		while (!iterM.hasNext()){
+			Material m = iterM.next();
+			if (m.sosElMaterial(codigo)){
+				Iterator<Prenda> iterP = prendas.iterator();
+				while (iterP.hasNext()){
+					Prenda p = iterP.next();
+					if (p.tenesElMaterial(codigo)){
+						eliminarPrenda(p.getCodigo());						
+					}
+				}
+				m.eliminar();
+				iterM.remove();
+				return;
+			}
+		}
+	}
+	
+	public void eliminarProveedor(String cuit) {
+		Iterator<Proveedor> iterProv = proveedores.iterator();
+		while (iterProv.hasNext()){
+			Proveedor prov = iterProv.next();
+			if (prov.sosElProveedor(cuit)){
+				Iterator<Material> iter = materiales.iterator();
+				while (iter.hasNext()){
+					Material m = iter.next();
+					if (m.tenesElProveedor(cuit)){
+						iter.remove();
+						eliminarMaterial(m.getCodigo());
+					}
+				}
+				iterProv.remove();
+				return;
+			}
+		}
+	}
+
+	public void eliminarPrenda(String codigo) {
+		for (Prenda pr : prendas)
+			if (pr.sosLaPrenda(codigo)){
+				Iterator<Prenda> iter = prendas.iterator();
+				while (iter.hasNext()){
+					Prenda p = iter.next();
+					if (p.tenesLaPrenda(codigo)){
+						iter.remove();
+						eliminarPrenda(p.getCodigo());
+					}
+				}
+				pr.eliminar();
+				this.prendas.remove(pr);
+				return;
+			}
+	}
+	
+	/* 
+	bajas que andan mas o menos
+	
+ 	public void eliminarMaterial(String codigo){
 		for (Material m : materiales){
 			if (m.sosElMaterial(codigo)){
 				m.eliminar();
@@ -250,6 +310,7 @@ public class Controlador {
 				return;
 			}	
 	}
+	*/
 	
 	//EXISTE
 	

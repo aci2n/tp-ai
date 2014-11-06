@@ -114,5 +114,9 @@ public class Material {
 	public void modificarStock(float cantidad) {
 		setCantidad(this.cantidad+cantidad);
 		this.actualizar();
+	}
+
+	public boolean tenesElProveedor(String cuit) {
+		return proveedor.sosElProveedor(cuit);
 	}	
 }

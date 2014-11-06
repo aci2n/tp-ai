@@ -71,6 +71,20 @@ public class ConjuntoPrenda extends Prenda{
 	public void descontarStock(float cantidad) {
 		for (Prenda p : prendas)
 			p.descontarStock(cantidad);
+	}
+
+	public boolean tenesElMaterial(String codigo) {
+		for (Prenda p : prendas)
+			if (p.tenesElMaterial(codigo))
+				return true;
+		return false;
+	}
+
+	public boolean tenesLaPrenda(String codigo) {
+		for (Prenda p : prendas)
+			if (p.sosLaPrenda(codigo))
+				return true;
+		return false;
 	}	
 	
 	
