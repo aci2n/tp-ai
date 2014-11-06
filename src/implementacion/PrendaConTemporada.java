@@ -71,5 +71,4 @@ public class PrendaConTemporada extends PrendaSimple{
 		}
 		return new PrendaConTemporadaView(getCodigo(), getNombre(), isActivo(),  itemsView, this.temporada, this.porcentajeVenta);
 	}
-
 }

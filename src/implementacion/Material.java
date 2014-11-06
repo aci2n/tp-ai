@@ -109,5 +109,10 @@ public class Material {
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+
+	public void modificarStock(float cantidad) {
+		this.cantidad=this.cantidad+cantidad;
+		this.actualizar();
 	}	
 }

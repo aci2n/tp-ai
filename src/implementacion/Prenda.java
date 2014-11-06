@@ -70,4 +70,6 @@ public abstract class Prenda {
 	}
 	
 	public abstract PrendaView generarPrendaView();
+
+	public abstract void descontarStock(float cantidad);
 }

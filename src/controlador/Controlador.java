@@ -1,7 +1,9 @@
 package controlador;
 
 import implementacion.ConjuntoPrenda;
+import implementacion.Factura;
 import implementacion.ItemMaterial;
+import implementacion.ItemPrenda;
 import implementacion.Material;
 import implementacion.Prenda;
 import implementacion.PrendaConTemporada;
@@ -14,6 +16,7 @@ import java.util.Collection;
 
 import view.ConjuntoPrendaView;
 import view.ItemMaterialView;
+import view.ItemPrendaView;
 import view.MaterialView;
 import view.PrendaConTemporadaView;
 import view.PrendaSinTemporadaView;
@@ -24,12 +27,14 @@ public class Controlador {
 	private Collection<Material> materiales;
 	private Collection<Proveedor> proveedores;
 	private Collection<Prenda> prendas;
+	private Collection<Factura> facturas;
 	public static Controlador con;
 	
 	public Controlador() {
 		proveedores = Proveedor.obtenerProveedores();
 		materiales = Material.obtenerMateriales();
 		prendas = Prenda.obtenerPrendas();
+		facturas =  Factura.obtenerFacturas();
 	}
 		
 	//SINGLETON
@@ -102,6 +107,16 @@ public class Controlador {
 		}
 	}
 	
+	public void generarFactura(Collection<ItemPrendaView> prendasView){
+		Collection<ItemPrenda> prendas = new ArrayList<ItemPrenda>();
+		for (ItemPrendaView ipv : prendasView){
+			ItemPrenda item = new ItemPrenda(obtenerPrenda(ipv.getPrenda().getCodigo()),ipv.getCantidad());
+			item.getPrenda().descontarStock(ipv.getCantidad());
+			prendas.add(item);			
+		}
+		Factura factura = new Factura(prendas);
+		this.facturas.add(factura);
+	}
 	
 	//MODIFICAR
 	

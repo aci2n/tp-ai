@@ -12,4 +12,9 @@ public abstract class PrendaSimple extends Prenda{
 	public void setMateriales(Collection<ItemMaterial> materiales){
 		this.materiales = materiales;
 	}	
+	
+	public void descontarStock(float cantidad){
+		for (ItemMaterial im : materiales)
+			im.getMaterial().modificarStock(-cantidad*im.getCantidad());
+	}
 }

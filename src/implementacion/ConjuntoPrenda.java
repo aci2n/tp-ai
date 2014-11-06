@@ -66,6 +66,11 @@ public class ConjuntoPrenda extends Prenda{
 			prendasView.add(prenda.generarPrendaView());
 		}
 		return new ConjuntoPrendaView(getCodigo(), getNombre(), this.descuento, prendasView);
+	}
+
+	public void descontarStock(float cantidad) {
+		for (Prenda p : prendas)
+			p.descontarStock(cantidad);
 	}	
 	
 	
