@@ -110,7 +110,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		Collection<PrendaSinTemporada> prendasSinTemporada = new ArrayList<PrendaSinTemporada>();
 		Collection <ItemMaterial> itemsMaterial = new ArrayList<ItemMaterial>();
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'sintemporada'");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'sintemporada' AND activo = 1");
 			ResultSet res = ps.executeQuery();
 			while (res.next()){
 				PrendaSinTemporada prendaSinTemporada = new PrendaSinTemporada();
@@ -141,7 +141,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 		Collection <ItemMaterial> itemsMaterial = new ArrayList<ItemMaterial>();
 		PrendaSinTemporada prendaSinTemporada = null;
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where activo = 1 AND tipo_prenda = 'sintemporada' AND codigo = ?");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'sintemporada' AND codigo = ?");
 			ps.setString(1, codigo);
 			ResultSet res = ps.executeQuery();
 			while (res.next()){
