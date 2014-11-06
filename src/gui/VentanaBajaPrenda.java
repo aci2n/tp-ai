@@ -82,7 +82,10 @@ public class VentanaBajaPrenda extends javax.swing.JFrame implements ActionListe
 		if (e.getSource()==eliminar){
 			if (prendas.getSelectedItem()!=null){
 				Controlador.getControlador().eliminarPrenda(prendas.getSelectedItem().toString());
-				prendas.removeItemAt(prendas.getSelectedIndex());
+				prendas.setSelectedIndex(-1);
+				prendas.removeAllItems();;
+				for (PrendaView pr : Controlador.getControlador().getPrendasView())
+					prendas.addItem(pr.getCodigo());
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0),"Por favor elija una prenda a eliminar.","Error",JOptionPane.ERROR_MESSAGE);
