@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import controlador.Controlador;
+
 
 public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPersistencia{
 
@@ -118,7 +120,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 				psObtenerMateriales.setString(1, res.getString("codigo"));
 				ResultSet resMateriales = psObtenerMateriales.executeQuery();
 				while (resMateriales.next()){
-					ItemMaterial item = new ItemMaterial(AdministradorPersistenciaMaterial.getInstance().buscarMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
+					ItemMaterial item = new ItemMaterial(Controlador.getControlador().obtenerMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
 					itemsMaterial.add(item);
 				}
 				prendaSinTemporada.setCodigo(res.getString("codigo"));
@@ -150,7 +152,7 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 				psObtenerMateriales.setString(1, res.getString("codigo"));
 				ResultSet resMateriales = psObtenerMateriales.executeQuery();
 				while (resMateriales.next()){
-					ItemMaterial item = new ItemMaterial(AdministradorPersistenciaMaterial.getInstance().buscarMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
+					ItemMaterial item = new ItemMaterial(Controlador.getControlador().obtenerMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
 					itemsMaterial.add(item);
 				}
 				prendaSinTemporada.setCodigo(res.getString("codigo"));

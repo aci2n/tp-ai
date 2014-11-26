@@ -48,7 +48,7 @@ public class Menu extends JFrame implements ActionListener{
 	}
 	
 	private void componentes(){
-		Controlador.getControlador();
+		Controlador.getControlador().inicializar();
 		Container c = this.getContentPane();
 		c.setLayout(new BorderLayout());
 		menubar = new JMenuBar();

@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import controlador.Controlador;
+
 
 public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersistencia{
 
@@ -117,7 +119,7 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 				psPrendas.setString(1, res.getString("codigo"));
 				ResultSet resPrendas = psPrendas.executeQuery();
 				while (resPrendas.next()){
-					Prenda pr = Prenda.buscarPrenda(resPrendas.getString("codigo_prenda"));
+					Prenda pr = Controlador.getControlador().obtenerPrenda(resPrendas.getString("codigo_prenda"));
 					prendas.add(pr);
 				}
 				conjuntoPrenda.setCodigo(res.getString("codigo"));
@@ -150,7 +152,7 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 				psPrendas.setString(1, res.getString("codigo"));
 				ResultSet resPrendas = psPrendas.executeQuery();
 				while (resPrendas.next()){
-					Prenda pr = Prenda.buscarPrenda(resPrendas.getString("codigo_prenda"));
+					Prenda pr = Controlador.getControlador().obtenerPrenda(resPrendas.getString("codigo_prenda"));
 					prendas.add(pr);
 				}
 				conjuntoPrenda.setCodigo(res.getString("codigo"));

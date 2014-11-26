@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import controlador.Controlador;
+
 public class AdministradorPersistenciaMaterial extends
 		AdministradorPersistencia {
 
@@ -100,7 +102,7 @@ public class AdministradorPersistenciaMaterial extends
 				m = new Material();
 	
 				m.setCodigo(rs.getString("codigo"));
-				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(rs.getString("cuit")));
+				m.setProveedor(Controlador.getControlador().obtenerProveedor(rs.getString("cuit")));
 				m.setNombre(rs.getString("nombre")); 
 				m.setCantidad(rs.getFloat("cantidad")); 
 				m.setPuntoPedido(rs.getFloat("punto_pedido")); 
@@ -127,7 +129,7 @@ public class AdministradorPersistenciaMaterial extends
 				Material m = new Material();
 				
 				m.setCodigo(rs.getString("codigo"));
-				m.setProveedor(AdministradorPersistenciaProveedor.getInstancia().buscarProveedor(rs.getString("cuit")));
+				m.setProveedor(Controlador.getControlador().obtenerProveedor(rs.getString("cuit")));
 				m.setNombre(rs.getString("nombre")); 
 				m.setCantidad(rs.getFloat("cantidad")); 
 				m.setPuntoPedido(rs.getFloat("punto_pedido")); 

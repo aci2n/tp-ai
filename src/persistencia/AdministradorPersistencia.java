@@ -2,7 +2,7 @@ package persistencia;
 
 
 public abstract class AdministradorPersistencia {
-	private static String database = "A_Interactivas_14";
+	private static String database = "tpai";
 	
 	public abstract void insert(Object o);
 	public abstract void update(Object o);
