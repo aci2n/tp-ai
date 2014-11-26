@@ -1,12 +1,12 @@
 package implementacion;
 
-import view.ItemPrendaView;
+import view.ItemFacturaView;
 
-public class ItemPrenda {
+public class ItemFactura {
 	private Prenda prenda;
 	private float cantidad;
 	
-	public ItemPrenda(Prenda prenda, float cantidad){
+	public ItemFactura(Prenda prenda, float cantidad){
 		this.prenda=prenda;
 		this.cantidad=cantidad;
 	}
@@ -31,7 +31,7 @@ public class ItemPrenda {
 		return prenda.calcularPrecio()*cantidad;
 	}
 
-	public ItemPrendaView generarItemPrendaView() {
-		return new ItemPrendaView(this.prenda.generarPrendaView(),this.cantidad);
+	public ItemFacturaView generarItemPrendaView() {
+		return new ItemFacturaView(this.prenda.generarPrendaView(),this.cantidad);
 	}		
 }

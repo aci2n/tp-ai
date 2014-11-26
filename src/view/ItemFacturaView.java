@@ -1,12 +1,12 @@
 package view;
 
 
-public class ItemPrendaView {
+public class ItemFacturaView {
 	private PrendaView prenda;
 	private float cantidad;
 	private float subtotal;
 
-	public ItemPrendaView(PrendaView prenda, float cantidad){
+	public ItemFacturaView(PrendaView prenda, float cantidad){
 		this.prenda=prenda;
 		this.cantidad=cantidad;
 		this.subtotal=calcularSubtotal();

@@ -5,14 +5,14 @@ import java.util.Collection;
 
 import persistencia.AdministradorPersistenciaFactura;
 import view.FacturaView;
-import view.ItemPrendaView;
+import view.ItemFacturaView;
 
 public class Factura {
-	private Collection<ItemPrenda> prendas;
+	private Collection<ItemFactura> prendas;
 	private int numeroFactura;
 	private static int contador = 1;
 	
-	public Factura(Collection<ItemPrenda> prendas){
+	public Factura(Collection<ItemFactura> prendas){
 		this.prendas=prendas;
 		numeroFactura=contador++;
 		AdministradorPersistenciaFactura.getInstancia().insert(this);
@@ -21,11 +21,11 @@ public class Factura {
 	public Factura() {
 	}
 
-	public Collection<ItemPrenda> getPrendas() {
+	public Collection<ItemFactura> getPrendas() {
 		return prendas;
 	}
 
-	public void setPrendas(Collection<ItemPrenda> prendas) {
+	public void setPrendas(Collection<ItemFactura> prendas) {
 		this.prendas = prendas;
 	}
 
@@ -43,14 +43,14 @@ public class Factura {
 
 	public float calcularPrecio(){
 		float total = 0;
-		for (ItemPrenda ip : this.prendas)
+		for (ItemFactura ip : this.prendas)
 			total = total + ip.calcularSubTotal();
 		return total;
 	}
 	
 	public FacturaView generarFacturaView(){
-		Collection<ItemPrendaView> prendasView = new ArrayList<ItemPrendaView>();
-		for (ItemPrenda p : this.prendas)
+		Collection<ItemFacturaView> prendasView = new ArrayList<ItemFacturaView>();
+		for (ItemFactura p : this.prendas)
 			prendasView.add(p.generarItemPrendaView());			
 		return new FacturaView(this.numeroFactura, prendasView);
 	}

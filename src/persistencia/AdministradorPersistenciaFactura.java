@@ -1,7 +1,7 @@
 package persistencia;
 
 import implementacion.Factura;
-import implementacion.ItemPrenda;
+import implementacion.ItemFactura;
 import implementacion.Prenda;
 
 import java.sql.Connection;
@@ -35,7 +35,7 @@ public class AdministradorPersistenciaFactura extends AdministradorPersistencia 
 			
 			ps.execute();
 			
-			for (ItemPrenda ip : f.getPrendas()){
+			for (ItemFactura ip : f.getPrendas()){
 				ps = con.prepareStatement("INSERT INTO "+super.getDatabase()+".dbo.Facturas_Prendas (nro_factura, codigo_prenda, cantidad) VALUES (?,?,?)");
 				ps.setInt(1, f.getNumeroFactura());
 				ps.setString(2, ip.getPrenda().getCodigo());
@@ -71,13 +71,13 @@ public class AdministradorPersistenciaFactura extends AdministradorPersistencia 
 				f.setNumeroFactura(rs.getInt("nro_factura"));
 				Factura.setContador(++contador);
 				
-				Collection<ItemPrenda> itemsPrenda = new ArrayList<ItemPrenda>();
+				Collection<ItemFactura> itemsPrenda = new ArrayList<ItemFactura>();
 				ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Facturas_Prendas WHERE nro_factura = ?");
 				ps.setInt(1, rs.getInt("nro_factura"));
 				ResultSet rsPrendas = ps.executeQuery();
 				while (rsPrendas.next()){
 					Prenda p = Prenda.buscarPrendaFactura(rsPrendas.getString("codigo_prenda"));
-					itemsPrenda.add(new ItemPrenda(p,rsPrendas.getFloat("cantidad")));
+					itemsPrenda.add(new ItemFactura(p,rsPrendas.getFloat("cantidad")));
 				}
 				
 				f.setPrendas(itemsPrenda);

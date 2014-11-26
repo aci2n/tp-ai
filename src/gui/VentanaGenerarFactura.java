@@ -16,7 +16,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import view.ItemPrendaView;
+import view.ItemFacturaView;
 import view.PrendaView;
 import controlador.Controlador;
 
@@ -45,7 +45,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 	private JLabel lPrecio;
 	private DefaultTableModel modelo;
 	private JTable tablaPrendas;
-	private Collection<ItemPrendaView> itemsPrenda = new ArrayList<ItemPrendaView>();
+	private Collection<ItemFacturaView> itemsPrenda = new ArrayList<ItemFacturaView>();
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -146,7 +146,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==buttonAgregar){
 			if (!noDuplicados(comboBoxPrendas.getSelectedItem().toString())){
-				ItemPrendaView ipv = new ItemPrendaView(Controlador.getControlador().obtenerPrendaView(comboBoxPrendas.getSelectedItem().toString()),(float)(Integer)spinnerCantidad.getValue());
+				ItemFacturaView ipv = new ItemFacturaView(Controlador.getControlador().obtenerPrendaView(comboBoxPrendas.getSelectedItem().toString()),(float)(Integer)spinnerCantidad.getValue());
 				itemsPrenda.add(ipv);
 				Object [] fila = {ipv.getPrenda().getNombre(), ipv.getCantidad(),"$"+ipv.getSubtotal()};
 				modelo.addRow (fila);
@@ -161,7 +161,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 				modelo.setRowCount(0);
 				tNroFactura.setText(Integer.toString(Controlador.getControlador().getNroFactura()));
 				tPrecio.setText("$"+0);
-				itemsPrenda = new ArrayList<ItemPrendaView>();
+				itemsPrenda = new ArrayList<ItemFacturaView>();
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor ingrese al menos 1 prenda.","Error",JOptionPane.ERROR_MESSAGE);
@@ -169,7 +169,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 	}
 
 	private boolean noDuplicados(String codigoPrenda){
-		for (ItemPrendaView ipv : itemsPrenda)
+		for (ItemFacturaView ipv : itemsPrenda)
 			if (ipv.getPrenda().sosLaPrenda(codigoPrenda))
 				return true;
 		return false;

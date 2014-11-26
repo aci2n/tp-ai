@@ -11,7 +11,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import view.FacturaView;
-import view.ItemPrendaView;
+import view.ItemFacturaView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
@@ -53,7 +53,7 @@ public class VentanaListaFacturas extends JFrame{
 
 				FacturaView fv = obtenerFacturaViewLocal(modelo.getValueAt(fila, 0).toString());
 				tip.append("<html><b>Prendas</b>:");
-				for (ItemPrendaView ipv : fv.getPrendas())
+				for (ItemFacturaView ipv : fv.getPrendas())
 					tip.append("<br>"+ipv.getPrenda().getNombre()+"  --  "+ipv.getCantidad());
 
 				return tip.toString();
