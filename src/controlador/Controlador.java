@@ -210,22 +210,18 @@ public class Controlador {
 	//BAJAS
 	
 	public void eliminarMaterial(String codigo){
-		Iterator<Material> iterM = materiales.iterator();
-		while (!iterM.hasNext()){
-			Material m = iterM.next();
-			if (m.sosElMaterial(codigo)){
-				Iterator<Prenda> iterP = prendas.iterator();
-				while (iterP.hasNext()){
-					Prenda p = iterP.next();
-					if (p.tenesElMaterial(codigo)){
-						eliminarPrenda(p.getCodigo());						
-					}
-				}
-				m.eliminar();
-				iterM.remove();
-				return;
-			}
-		}
+		Material m = obtenerMaterial(codigo);
+	    if (m != null) {
+	      Iterator<Prenda> iterP = prendas.iterator();
+	      while (iterP.hasNext()) {
+	        Prenda p = iterP.next();
+	        if (p.tenesElMaterial(codigo)) {
+	          eliminarPrenda(p.getCodigo());						
+	        }
+	      }
+	      m.eliminar();
+	      materiales.remove(m);
+	    }
 	}
 	
 	public void eliminarProveedor(String cuit) {
