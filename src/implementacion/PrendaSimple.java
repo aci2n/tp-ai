@@ -28,4 +28,11 @@ public abstract class PrendaSimple extends Prenda{
 	public boolean tenesLaPrenda(String codigo) {
 		return false;
 	}
+	
+	public boolean hayStock(float cantidad){
+		for (ItemMaterial im : materiales)
+			if (!im.getMaterial().tenesStock(cantidad*im.getCantidad()))
+				return false;
+		return true;
+	}
 }

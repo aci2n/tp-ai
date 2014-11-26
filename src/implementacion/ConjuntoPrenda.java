@@ -87,5 +87,10 @@ public class ConjuntoPrenda extends Prenda{
 		return false;
 	}	
 	
-	
+	public boolean tenesStock(float cantidad){
+		for (Prenda p : prendas)
+			if (!p.hayStock(cantidad))
+				return false;
+		return true;
+	}
 }

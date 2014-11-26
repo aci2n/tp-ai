@@ -127,4 +127,8 @@ public class Material extends Observable {
 	public boolean tenesElProveedor(String cuit) {
 		return proveedor.sosElProveedor(cuit);
 	}
+
+	public boolean tenesStock(float cantidad) {
+		return this.cantidad>=cantidad;
+	}
 }

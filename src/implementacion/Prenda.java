@@ -76,4 +76,6 @@ public abstract class Prenda {
 	public abstract boolean tenesElMaterial(String codigo);
 	
 	public abstract boolean tenesLaPrenda(String codigo);
+
+	public abstract boolean hayStock(float cantidad);
 }
