@@ -244,20 +244,17 @@ public class Controlador {
 	}
 
 	public void eliminarPrenda(String codigo) {
-		for (Prenda pr : prendas)
-			if (pr.sosLaPrenda(codigo)){
-				Iterator<Prenda> iter = prendas.iterator();
-				while (iter.hasNext()){
-					Prenda p = iter.next();
-					if (p.tenesLaPrenda(codigo)){
-						iter.remove();
-						eliminarPrenda(p.getCodigo());
-					}
+		Prenda prenda = obtenerPrenda(codigo);
+		if (prenda != null) {
+			prendas.remove(prenda);
+			prenda.eliminar();
+			for (Prenda p : prendas) {
+				if (p.tenesLaPrenda(codigo)) {
+					prendas.remove(p);
+					p.eliminar();
 				}
-				pr.eliminar();
-				this.prendas.remove(pr);
-				return;
 			}
+		}
 	}
 	
 	/* 

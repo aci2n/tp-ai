@@ -82,7 +82,7 @@ public class ConjuntoPrenda extends Prenda{
 
 	public boolean tenesLaPrenda(String codigo) {
 		for (Prenda p : prendas)
-			if (p.sosLaPrenda(codigo))
+			if (p.sosLaPrenda(codigo) || p.tenesLaPrenda(codigo))
 				return true;
 		return false;
 	}	
