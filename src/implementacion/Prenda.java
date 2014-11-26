@@ -78,4 +78,16 @@ public abstract class Prenda {
 	public abstract boolean tenesLaPrenda(String codigo);
 
 	public abstract boolean hayStock(float cantidad);
+
+	public static Prenda buscarPrendaFactura(String codigo) {
+		Prenda p = null;
+		p = AdministradorPersistenciaConjuntoPrenda.getInstancia().buscarPrendaFactura(codigo);
+		if (p==null){
+			p=AdministradorPersistenciaPrendaConTemporada.getInstancia().buscarPrendaFactura(codigo);
+			if(p == null){
+				p=AdministradorPersistenciaPrendaSinTemporada.getInstancia().buscarPrendaFactura(codigo);
+			}
+		}
+		return p;	
+	}
 }

@@ -1,6 +1,7 @@
 package persistencia;
 
 import implementacion.ItemMaterial;
+import implementacion.Material;
 import implementacion.PrendaSinTemporada;
 
 import java.sql.Connection;
@@ -153,6 +154,36 @@ public class AdministradorPersistenciaPrendaSinTemporada extends AdministradorPe
 				ResultSet resMateriales = psObtenerMateriales.executeQuery();
 				while (resMateriales.next()){
 					ItemMaterial item = new ItemMaterial(Controlador.getControlador().obtenerMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
+					itemsMaterial.add(item);
+				}
+				prendaSinTemporada.setCodigo(res.getString("codigo"));
+				prendaSinTemporada.setActivo(res.getBoolean("activo"));
+				prendaSinTemporada.setNombre(res.getString("nombre"));
+				prendaSinTemporada.setMateriales(itemsMaterial);
+			}
+			con.close();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		return prendaSinTemporada;
+	}
+	
+	public PrendaSinTemporada buscarPrendaFactura(String codigo){
+		Connection con = Conexion.connect();
+		Collection <ItemMaterial> itemsMaterial = new ArrayList<ItemMaterial>();
+		PrendaSinTemporada prendaSinTemporada = null;
+		try {
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'sintemporada' AND codigo = ?");
+			ps.setString(1, codigo);
+			ResultSet res = ps.executeQuery();
+			while (res.next()){
+				prendaSinTemporada = new PrendaSinTemporada();
+				PreparedStatement psObtenerMateriales = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas_Materiales where codigo_prenda = ?");
+				psObtenerMateriales.setString(1, res.getString("codigo"));
+				ResultSet resMateriales = psObtenerMateriales.executeQuery();
+				while (resMateriales.next()){
+					ItemMaterial item = new ItemMaterial(Material.buscarMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
 					itemsMaterial.add(item);
 				}
 				prendaSinTemporada.setCodigo(res.getString("codigo"));

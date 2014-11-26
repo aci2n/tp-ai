@@ -57,6 +57,7 @@ public class Controlador {
 	public static Controlador getControlador(){
 		if(con == null){
 			con = new Controlador();
+			con.inicializar();
 		}
 		return con;
 	}
@@ -300,7 +301,10 @@ public class Controlador {
 		for (Proveedor p : proveedores)
 			if (p.sosElProveedor(cuit)==true)
 				return p;
-		return Proveedor.buscarProveedor(cuit);		
+		Proveedor proveedor = Proveedor.buscarProveedor(cuit);
+		if (proveedor != null)
+			proveedores.add(proveedor);
+		return proveedor;	
 	}
 	
 	public ProveedorView obtenerProveedorView(String cuit){
@@ -314,7 +318,10 @@ public class Controlador {
 		for (Material m : materiales)
 			if (m.sosElMaterial(codigo)==true)
 				return m;
-		return Material.buscarMaterial(codigo);
+		Material material = Material.buscarMaterial(codigo);
+		if (material != null)
+			materiales.add(material);
+		return material;
 	}
 	
 	public MaterialView obtenerMaterialView(String codigo) {
@@ -328,7 +335,10 @@ public class Controlador {
 		for (Prenda p : prendas)
 			if (p.sosLaPrenda(codigo)==true)
 				return p;
-		return Prenda.buscarPrenda(codigo);
+		Prenda prenda = Prenda.buscarPrenda(codigo);
+		if (prenda != null)
+			prendas.add(prenda);
+		return prenda;
 	}
 	
 	public PrendaView obtenerPrendaView(String codigo) {

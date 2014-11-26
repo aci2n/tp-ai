@@ -1,6 +1,7 @@
 package persistencia;
 
 import implementacion.ItemMaterial;
+import implementacion.Material;
 import implementacion.PrendaConTemporada;
 
 import java.sql.Connection;
@@ -159,6 +160,38 @@ public class AdministradorPersistenciaPrendaConTemporada extends AdministradorPe
 				ResultSet resMateriales = psObtenerMateriales.executeQuery();
 				while (resMateriales.next()){
 					ItemMaterial item = new ItemMaterial(Controlador.getControlador().obtenerMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
+					itemsMaterial.add(item);
+				}
+				prendaConTemporada.setCodigo(res.getString("codigo"));
+				prendaConTemporada.setNombre(res.getString("nombre"));
+				prendaConTemporada.setActivo(res.getBoolean("activo"));
+				prendaConTemporada.setTemporada(res.getString("temporada"));
+				prendaConTemporada.setPorcentajeVenta(res.getFloat("porcentaje_venta"));
+				prendaConTemporada.setMateriales(itemsMaterial);
+			}
+			con.close();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		return prendaConTemporada;
+	}
+	
+	public PrendaConTemporada buscarPrendaFactura(String codigo){
+		Connection con = Conexion.connect();
+		Collection <ItemMaterial> itemsMaterial = new ArrayList<ItemMaterial>();
+		PrendaConTemporada prendaConTemporada = null;
+		try {
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'contemporada' AND codigo = ?");
+			ps.setString(1, codigo);
+			ResultSet res = ps.executeQuery();
+			while (res.next()){
+				prendaConTemporada = new PrendaConTemporada();
+				PreparedStatement psObtenerMateriales = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas_Materiales where codigo_prenda = ?");
+				psObtenerMateriales.setString(1, res.getString("codigo"));
+				ResultSet resMateriales = psObtenerMateriales.executeQuery();
+				while (resMateriales.next()){
+					ItemMaterial item = new ItemMaterial(Material.buscarMaterial(resMateriales.getString("codigo_material")), resMateriales.getFloat("cantidad"));
 					itemsMaterial.add(item);
 				}
 				prendaConTemporada.setCodigo(res.getString("codigo"));

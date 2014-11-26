@@ -168,4 +168,35 @@ public class AdministradorPersistenciaConjuntoPrenda extends AdministradorPersis
 		}
 		return conjuntoPrenda;
 	}
+	
+	public ConjuntoPrenda buscarPrendaFactura(String codigo){
+		Connection con = Conexion.connect();
+		ConjuntoPrenda conjuntoPrenda = null;
+		Collection <Prenda> prendas = new ArrayList<Prenda>();
+		try {
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Prendas where tipo_prenda = 'conjunto' AND codigo = ?");
+			ps.setString(1, codigo);
+			ResultSet res = ps.executeQuery();
+			while (res.next()){
+				conjuntoPrenda = new ConjuntoPrenda();
+				PreparedStatement psPrendas = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Conjuntos_Prendas where codigo_conjunto = ?");
+				psPrendas.setString(1, res.getString("codigo"));
+				ResultSet resPrendas = psPrendas.executeQuery();
+				while (resPrendas.next()){
+					Prenda pr = Prenda.buscarPrendaFactura(resPrendas.getString("codigo_prenda"));
+					prendas.add(pr);
+				}
+				conjuntoPrenda.setCodigo(res.getString("codigo"));
+				conjuntoPrenda.setNombre(res.getString("nombre"));
+				conjuntoPrenda.setDescuento(res.getFloat("descuento"));
+				conjuntoPrenda.setActivo(res.getBoolean("activo"));
+				conjuntoPrenda.setPrendas(prendas);
+			}
+			con.close();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		return conjuntoPrenda;
+	}
 }

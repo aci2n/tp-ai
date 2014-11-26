@@ -11,8 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import controlador.Controlador;
-
 public class AdministradorPersistenciaFactura extends AdministradorPersistencia {
 	
 	private static AdministradorPersistenciaFactura instancia;
@@ -78,7 +76,7 @@ public class AdministradorPersistenciaFactura extends AdministradorPersistencia 
 				ps.setInt(1, rs.getInt("nro_factura"));
 				ResultSet rsPrendas = ps.executeQuery();
 				while (rsPrendas.next()){
-					Prenda p = Controlador.getControlador().obtenerPrenda(rsPrendas.getString("codigo_prenda"));
+					Prenda p = Prenda.buscarPrendaFactura(rsPrendas.getString("codigo_prenda"));
 					itemsPrenda.add(new ItemPrenda(p,rsPrendas.getFloat("cantidad")));
 				}
 				
