@@ -212,33 +212,33 @@ public class Controlador {
 	public void eliminarMaterial(String codigo){
 		Material m = obtenerMaterial(codigo);
 	    if (m != null) {
-	      Iterator<Prenda> iterP = prendas.iterator();
-	      while (iterP.hasNext()) {
-	        Prenda p = iterP.next();
-	        if (p.tenesElMaterial(codigo)) {
-	          eliminarPrenda(p.getCodigo());						
-	        }
-	      }
-	      m.eliminar();
-	      materiales.remove(m);
+	    	m.eliminar();
+	    	materiales.remove(m);
+	    	Collection<Prenda> prendasAEliminar = new ArrayList<Prenda>();
+	    	for (Prenda p : prendas) {
+	    		if (p.tenesElMaterial(codigo)) {
+	    			prendasAEliminar.add(p);						
+	    		}
+	    	}
+	    	for (Prenda p : prendasAEliminar) {
+	    		eliminarPrenda(p.getCodigo());
+	    	}
 	    }
 	}
 	
 	public void eliminarProveedor(String cuit) {
-		Iterator<Proveedor> iterProv = proveedores.iterator();
-		while (iterProv.hasNext()){
-			Proveedor prov = iterProv.next();
-			if (prov.sosElProveedor(cuit)){
-				Iterator<Material> iter = materiales.iterator();
-				while (iter.hasNext()){
-					Material m = iter.next();
-					if (m.tenesElProveedor(cuit)){
-						iter.remove();
-						eliminarMaterial(m.getCodigo());
-					}
+		Proveedor prov = obtenerProveedor(cuit);
+		if (prov != null) {
+			prov.eliminar();
+			proveedores.remove(prov);
+			Collection<Material> materialesAEliminar = new ArrayList<Material>();
+			for (Material m : materiales) {
+				if (m.tenesElProveedor(cuit)){
+					materialesAEliminar.add(m);
 				}
-				iterProv.remove();
-				return;
+			}
+			for (Material m : materialesAEliminar) {
+				eliminarMaterial(m.getCodigo());
 			}
 		}
 	}
