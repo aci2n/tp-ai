@@ -128,9 +128,7 @@ public class Controlador {
 		this.facturas.add(factura);
 		for (ItemFacturaView ipv : prendasView) {
 			Prenda prenda =  obtenerPrenda(ipv.getPrenda().getCodigo());
-			if (prenda.hayStock(ipv.getCantidad())){
-				factura.agregarItem(prenda, ipv.getCantidad());
-			}
+			factura.agregarItem(prenda, ipv.getCantidad());
 		}
 	}
 	
@@ -397,14 +395,22 @@ public class Controlador {
 	public Collection<FacturaView> getFacturasView() {
 		Collection<FacturaView> facturasView = new ArrayList<FacturaView>();
 		for (Factura factura : this.facturas)
-			facturasView.add(factura.generarFacturaView());
+			if (factura.isConfirmada())
+				facturasView.add(factura.generarFacturaView());
 		return facturasView;
 	}
 	
-	public void confirmarFactura(int nroFactura) {
-		Factura factura = obtenerFactura(nroFactura);
-		if (factura != null) {
-			factura.confirmar();
+	public void confirmarFactura(int nroFactura, boolean valor) {
+		if(valor){
+			Factura factura = obtenerFactura(nroFactura);
+			if (factura != null) {
+				boolean tieneStock = factura.confirmar();
+				if (!tieneStock)
+					Factura.setContador(Factura.getContador()-1);
+			}
+		}
+		else{
+			Factura.setContador(Factura.getContador()-1);
 		}
 	}
 }

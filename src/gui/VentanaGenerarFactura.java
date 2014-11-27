@@ -65,7 +65,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 			{
 				lNroFactura = new JLabel();
 				getContentPane().add(lNroFactura);
-				lNroFactura.setText("N� factura:");
+				lNroFactura.setText("N�ｿｽ factura:");
 				lNroFactura.setBounds(12, 12, 68, 17);
 			}
 			{
@@ -125,7 +125,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 				buttonGenerar = new JButton();
 				getContentPane().add(buttonGenerar);
 				buttonGenerar.setText("Generar factura");
-				buttonGenerar.setBounds(274, 377, 106, 24);
+				buttonGenerar.setBounds(220, 377, 158, 24);
 				buttonGenerar.addActionListener(this);
 			}	
 		} catch (Exception e) {
@@ -164,8 +164,9 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 			if (!itemsPrenda.isEmpty()){
 				Controlador.getControlador().generarFactura(itemsPrenda);
 				int nroFactura = Controlador.getControlador().getNroFactura();
-				new VentanaConfirmarFactura(nroFactura, Float.parseFloat(tPrecio.getText().replace("$", "")));
+				new VentanaConfirmarFactura(nroFactura-1, Float.parseFloat(tPrecio.getText().replace("$", "")));
 				modelo.setRowCount(0);
+				nroFactura = Controlador.getControlador().getNroFactura();
 				tNroFactura.setText(Integer.toString(nroFactura));
 				tPrecio.setText("$"+0);
 				itemsPrenda = new ArrayList<ItemFacturaView>();
