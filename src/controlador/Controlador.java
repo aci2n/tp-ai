@@ -1,11 +1,3 @@
-/* 
- * hay que ver como hacemo para que cuando levante desde la base de datos 
- * no cree una instancia distinta a la que esta en el controlador
- * porque despues cuando actualizas ponele descontar stock se cambia
- * en la base de datos pero no en el controlador y queda medio mal
- * aunque ni se nota casi
- */
-
 package controlador;
 
 import implementacion.ConjuntoPrenda;
@@ -364,7 +356,8 @@ public class Controlador {
 	public Collection<MaterialView> getMaterialesView() {
 		Collection<MaterialView> materialesView = new ArrayList<MaterialView>();
 		for (Material material : this.materiales) {
-			materialesView.add(material.generarMaterialView());
+			if (material.isActivo())
+				materialesView.add(material.generarMaterialView());
 		}
 		return materialesView;
 	}
@@ -373,7 +366,8 @@ public class Controlador {
 	public Collection<ProveedorView> getProveedoresView() {
 		Collection<ProveedorView> proveedoresView = new ArrayList<ProveedorView>();
 		for (Proveedor proveedor : this.proveedores) {
-			proveedoresView.add(proveedor.generarProveedorView());
+			if(proveedor.isActivo())
+				proveedoresView.add(proveedor.generarProveedorView());
 		}
 		return proveedoresView;
 	}
@@ -382,7 +376,8 @@ public class Controlador {
 	public Collection<PrendaView> getPrendasView() {
 		Collection<PrendaView> prendasView = new ArrayList<PrendaView>();
 		for (Prenda prenda : this.prendas) {
-			prendasView.add(prenda.generarPrendaView());
+			if (prenda.isActivo())
+				prendasView.add(prenda.generarPrendaView());
 		}
 		return prendasView;
 	}

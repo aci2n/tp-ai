@@ -90,4 +90,9 @@ public abstract class Prenda {
 		}
 		return p;	
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		return ((Prenda)o).getCodigo() == this.codigo;
+	}
 }

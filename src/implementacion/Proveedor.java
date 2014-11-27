@@ -1,6 +1,7 @@
 package implementacion;
 
 import java.util.Collection;
+
 import persistencia.AdministradorPersistenciaProveedor;
 import view.ProveedorView;
 
@@ -69,5 +70,10 @@ public class Proveedor {
 	
 	public void actualizar(){
 		AdministradorPersistenciaProveedor.getInstancia().update(this);
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		return ((Proveedor)o).getCuit() == this.cuit;
 	}
 }

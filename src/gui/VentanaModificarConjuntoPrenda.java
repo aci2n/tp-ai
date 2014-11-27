@@ -196,7 +196,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 		}
 	}
 	
-	private boolean seContieneASiMismo(String codigoPrendaAInsertar, String codigoPrendaActual){ //calabria estaria orgulloso
+	private boolean seContieneASiMismo(String codigoPrendaAInsertar, String codigoPrendaActual){
 		if (codigoPrendaAInsertar.equals(codigoPrendaActual))
 			return true;
 		PrendaView p = Controlador.getControlador().obtenerPrendaView(codigoPrendaAInsertar);

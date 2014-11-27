@@ -128,4 +128,9 @@ public class Material extends Observable {
 	public boolean tenesStock(float cantidad) {
 		return this.cantidad>=cantidad;
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		return ((Material)o).getCodigo() == this.codigo;
+	}
 }

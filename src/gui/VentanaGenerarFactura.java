@@ -47,6 +47,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 	private DefaultTableModel modelo;
 	private JTable tablaPrendas;
 	private Collection<ItemFacturaView> itemsPrenda = new ArrayList<ItemFacturaView>();
+	private float precio = 0;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -153,7 +154,8 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 					itemsPrenda.add(ipv);
 					Object [] fila = {ipv.getPrenda().getNombre(), ipv.getCantidad(),"$"+ipv.getSubtotal()};
 					modelo.addRow (fila);
-					tPrecio.setText("$"+ipv.getSubtotal());
+					precio = ipv.getSubtotal() + precio;
+					tPrecio.setText("$"+precio);
 				}
 				else 
 					JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
@@ -166,11 +168,12 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 			if (!itemsPrenda.isEmpty()){
 				Controlador.getControlador().generarFactura(itemsPrenda);
 				int nroFactura = Controlador.getControlador().getNroFactura();
-				new VentanaConfirmarFactura(nroFactura-1, Float.parseFloat(tPrecio.getText().replace("$", "")));
+				new VentanaConfirmarFactura(nroFactura-1, precio);
 				modelo.setRowCount(0);
 				nroFactura = Controlador.getControlador().getNroFactura();
 				tNroFactura.setText(Integer.toString(nroFactura));
-				tPrecio.setText("$"+0);
+				precio = 0;
+				tPrecio.setText("$"+precio);
 				itemsPrenda = new ArrayList<ItemFacturaView>();
 			}
 			else
