@@ -248,12 +248,12 @@ public class Controlador {
 		if (prenda != null) {
 			prendas.remove(prenda);
 			prenda.eliminar();
-			for (Prenda p : prendas) {
-				if (p.tenesLaPrenda(codigo)) {
-					prendas.remove(p);
-					p.eliminar();
-				}
-			}
+	    	Collection<Prenda> prendasAEliminar = new ArrayList<Prenda>();
+			for (Prenda p : prendas)
+				if (p.tenesLaPrenda(codigo))
+					prendasAEliminar.add(p);
+			for (Prenda p : prendasAEliminar)
+				eliminarPrenda(p.getCodigo());
 		}
 	}
 	
