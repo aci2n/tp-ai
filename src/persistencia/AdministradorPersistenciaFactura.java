@@ -70,6 +70,7 @@ public class AdministradorPersistenciaFactura extends AdministradorPersistencia 
 				Factura f = new Factura();
 				f.setNumeroFactura(rs.getInt("nro_factura"));
 				Factura.setContador(++contador);
+				f.setConfirmada(true);
 				
 				Collection<ItemFactura> itemsPrenda = new ArrayList<ItemFactura>();
 				ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Facturas_Prendas WHERE nro_factura = ?");

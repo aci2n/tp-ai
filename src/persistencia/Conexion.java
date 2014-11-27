@@ -7,7 +7,7 @@ public class Conexion {
 	public static Connection connect() {
 		Connection con = null;
 		try {
-            String userName = "alvaroai";
+            String userName = "alvaroai"; //alvaroai, no password pls no borrar este comentario
             String password = ""; 
             String url = "jdbc:sqlserver://localhost";
             

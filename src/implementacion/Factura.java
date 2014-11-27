@@ -28,9 +28,10 @@ public class Factura {
 			for (ItemFactura item : prendas) {
 				item.getPrenda().descontarStock(item.getCantidad());
 			}
+			this.setConfirmada(true);
 			AdministradorPersistenciaFactura.getInstancia().insert(this);
 		}
-		return false;	
+		return stockSuficiente;	
 	}
 
 	public Collection<ItemFactura> getPrendas() {
