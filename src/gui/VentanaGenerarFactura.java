@@ -145,15 +145,20 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==buttonAgregar){
-			if (!noDuplicados(comboBoxPrendas.getSelectedItem().toString())){
-				ItemFacturaView ipv = new ItemFacturaView(Controlador.getControlador().obtenerPrendaView(comboBoxPrendas.getSelectedItem().toString()),(float)(Integer)spinnerCantidad.getValue());
-				itemsPrenda.add(ipv);
-				Object [] fila = {ipv.getPrenda().getNombre(), ipv.getCantidad(),"$"+ipv.getSubtotal()};
-				modelo.addRow (fila);
-				tPrecio.setText("$"+ipv.getSubtotal());
+			try{
+				if (!noDuplicados(comboBoxPrendas.getSelectedItem().toString())){
+					ItemFacturaView ipv = new ItemFacturaView(Controlador.getControlador().obtenerPrendaView(comboBoxPrendas.getSelectedItem().toString()),(float)(Integer)spinnerCantidad.getValue());
+					itemsPrenda.add(ipv);
+					Object [] fila = {ipv.getPrenda().getNombre(), ipv.getCantidad(),"$"+ipv.getSubtotal()};
+					modelo.addRow (fila);
+					tPrecio.setText("$"+ipv.getSubtotal());
+				}
+				else 
+					JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
+				}
+			catch (NullPointerException exception){
+				JOptionPane.showMessageDialog(this.getComponent(0), "Seleccione una prenda a agregar.","Error",JOptionPane.ERROR_MESSAGE);
 			}
-			else 
-				JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
 		}		
 		if (e.getSource()==buttonConfirmar){
 			if (!itemsPrenda.isEmpty()){
