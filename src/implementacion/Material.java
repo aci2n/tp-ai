@@ -22,10 +22,12 @@ public class Material extends Observable {
 		this.cantidad=cantidad;
 		this.costo=costo;
 		this.activo = true;
+		this.addObserver(SistemaProveedores.getInstance());
 		AdministradorPersistenciaMaterial.getInstance().insert(this);
 	}
 	
 	public Material(){
+		this.addObserver(SistemaProveedores.getInstance());
 	}
 
 	public boolean sosElMaterial(String codigo) {
@@ -48,7 +50,6 @@ public class Material extends Observable {
 
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
-		this.addObserver(proveedor);
 	}
 
 	public void setCantidad(float cantidad) {

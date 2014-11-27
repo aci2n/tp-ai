@@ -8,13 +8,19 @@ import java.util.Observer;
 public class SistemaProveedores implements Observer{
 	
 	private Collection<Material> materiales;
+	private static SistemaProveedores instance;
 
-	public SistemaProveedores(){
+	private SistemaProveedores(){
 		materiales = new ArrayList<Material>();
 	}
-	@Override
+	
+	public static SistemaProveedores getInstance() {
+		if (instance == null)
+			instance = new SistemaProveedores();
+		return instance;
+	}
+	
 	public void update(Observable o, Object arg1) {
-		
 		Material m = (Material) o;
 		materiales.add(m);
 		System.out.println(m.getCodigo());
