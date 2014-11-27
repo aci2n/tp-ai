@@ -11,7 +11,6 @@ package controlador;
 import implementacion.ConjuntoPrenda;
 import implementacion.Factura;
 import implementacion.ItemMaterial;
-import implementacion.ItemFactura;
 import implementacion.Material;
 import implementacion.Prenda;
 import implementacion.PrendaConTemporada;
@@ -125,7 +124,6 @@ public class Controlador {
 	}
 	
 	public void generarFactura(Collection<ItemFacturaView> prendasView){
-		Collection<ItemFactura> prendas = new ArrayList<ItemFactura>();
 		Factura factura = new Factura();
 		this.facturas.add(factura);
 		for (ItemFacturaView ipv : prendasView) {

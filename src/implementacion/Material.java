@@ -1,11 +1,7 @@
 package implementacion;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
-
 import persistencia.AdministradorPersistenciaMaterial;
 import view.MaterialView;
 
