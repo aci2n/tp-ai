@@ -7,13 +7,14 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import view.ProveedorView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
 public class VentanaModificarProveedor extends javax.swing.JFrame implements ActionListener{
-	private JComboBox proveedores;
+	private JComboBox<String> proveedores;
 	private JLabel nombre;
 	private JTextField tNombre;
 	private JLabel cuit;
@@ -41,9 +42,10 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 	
 	private void componentes() {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			{
 
-				proveedores = new JComboBox();
+				proveedores = new JComboBox<String>();
 				getContentPane().add(proveedores);
 				proveedores.setBounds(78, 12, 265, 24);
 				for (ProveedorView p : Controlador.getControlador().getProveedoresView())

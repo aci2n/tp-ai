@@ -7,6 +7,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import view.ProveedorView;
@@ -25,7 +26,12 @@ public class VentanaListaProveedor extends JFrame{
 	
 	
 	private void componentes(){
-		
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
 		Collection<ProveedorView> proveedores = Controlador.getControlador().getProveedoresView();
@@ -41,7 +47,7 @@ public class VentanaListaProveedor extends JFrame{
 		for(ProveedorView p : proveedores){
 			/*String activo;
 			if (p.isActivo())
-				activo="Sí";
+				activo="Sï¿½";
 			else
 				activo="No";*/
 			Object[] nuevo = {p.getNombre(), p.getCuit()};

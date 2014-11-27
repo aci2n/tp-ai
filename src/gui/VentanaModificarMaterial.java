@@ -7,13 +7,14 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import view.MaterialView;
 import controlador.Controlador;
 
 @SuppressWarnings("serial")
 public class VentanaModificarMaterial extends javax.swing.JFrame implements ActionListener{
-	private JComboBox materiales;
+	private JComboBox<String> materiales;
 	private JLabel nombre;
 	private JTextField tNombre;
 	private JTextField tCuit;
@@ -51,8 +52,9 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 	
 	private void componentes() {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			{				
-				materiales = new JComboBox();
+				materiales = new JComboBox<String>();
 				getContentPane().add(materiales);
 				for (MaterialView m : Controlador.getControlador().getMaterialesView())
 					materiales.addItem(m.getCodigo());
@@ -69,7 +71,7 @@ public class VentanaModificarMaterial extends javax.swing.JFrame implements Acti
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Código:");
+				codigo.setText("CÃ³digo:");
 				codigo.setBounds(12, 19, 54, 17);
 			}
 			{

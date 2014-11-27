@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -40,7 +41,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 	private JTextField tDescuento;
 	private JLabel descuento;
 	private JTable tablaMateriales;
-	private JComboBox prendasComboBox;
+	private JComboBox<String> prendasComboBox;
 	private JButton agregarPrenda;
 	private JButton confirmar;
 	Collection<PrendaView> prendas = new ArrayList<PrendaView>();
@@ -69,12 +70,12 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 	
 	private void componentes() {
 		try {
-
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			getContentPane().setLayout(null);
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Codigo:");
+				codigo.setText("Código:");
 				codigo.setBounds(12, 12, 48, 17);
 			}
 			{
@@ -112,7 +113,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 				confirmar.addActionListener(this);
 			}
 			{
-				prendasComboBox = new JComboBox();
+				prendasComboBox = new JComboBox<String>();
 				getContentPane().add(prendasComboBox);
 				for (PrendaView p : Controlador.getControlador().getPrendasView())
 					prendasComboBox.addItem(p.getCodigo());
@@ -123,7 +124,7 @@ public class VentanaAltaConjuntoPrenda extends javax.swing.JFrame implements Act
 				agregarPrenda= new JButton();
 				getContentPane().add(agregarPrenda);
 				agregarPrenda.setBounds(239, 126, 96, 27);
-				agregarPrenda.setText("A�adir");
+				agregarPrenda.setText("Añadir");
 				agregarPrenda.addActionListener(this);
 			}
 			{

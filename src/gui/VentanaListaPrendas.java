@@ -8,6 +8,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import view.ConjuntoPrendaView;
@@ -31,21 +32,26 @@ public class VentanaListaPrendas extends JFrame{
 	
 	
 	private void componentes(){
-		
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 		Container c = this.getContentPane();
 		final Collection<PrendaView> prendas = Controlador.getControlador().getPrendasView();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS
 		
-		modelo.addColumn("Código");
+		modelo.addColumn("CÃ³digo");
 		modelo.addColumn("Nombre");
 		modelo.addColumn("Precio");
 		
 		// FILAS 
 		
 		for(PrendaView pr : prendas){
-			Object[] nuevo = {pr.getCodigo(), pr.getNombre(),pr.getPrecio()};
+			Object[] nuevo = {pr.getCodigo(), pr.getNombre(),"$"+pr.getPrecio()};
 			modelo.addRow(nuevo);
 		}
 		

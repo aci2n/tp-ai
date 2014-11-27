@@ -400,16 +400,21 @@ public class Controlador {
 	}
 	
 	public void confirmarFactura(int nroFactura, boolean valor) {
+		Factura factura = obtenerFactura(nroFactura);
 		if(valor){
-			Factura factura = obtenerFactura(nroFactura);
 			if (factura != null) {
 				boolean tieneStock = factura.confirmar();
-				if (!tieneStock)
+				if (!tieneStock){
+					facturas.remove(factura);
 					Factura.setContador(Factura.getContador()-1);
+				}
 			}
 		}
 		else{
-			Factura.setContador(Factura.getContador()-1);
+			if(factura != null){
+				facturas.remove(factura);
+				Factura.setContador(Factura.getContador()-1);
+			}
 		}
 	}
 }

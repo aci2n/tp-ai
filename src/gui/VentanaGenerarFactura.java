@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -40,7 +41,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 	private JButton buttonGenerar;
 	private JButton buttonAgregar;
 	private JSpinner spinnerCantidad;
-	private JComboBox comboBoxPrendas;
+	private JComboBox<String> comboBoxPrendas;
 	private JLabel tPrecio;
 	private JLabel lPrecio;
 	private DefaultTableModel modelo;
@@ -61,11 +62,12 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 	
 	private void initGUI() {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			getContentPane().setLayout(null);
 			{
 				lNroFactura = new JLabel();
 				getContentPane().add(lNroFactura);
-				lNroFactura.setText("N�ｿｽ factura:");
+				lNroFactura.setText("N° factura:");
 				lNroFactura.setBounds(12, 12, 68, 17);
 			}
 			{
@@ -89,7 +91,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 				tPrecio.setText("$"+0);
 			}
 			{
-				comboBoxPrendas = new JComboBox();
+				comboBoxPrendas = new JComboBox<String>();
 				getContentPane().add(comboBoxPrendas);
 				for (PrendaView pv : Controlador.getControlador().getPrendasView())
 					comboBoxPrendas.addItem(pv.getCodigo());

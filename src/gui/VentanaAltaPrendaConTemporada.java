@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,7 +30,7 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 	private JTextField tCodigo;
 	private JTextField tNombre;
 	private JTable tablaMateriales;
-	private JComboBox materialesComboBox;
+	private JComboBox<String> materialesComboBox;
 	private JButton agregarMaterial;
 	private JSpinner cantidadMaterial;
 	private JButton confirmar;
@@ -62,12 +64,12 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 	
 	private void componentes() {
 		try {
-
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			getContentPane().setLayout(null);
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Codigo:");
+				codigo.setText("Código:");
 				codigo.setBounds(12, 12, 48, 17);
 			}
 			{
@@ -116,7 +118,7 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 				confirmar.addActionListener(this);
 			}
 			{
-				materialesComboBox = new JComboBox();
+				materialesComboBox = new JComboBox<String>();
 				getContentPane().add(materialesComboBox);
 				for (MaterialView m : Controlador.getControlador().getMaterialesView())
 					materialesComboBox.addItem(m.getCodigo());
@@ -132,7 +134,7 @@ public class VentanaAltaPrendaConTemporada extends javax.swing.JFrame implements
 				agregarMaterial = new JButton();
 				getContentPane().add(agregarMaterial);
 				agregarMaterial.setBounds(239, 126, 96, 27);
-				agregarMaterial.setText("A�adir");
+				agregarMaterial.setText("Añadir");
 				agregarMaterial.addActionListener(this);
 			}
 			{

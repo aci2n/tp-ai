@@ -12,12 +12,12 @@ import java.awt.event.WindowListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Controlador;
 
+@SuppressWarnings("serial")
 public class VentanaConfirmarFactura extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

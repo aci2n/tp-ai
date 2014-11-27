@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import view.MaterialView;
 import controlador.Controlador;
@@ -38,6 +39,7 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 	
 	private void componentes() {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			{
 				nombre = new JLabel();
 				getContentPane().add(nombre);
@@ -97,7 +99,7 @@ public class VentanaAltaMaterial extends javax.swing.JFrame implements ActionLis
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Código:");
+				codigo.setText("CÃ³digo:");
 				codigo.setBounds(12, 16, 54, 17);
 			}
 			{

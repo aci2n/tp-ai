@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import view.MaterialView;
 import controlador.Controlador;
@@ -13,7 +14,7 @@ import controlador.Controlador;
 @SuppressWarnings("serial")
 public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionListener{
 	private JButton eliminar;
-	private JComboBox materiales;
+	private JComboBox<String> materiales;
 	private JLabel codigo;
 
 	public static void main(String[] args) {
@@ -37,8 +38,9 @@ public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionLis
 	
 	private void componentes() {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			{
-				materiales = new JComboBox();
+				materiales = new JComboBox<String>();
 				getContentPane().add(materiales);
 				materiales.setBounds(70, 12, 243, 24);
 				for (MaterialView m : Controlador.getControlador().getMaterialesView())
@@ -55,7 +57,7 @@ public class VentanaBajaMaterial extends javax.swing.JFrame implements ActionLis
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Código:");
+				codigo.setText("CÃ³digo:");
 				codigo.setBounds(12, 12, 54, 24);
 			}			
 		} catch (Exception e) {

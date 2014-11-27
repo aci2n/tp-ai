@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,9 +37,9 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 	private JLabel codigo;
 	private JLabel nombre;
 	private JTextField tNombre;
-	private JComboBox comboCodigo;
+	private JComboBox<String> comboCodigo;
 	private JTable tablaPrendas;
-	private JComboBox prendasComboBox;
+	private JComboBox<String> prendasComboBox;
 	private JButton agregarPrenda;
 	private JButton confirmar;
 	private JTextField tDescuento;
@@ -69,12 +70,12 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 	
 	private void componentes() {
 		try {
-
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			getContentPane().setLayout(null);
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Codigo:");
+				codigo.setText("CÃ³digo:");
 				codigo.setBounds(12, 12, 48, 17);
 			}
 			{
@@ -107,7 +108,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 				confirmar.addActionListener(this);
 			}
 			{
-				prendasComboBox = new JComboBox();
+				prendasComboBox = new JComboBox<String>();
 				getContentPane().add(prendasComboBox);
 				for (PrendaView p : Controlador.getControlador().getPrendasView())
 					prendasComboBox.addItem(p.getCodigo());
@@ -115,7 +116,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 				prendasComboBox.setSelectedIndex(-1);
 			}
 			{
-				comboCodigo = new JComboBox();
+				comboCodigo = new JComboBox<String>();
 				getContentPane().add(comboCodigo);
 				for (PrendaView p : Controlador.getControlador().getPrendasView())
 					if(p instanceof ConjuntoPrendaView) //ni nos vimos patrones GRASP
@@ -128,7 +129,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 				agregarPrenda = new JButton();
 				getContentPane().add(agregarPrenda);
 				agregarPrenda.setBounds(239, 126, 96, 27);
-				agregarPrenda.setText("Añadir");
+				agregarPrenda.setText("AÃ±adir");
 				agregarPrenda.addActionListener(this);
 			}
 			{
@@ -172,7 +173,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 						JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else
-					JOptionPane.showMessageDialog(this.getComponent(0), "Un conjunto no puede contenerse a sí mismo.","Error",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this.getComponent(0), "Un conjunto no puede contenerse a sï¿½ mismo.","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			else
 				JOptionPane.showMessageDialog(this.getComponent(0), "Por favor seleccione una prenda.","Error",JOptionPane.ERROR_MESSAGE);

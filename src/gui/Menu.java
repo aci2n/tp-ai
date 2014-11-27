@@ -12,7 +12,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
-
+import javax.swing.UIManager;
 import controlador.Controlador;
 
 
@@ -48,6 +48,11 @@ public class Menu extends JFrame implements ActionListener{
 	}
 	
 	private void componentes(){
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Controlador.getControlador(); //para que cargue apenas se arranca
 		Container c = this.getContentPane();
 		c.setLayout(new BorderLayout());
@@ -193,7 +198,7 @@ public class Menu extends JFrame implements ActionListener{
 	
 	private void comportamiento(){
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Sistema de Venta y Reposición de Indumentaria");		
+		setTitle("Sistema de Venta y ReposiciÃ³n de Indumentaria");		
 		setSize(500,300);
 		setLocationRelativeTo(null);
 		this.setVisible(true);

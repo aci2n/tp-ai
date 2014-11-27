@@ -7,6 +7,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import view.MaterialView;
@@ -25,7 +26,12 @@ public class VentanaListaMateriales extends JFrame{
 	
 	
 	private void componentes(){
-		
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 		Container c = this.getContentPane();
 		DefaultTableModel modelo = new DefaultTableModel();
 		Collection<MaterialView> materialesView = Controlador.getControlador().getMaterialesView();
@@ -33,7 +39,7 @@ public class VentanaListaMateriales extends JFrame{
 		
 		// COLUMNAS
 		
-		modelo.addColumn("Código");
+		modelo.addColumn("CÃ³digo");
 		modelo.addColumn("Nombre");
 		modelo.addColumn("Punto Pedido");
 		modelo.addColumn("Proveedor");

@@ -8,6 +8,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import view.FacturaView;
@@ -28,14 +29,19 @@ public class VentanaListaFacturas extends JFrame{
 	
 	
 	private void componentes(){
-		
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 		Container c = this.getContentPane();
 		final Collection<FacturaView> facturas = Controlador.getControlador().getFacturasView();
 		c.setLayout(new BorderLayout());
 		
 		// COLUMNAS
 		
-		modelo.addColumn("N° factura");
+		modelo.addColumn("NÂ° factura");
 		modelo.addColumn("Precio");
 		
 		// FILAS 

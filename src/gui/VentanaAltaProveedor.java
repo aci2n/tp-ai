@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import view.ProveedorView;
 import controlador.Controlador;
@@ -38,6 +39,7 @@ public class VentanaAltaProveedor extends javax.swing.JFrame implements ActionLi
 
 	private void componentes() {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			getContentPane().setLayout(null);
 			{
 				nombre = new JLabel();

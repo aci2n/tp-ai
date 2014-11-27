@@ -13,6 +13,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -40,9 +41,9 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 	private JLabel codigo;
 	private JLabel nombre;
 	private JTextField tNombre;
-	private JComboBox comboCodigo;
+	private JComboBox<String> comboCodigo;
 	private JTable tablaMateriales;
-	private JComboBox materialesComboBox;
+	private JComboBox<String> materialesComboBox;
 	private JButton agregarMaterial;
 	private JSpinner cantidadMaterial;
 	private JButton confirmar;
@@ -76,12 +77,12 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 	
 	private void componentes() {
 		try {
-
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			getContentPane().setLayout(null);
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Codigo:");
+				codigo.setText("Código:");
 				codigo.setBounds(12, 12, 48, 17);
 			}
 			{
@@ -125,7 +126,7 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 				confirmar.addActionListener(this);
 			}
 			{
-				materialesComboBox = new JComboBox();
+				materialesComboBox = new JComboBox<String>();
 				getContentPane().add(materialesComboBox);
 				for (MaterialView m : Controlador.getControlador().getMaterialesView())
 					materialesComboBox.addItem(m.getCodigo());
@@ -133,7 +134,7 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 				materialesComboBox.setSelectedIndex(-1);
 			}
 			{
-				comboCodigo = new JComboBox();
+				comboCodigo = new JComboBox<String>();
 				getContentPane().add(comboCodigo);
 				for (PrendaView p : Controlador.getControlador().getPrendasView())
 					if(p instanceof PrendaConTemporadaView) //ni nos vimos patrones GRASP
@@ -151,7 +152,7 @@ public class VentanaModificarPrendaConTemporada extends javax.swing.JFrame imple
 				agregarMaterial = new JButton();
 				getContentPane().add(agregarMaterial);
 				agregarMaterial.setBounds(239, 126, 96, 27);
-				agregarMaterial.setText("A�adir");
+				agregarMaterial.setText("Añadir");
 				agregarMaterial.addActionListener(this);
 			}
 			{

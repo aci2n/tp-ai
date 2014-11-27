@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import view.PrendaView;
 import controlador.Controlador;
@@ -28,7 +29,7 @@ import controlador.Controlador;
 public class VentanaBajaPrenda extends javax.swing.JFrame implements ActionListener{
 
 	private JButton eliminar;
-	private JComboBox prendas;
+	private JComboBox<String> prendas;
 	private JLabel codigo;
 
 	public static void main(String[] args) {
@@ -52,8 +53,9 @@ public class VentanaBajaPrenda extends javax.swing.JFrame implements ActionListe
 	
 	private void componentes() {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			{
-				prendas = new JComboBox();
+				prendas = new JComboBox<String>();
 				getContentPane().add(prendas);
 				prendas.setBounds(70, 12, 243, 24);
 				for (PrendaView pr : Controlador.getControlador().getPrendasView())
@@ -70,7 +72,7 @@ public class VentanaBajaPrenda extends javax.swing.JFrame implements ActionListe
 			{
 				codigo = new JLabel();
 				getContentPane().add(codigo);
-				codigo.setText("Código:");
+				codigo.setText("CÃ³digo:");
 				codigo.setBounds(12, 12, 54, 24);
 			}			
 		} catch (Exception e) {

@@ -1,9 +1,6 @@
 package implementacion;
 
 import java.util.Collection;
-import java.util.Observable;
-import java.util.Observer;
-
 import persistencia.AdministradorPersistenciaProveedor;
 import view.ProveedorView;
 
@@ -72,9 +69,5 @@ public class Proveedor {
 	
 	public void actualizar(){
 		AdministradorPersistenciaProveedor.getInstancia().update(this);
-	}
-	
-	private void generarOrdenDeCompra(Material material, float cantidadAComprar) {
-		//	TODO
 	}
 }
