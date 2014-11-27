@@ -45,11 +45,6 @@ public class VentanaListaProveedor extends JFrame{
 		// FILAS 
 		
 		for(ProveedorView p : proveedores){
-			/*String activo;
-			if (p.isActivo())
-				activo="S�";
-			else
-				activo="No";*/
 			Object[] nuevo = {p.getNombre(), p.getCuit()};
 			modelo.addRow(nuevo);
 		}

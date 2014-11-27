@@ -119,7 +119,7 @@ public class VentanaModificarConjuntoPrenda extends javax.swing.JFrame implement
 				comboCodigo = new JComboBox<String>();
 				getContentPane().add(comboCodigo);
 				for (PrendaView p : Controlador.getControlador().getPrendasView())
-					if(p instanceof ConjuntoPrendaView) //ni nos vimos patrones GRASP
+					if(p instanceof ConjuntoPrendaView)
 						comboCodigo.addItem(p.getCodigo());
 				comboCodigo.setBounds(96, 8, 239, 24);
 				comboCodigo.setSelectedIndex(-1);

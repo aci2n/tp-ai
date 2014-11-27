@@ -18,7 +18,6 @@ public class Factura {
 		numeroFactura = contador++;
 	}
 	
-	// El método confirmar() retorna false en caso de que no haya stock suficiente de alguna de las prendas
 	public boolean confirmar() {
 		boolean stockSuficiente = true;
 		for (ItemFactura item : prendas) {

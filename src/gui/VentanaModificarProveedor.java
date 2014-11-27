@@ -19,7 +19,6 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 	private JTextField tNombre;
 	private JLabel cuit;
 	private JButton modificar;
-	//private JCheckBox activo;
 
 	public static void main(String[] args) {
 		new VentanaModificarProveedor();
@@ -66,12 +65,6 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 				nombre.setText("Nombre:");
 				nombre.setBounds(12, 48, 54, 17);
 			}
-			/*{
-				activo = new JCheckBox();
-				getContentPane().add(activo);
-				activo.setText("Activo");
-				activo.setBounds(12, 81, 80, 17);
-			}*/
 			{
 				tNombre = new JTextField();
 				getContentPane().add(tNombre);
@@ -93,7 +86,6 @@ public class VentanaModificarProveedor extends javax.swing.JFrame implements Act
 			if (proveedores.getSelectedItem()!=null){
 				ProveedorView proveedorView = Controlador.getControlador().obtenerProveedorView(proveedores.getSelectedItem().toString());
 				tNombre.setText(proveedorView.getNombre());
-				//activo.setSelected(proveedorView.isActivo());
 			}
 		}
 		if (e.getSource()==modificar){

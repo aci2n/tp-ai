@@ -111,7 +111,7 @@ public class VentanaModificarPrendaSinTemporada extends javax.swing.JFrame imple
 				comboCodigo = new JComboBox<String>();
 				getContentPane().add(comboCodigo);
 				for (PrendaView p : Controlador.getControlador().getPrendasView())
-					if(p instanceof PrendaSinTemporadaView) //ni nos vimos patrones GRASP
+					if(p instanceof PrendaSinTemporadaView)
 						comboCodigo.addItem(p.getCodigo());
 				comboCodigo.setBounds(96, 8, 239, 24);
 				comboCodigo.setSelectedIndex(-1);
