@@ -90,5 +90,33 @@ public class AdministradorPersistenciaFactura extends AdministradorPersistencia 
 		}
 		return facturas;
 	}
+	
+	public Factura obtenerFactura(int nroFactura) {
+		Factura factura = null;
+		try {
+			Connection con = Conexion.connect();
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Facturas WHERE nro_factura = ?");
+			ps.setInt(1, nroFactura);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()){
+				factura = new Factura();
+				factura.setNumeroFactura(nroFactura);
+				
+				Collection<ItemFactura> itemsPrenda = new ArrayList<ItemFactura>();
+				ps = con.prepareStatement("SELECT * FROM "+super.getDatabase()+".dbo.Facturas_Prendas WHERE nro_factura = ?");
+				ps.setInt(1, nroFactura);
+				ResultSet rsPrendas = ps.executeQuery();
+				while (rsPrendas.next()){
+					Prenda p = Prenda.buscarPrendaFactura(rsPrendas.getString("codigo_prenda"));
+					itemsPrenda.add(new ItemFactura(p,rsPrendas.getFloat("cantidad")));
+				}
+				factura.setPrendas(itemsPrenda);
+			}
+		} catch (SQLException e) {
+		}
+		return factura;
+	}
 
 }

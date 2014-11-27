@@ -347,6 +347,23 @@ public class Controlador {
 		return null;
 	}
 	
+	public Factura obtenerFactura(int nroFactura) {
+		for (Factura f : facturas)
+			if (f.sosLaFactura(nroFactura))
+				return f;
+		Factura factura = Factura.buscarFactura(nroFactura);
+		if (factura != null)
+			facturas.add(factura);
+		return factura;
+	}
+	
+	public FacturaView obtenerFacturaView(int nroFactura) {
+		Factura f = obtenerFactura(nroFactura);
+		if (f != null)
+			return f.generarFacturaView();
+		return null;
+	}
+	
 	//GETTERS
 	
 	public Collection<MaterialView> getMaterialesView() {
@@ -384,5 +401,12 @@ public class Controlador {
 		for (Factura factura : this.facturas)
 			facturasView.add(factura.generarFacturaView());
 		return facturasView;
+	}
+	
+	public void confirmarFactura(int nroFactura) {
+		Factura factura = obtenerFactura(nroFactura);
+		if (factura != null) {
+			factura.confirmar();
+		}
 	}
 }

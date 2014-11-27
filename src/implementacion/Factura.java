@@ -71,6 +71,10 @@ public class Factura {
 		return AdministradorPersistenciaFactura.getInstancia().obtenerFacturas();
 	}
 	
+	public static Factura buscarFactura(int nroFactura) {
+		return AdministradorPersistenciaFactura.getInstancia().obtenerFactura(nroFactura);
+	}
+	
 	public void agregarItem(Prenda prenda, float cantidad) {
 		ItemFactura item = new ItemFactura(prenda, cantidad);
 		this.prendas.add(item);

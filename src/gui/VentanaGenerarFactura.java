@@ -37,7 +37,7 @@ import controlador.Controlador;
 public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionListener{
 	private JLabel lNroFactura;
 	private JLabel tNroFactura;
-	private JButton buttonConfirmar;
+	private JButton buttonGenerar;
 	private JButton buttonAgregar;
 	private JSpinner spinnerCantidad;
 	private JComboBox comboBoxPrendas;
@@ -65,7 +65,7 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 			{
 				lNroFactura = new JLabel();
 				getContentPane().add(lNroFactura);
-				lNroFactura.setText("N° factura:");
+				lNroFactura.setText("Nï¿½ factura:");
 				lNroFactura.setBounds(12, 12, 68, 17);
 			}
 			{
@@ -122,11 +122,11 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 				scrollPaneTabla.setBounds(12, 97, 368, 271);
 			}
 			{
-				buttonConfirmar = new JButton();
-				getContentPane().add(buttonConfirmar);
-				buttonConfirmar.setText("Confirmar");
-				buttonConfirmar.setBounds(274, 377, 106, 24);
-				buttonConfirmar.addActionListener(this);
+				buttonGenerar = new JButton();
+				getContentPane().add(buttonGenerar);
+				buttonGenerar.setText("Generar factura");
+				buttonGenerar.setBounds(274, 377, 106, 24);
+				buttonGenerar.addActionListener(this);
 			}	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -155,11 +155,13 @@ public class VentanaGenerarFactura extends javax.swing.JFrame implements ActionL
 			else 
 				JOptionPane.showMessageDialog(this.getComponent(0), "No ingrese prendas duplicadas.","Error",JOptionPane.ERROR_MESSAGE);
 		}		
-		if (e.getSource()==buttonConfirmar){
+		if (e.getSource()==buttonGenerar){
 			if (!itemsPrenda.isEmpty()){
 				Controlador.getControlador().generarFactura(itemsPrenda);
+				int nroFactura = Controlador.getControlador().getNroFactura();
+				new VentanaConfirmarFactura(nroFactura, Float.parseFloat(tPrecio.getText().replace("$", "")));
 				modelo.setRowCount(0);
-				tNroFactura.setText(Integer.toString(Controlador.getControlador().getNroFactura()));
+				tNroFactura.setText(Integer.toString(nroFactura));
 				tPrecio.setText("$"+0);
 				itemsPrenda = new ArrayList<ItemFacturaView>();
 			}
