@@ -126,15 +126,14 @@ public class Controlador {
 	
 	public void generarFactura(Collection<ItemFacturaView> prendasView){
 		Collection<ItemFactura> prendas = new ArrayList<ItemFactura>();
-		for (ItemFacturaView ipv : prendasView){
-			if (obtenerPrenda(ipv.getPrenda().getCodigo()).hayStock(ipv.getCantidad())){
-				ItemFactura item = new ItemFactura(obtenerPrenda(ipv.getPrenda().getCodigo()),ipv.getCantidad());
-				item.getPrenda().descontarStock(ipv.getCantidad());
-				prendas.add(item);			
+		Factura factura = new Factura();
+		this.facturas.add(factura);
+		for (ItemFacturaView ipv : prendasView) {
+			Prenda prenda =  obtenerPrenda(ipv.getPrenda().getCodigo());
+			if (prenda.hayStock(ipv.getCantidad())){
+				factura.agregarItem(prenda, ipv.getCantidad());
 			}
 		}
-		Factura factura = new Factura(prendas);
-		this.facturas.add(factura);
 	}
 	
 	//MODIFICAR
